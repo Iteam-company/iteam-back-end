@@ -1,5 +1,6 @@
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
+import { RepositoryMixin } from '@loopback/repository';
 import {
   RestExplorerBindings,
   RestExplorerComponent,
@@ -10,7 +11,7 @@ import {MySequence} from './sequence';
 
 export {ApplicationConfig};
 
-export class IteamApplication extends BootMixin(RestApplication) {
+export class IteamApplication extends BootMixin(RepositoryMixin(RestApplication)) {
   constructor(options: ApplicationConfig = {}) {
     super(options);
 
