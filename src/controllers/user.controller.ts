@@ -27,10 +27,14 @@ import { Users } from "../models";
 import { UserRepository } from "../repositories";
 import UserLoginSchema from "../schemas/userLogin.schema";
 
+import { AllowedEmailsRepository } from "../repositories";
+
 export class UserController {
   constructor(
     @repository(UserRepository)
     public userRepository: UserRepository,
+    @repository(AllowedEmailsRepository)
+    public allowedEmailsRepository: AllowedEmailsRepository,
     @inject(RestBindings.Http.RESPONSE) private response: Response
   ) {}
 
@@ -46,6 +50,10 @@ export class UserController {
     credentials: any
   ): Promise<any> {
     const {email, password} = credentials;
+
+    const isAllowed = await this.userRepository.findOne({where: {email}});
+    if(!isAllowed) return this.response.status(401).json({msg: "You are not allowed to pass, please ask admin to have access"});
+
     const user: any = await this.userRepository.findOne({where: {email}});
     if (!user) return this.response.status(401).json({msg: "Credentilas are wrong"});
 
@@ -72,23 +80,18 @@ export class UserController {
       },
     })
     user: Omit<Users, "id">
-  ): Promise<Users> {
+  ): Promise<any> {
     console.log("USER", user);
-    const {password} = user;
+    const {email, password} = user;
+
+    const isAllowed = await this.allowedEmailsRepository.findOne({where: {email}});
+
+    if(!isAllowed) return this.response.status(401).json({msg: "You are not allowed to pass, please ask admin to have access"});
 
     const hashedPassword = await encrypt(password);
     user.password = hashedPassword;
-    
-    return this.userRepository.create(user);
-  }
 
-  @get("/users/count")
-  @response(200, {
-    description: "User model count",
-    content: { "application/json": { schema: CountSchema } },
-  })
-  async count(@param.where(Users) where?: Where<Users>): Promise<Count> {
-    return this.userRepository.count(where);
+    return this.userRepository.create(user);
   }
 
   @get("/users")

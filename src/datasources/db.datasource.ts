@@ -5,11 +5,6 @@ const config = {
   name: 'db',
   connector: 'postgresql',
   url: 'postgres://tbzmtjww:bSRayf27ApweTc5oBw4RjoJEpjQcek-e@surus.db.elephantsql.com/tbzmtjww',
-  // host: '127.0.0.1',
-  // port: 7777,
-  // user: 'postgres',
-  // password: 'password',
-  // database: 'iteam'
 };
 
 // Observe application's life cycle to disconnect the datasource when
