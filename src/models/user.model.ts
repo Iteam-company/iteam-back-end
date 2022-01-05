@@ -17,9 +17,13 @@ export class Users extends Entity {
 
   @property({
     type: 'string',
-    required: true,
   })
   password: string;
+
+  @property({
+    type: 'string',
+  })
+  googleId: string;
 
   @property({
     type: 'string',
