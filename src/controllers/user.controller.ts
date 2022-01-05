@@ -56,7 +56,7 @@ export class UserController {
     })
     credentials: any
   ): Promise<any> {
-    const {email, password} = credentials;
+    const { email, password, googleId } = credentials;
 
     const isAllowed = await this.allowedEmailsRepository.findOne({where: {email}});
     if(!isAllowed) return this.response.status(401).json({msg: "You are not allowed to pass, please ask admin to have access"});
@@ -64,8 +64,15 @@ export class UserController {
     const user: any = await this.userRepository.findOne({where: {email}});
     if (!user) return this.response.status(401).json({msg: "Credentilas are wrong"});
 
-    const isMatched =  await compare(password, user.password);
-    if (!isMatched) return this.response.status(401).json({msg: "Credentilas are wrong"});
+    if ( password ) {
+      const isMatched =  await compare(password, user.password);
+      if (!isMatched) return this.response.status(401).json({msg: "Credentilas are wrong"});
+    } 
+    
+    if (googleId) {
+      const userByGoogleId: any = await this.userRepository.findOne({where: { googleId }});
+      if (!userByGoogleId) return this.response.status(401).json({msg: "Wrong google AUTH"});
+    }
 
     const token = await this.jwtService.generateToken(user);
 
@@ -94,13 +101,15 @@ export class UserController {
     const {email, password} = user;
 
     const isAllowed = await this.allowedEmailsRepository.findOne({where: {email}});
-    if(!isAllowed) return this.response.status(401).json({msg: "You are not allowed to pass, please ask admin to have access"});
+    if(!isAllowed) return this.response.status(401).json({ msg: "You are not allowed to pass, please ask admin to have access" });
 
     const checkingExistingUser: any = await this.userRepository.findOne({where: {email}});
-    if (checkingExistingUser) return this.response.status(401).json({msg: "This email is already in use"});
+    if (checkingExistingUser) return this.response.status(401).json({ msg: "This email is already in use" });
 
-    const hashedPassword = await encrypt(password);
-    user.password = hashedPassword;
+    if(password) {
+      const hashedPassword = await encrypt(password);
+      user.password = hashedPassword;
+    }
 
     return this.userRepository.create(user);
   }
