@@ -8,6 +8,5 @@ export const encrypt  = async (value: string): Promise<string> => {
 
 export const compare = async (plainPassword: string, hash: string): Promise<boolean> => {
     const compareResult = await bcrypt.compare(plainPassword, hash);
-    console.log("result", compareResult);
     return compareResult;
 }

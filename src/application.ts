@@ -1,15 +1,23 @@
-import {BootMixin} from '@loopback/boot';
-import {ApplicationConfig} from '@loopback/core';
+import { BootMixin } from '@loopback/boot';
+import { ApplicationConfig } from '@loopback/core';
 import { RepositoryMixin } from '@loopback/repository';
 import {
   RestExplorerBindings,
   RestExplorerComponent,
 } from '@loopback/rest-explorer';
-import {RestApplication} from '@loopback/rest';
+import { RestApplication } from '@loopback/rest';
 import path from 'path';
-import {MySequence} from './sequence';
+import { MySequence } from './sequence';
 
-export {ApplicationConfig};
+import { AuthenticationComponent } from '@loopback/authentication';
+import {
+  JWTAuthenticationComponent,
+  SECURITY_SCHEME_SPEC,
+  UserServiceBindings,
+} from '@loopback/authentication-jwt';
+import { DbDataSource } from './datasources';
+
+export { ApplicationConfig };
 
 export class IteamApplication extends BootMixin(RepositoryMixin(RestApplication)) {
   constructor(options: ApplicationConfig = {}) {
@@ -37,5 +45,11 @@ export class IteamApplication extends BootMixin(RepositoryMixin(RestApplication)
         nested: true,
       },
     };
+
+    this.component(AuthenticationComponent);
+    // Mount jwt component
+    this.component(JWTAuthenticationComponent);
+    // Bind datasource
+    this.dataSource(DbDataSource, UserServiceBindings.DATASOURCE_NAME); 
   }
 }
