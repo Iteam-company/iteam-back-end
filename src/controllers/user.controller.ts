@@ -19,6 +19,7 @@ import {
   SchemaObject,
 } from "@loopback/rest";
 
+
 import {inject} from '@loopback/core';
 import {Response, RestBindings} from '@loopback/rest';
 import { compare, encrypt } from "../shared/bcrypt.shared";
@@ -29,13 +30,19 @@ import UserLoginSchema from "../schemas/userLogin.schema";
 
 import { AllowedEmailsRepository } from "../repositories";
 
+import { TokenServiceBindings } from "@loopback/authentication-jwt";
+import { TokenService, authenticate } from "@loopback/authentication";
+
+
 export class UserController {
   constructor(
     @repository(UserRepository)
     public userRepository: UserRepository,
     @repository(AllowedEmailsRepository)
     public allowedEmailsRepository: AllowedEmailsRepository,
-    @inject(RestBindings.Http.RESPONSE) private response: Response
+    @inject(RestBindings.Http.RESPONSE) private response: Response,
+    @inject(TokenServiceBindings.TOKEN_SERVICE)
+    public jwtService: TokenService,
   ) {}
 
   @post("/users/login")
@@ -51,7 +58,7 @@ export class UserController {
   ): Promise<any> {
     const {email, password} = credentials;
 
-    const isAllowed = await this.userRepository.findOne({where: {email}});
+    const isAllowed = await this.allowedEmailsRepository.findOne({where: {email}});
     if(!isAllowed) return this.response.status(401).json({msg: "You are not allowed to pass, please ask admin to have access"});
 
     const user: any = await this.userRepository.findOne({where: {email}});
@@ -60,7 +67,9 @@ export class UserController {
     const isMatched =  await compare(password, user.password);
     if (!isMatched) return this.response.status(401).json({msg: "Credentilas are wrong"});
 
-    return this.response.status(200).json({user});
+    const token = await this.jwtService.generateToken(user);
+
+    return this.response.status(200).json({...user, token});
   }
 
   @post("/users/registration")
@@ -85,8 +94,10 @@ export class UserController {
     const {email, password} = user;
 
     const isAllowed = await this.allowedEmailsRepository.findOne({where: {email}});
-
     if(!isAllowed) return this.response.status(401).json({msg: "You are not allowed to pass, please ask admin to have access"});
+
+    const checkingExistingUser: any = await this.userRepository.findOne({where: {email}});
+    if (checkingExistingUser) return this.response.status(401).json({msg: "This email is already in use"});
 
     const hashedPassword = await encrypt(password);
     user.password = hashedPassword;
@@ -95,6 +106,7 @@ export class UserController {
   }
 
   @get("/users")
+  @authenticate('jwt')
   @response(200, {
     description: "Array of User model instances",
     content: {

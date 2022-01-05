@@ -1,3 +1,4 @@
+import { authenticate } from "@loopback/authentication";
 import {
   Count,
   CountSchema,
@@ -5,7 +6,7 @@ import {
   FilterExcludingWhere,
   repository,
   Where,
-} from '@loopback/repository';
+} from "@loopback/repository";
 import {
   post,
   param,
@@ -16,135 +17,147 @@ import {
   del,
   requestBody,
   response,
-} from '@loopback/rest';
-import {AllowedEmails} from '../models';
-import {AllowedEmailsRepository} from '../repositories';
+} from "@loopback/rest";
+import { AllowedEmails } from "../models";
+import { AllowedEmailsRepository } from "../repositories";
+import { inject } from "@loopback/core";
+import { Response, RestBindings } from '@loopback/rest';
 
+@authenticate('jwt')
 export class AllowedEmailsController {
   constructor(
     @repository(AllowedEmailsRepository)
-    public allowedEmailsRepository : AllowedEmailsRepository,
+    public allowedEmailsRepository: AllowedEmailsRepository,
+    @inject(RestBindings.Http.RESPONSE) private response: Response,
   ) {}
 
-  @post('/allowed-emails/add')
+  @post("/allowed-emails/add")
   @response(200, {
-    description: 'AllowedEmails model instance',
-    content: {'application/json': {schema: getModelSchemaRef(AllowedEmails)}},
+    description: "AllowedEmails model instance",
+    content: {
+      "application/json": { schema: getModelSchemaRef(AllowedEmails) },
+    },
   })
   async create(
     @requestBody({
       content: {
-        'application/json': {
+        "application/json": {
           schema: getModelSchemaRef(AllowedEmails, {
-            title: 'NewAllowedEmails',
-            exclude: ['id'],
+            title: "NewAllowedEmails",
+            exclude: ["id"],
           }),
         },
       },
     })
-    allowedEmails: Omit<AllowedEmails, 'id'>,
-  ): Promise<AllowedEmails> {
+    allowedEmails: Omit<AllowedEmails, "id">
+  ): Promise<any> {
+   const {email } = allowedEmails;
+
+    const checkingExistingEmail: any = this.allowedEmailsRepository.findOne({where: {email}});
+    if (checkingExistingEmail) return this.response.status(401).json({msg: "This email is already allowed"});
+
     return this.allowedEmailsRepository.create(allowedEmails);
   }
 
-  @get('/allowed-emails/count')
+  @get("/allowed-emails/count")
   @response(200, {
-    description: 'AllowedEmails model count',
-    content: {'application/json': {schema: CountSchema}},
+    description: "AllowedEmails model count",
+    content: { "application/json": { schema: CountSchema } },
   })
   async count(
-    @param.where(AllowedEmails) where?: Where<AllowedEmails>,
+    @param.where(AllowedEmails) where?: Where<AllowedEmails>
   ): Promise<Count> {
     return this.allowedEmailsRepository.count(where);
   }
 
-  @get('/allowed-emails')
+  @get("/allowed-emails")
   @response(200, {
-    description: 'Array of AllowedEmails model instances',
+    description: "Array of AllowedEmails model instances",
     content: {
-      'application/json': {
+      "application/json": {
         schema: {
-          type: 'array',
-          items: getModelSchemaRef(AllowedEmails, {includeRelations: true}),
+          type: "array",
+          items: getModelSchemaRef(AllowedEmails, { includeRelations: true }),
         },
       },
     },
   })
   async find(
-    @param.filter(AllowedEmails) filter?: Filter<AllowedEmails>,
+    @param.filter(AllowedEmails) filter?: Filter<AllowedEmails>
   ): Promise<AllowedEmails[]> {
     return this.allowedEmailsRepository.find(filter);
   }
 
-  @patch('/allowed-emails')
+  @patch("/allowed-emails")
   @response(200, {
-    description: 'AllowedEmails PATCH success count',
-    content: {'application/json': {schema: CountSchema}},
+    description: "AllowedEmails PATCH success count",
+    content: { "application/json": { schema: CountSchema } },
   })
   async updateAll(
     @requestBody({
       content: {
-        'application/json': {
-          schema: getModelSchemaRef(AllowedEmails, {partial: true}),
+        "application/json": {
+          schema: getModelSchemaRef(AllowedEmails, { partial: true }),
         },
       },
     })
     allowedEmails: AllowedEmails,
-    @param.where(AllowedEmails) where?: Where<AllowedEmails>,
+    @param.where(AllowedEmails) where?: Where<AllowedEmails>
   ): Promise<Count> {
     return this.allowedEmailsRepository.updateAll(allowedEmails, where);
   }
 
-  @get('/allowed-emails/{id}')
+  @get("/allowed-emails/{id}")
   @response(200, {
-    description: 'AllowedEmails model instance',
+    description: "AllowedEmails model instance",
     content: {
-      'application/json': {
-        schema: getModelSchemaRef(AllowedEmails, {includeRelations: true}),
+      "application/json": {
+        schema: getModelSchemaRef(AllowedEmails, { includeRelations: true }),
       },
     },
   })
   async findById(
-    @param.path.number('id') id: number,
-    @param.filter(AllowedEmails, {exclude: 'where'}) filter?: FilterExcludingWhere<AllowedEmails>
+    @param.path.number("id") id: number,
+    @param.filter(AllowedEmails, { exclude: "where" })
+    filter?: FilterExcludingWhere<AllowedEmails>
   ): Promise<AllowedEmails> {
     return this.allowedEmailsRepository.findById(id, filter);
   }
 
-  @patch('/allowed-emails/{id}')
+  @patch("/allowed-emails/{id}")
   @response(204, {
-    description: 'AllowedEmails PATCH success',
+    description: "AllowedEmails PATCH success",
   })
   async updateById(
-    @param.path.number('id') id: number,
+    @param.path.number("id") id: number,
     @requestBody({
       content: {
-        'application/json': {
-          schema: getModelSchemaRef(AllowedEmails, {partial: true}),
+        "application/json": {
+          schema: getModelSchemaRef(AllowedEmails, { partial: true }),
         },
       },
     })
-    allowedEmails: AllowedEmails,
+    allowedEmails: AllowedEmails
   ): Promise<void> {
     await this.allowedEmailsRepository.updateById(id, allowedEmails);
   }
 
-  @put('/allowed-emails/{id}')
+  @put("/allowed-emails/{id}")
   @response(204, {
-    description: 'AllowedEmails PUT success',
+    description: "AllowedEmails PUT success",
   })
   async replaceById(
-    @param.path.number('id') id: number,
-    @requestBody() allowedEmails: AllowedEmails,
+    @param.path.number("id") id: number,
+    @requestBody() allowedEmails: AllowedEmails
   ): Promise<void> {
     await this.allowedEmailsRepository.replaceById(id, allowedEmails);
   }
 
-  @del('/allowed-emails/{id}')
+  @del("/allowed-emails/{id}")
   @response(204, {
-    description: 'AllowedEmails DELETE success',
+    description: "AllowedEmails DELETE success",
   })
-  async deleteById(@param.path.number('id') id: number): Promise<void> {
+  async deleteById(@param.path.number("id") id: number): Promise<void> {
     await this.allowedEmailsRepository.deleteById(id);
   }
 }
