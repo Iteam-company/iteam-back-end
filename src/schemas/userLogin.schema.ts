@@ -8,6 +8,9 @@ const  UserLoginSchema = {
       password: {
         type: 'string',
       },
+      googleId: {
+        type: 'string'
+      }
     },
 };
 

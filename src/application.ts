@@ -16,6 +16,7 @@ import {
   UserServiceBindings,
 } from '@loopback/authentication-jwt';
 import { DbDataSource } from './datasources';
+import bodyParser from 'body-parser';
 
 export { ApplicationConfig };
 
