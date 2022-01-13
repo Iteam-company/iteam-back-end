@@ -35,6 +35,7 @@ export class FilesUploadController {
     request: any
   ): Promise<object> {
     return new Promise<object>((resolve, reject) => {
+      console.log("dirname", __dirname);
     multerUpload(request, {}, async (err: any) => {
       if (err) return reject(this.response.status(500));
       const cloudinaryResponse = await cloudinaryUploader.upload(
