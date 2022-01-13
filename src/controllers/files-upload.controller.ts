@@ -38,7 +38,7 @@ export class FilesUploadController {
     multerUpload(request, {}, async (err: any) => {
       if (err) return reject(this.response.status(500));
       const cloudinaryResponse = await cloudinaryUploader.upload(
-        `public/uploads/${request.file.filename}`,
+        `./public/uploads/${request.file.filename}`,
         {
           public_id: `Iteam/${request.file.filename}`,
         }
