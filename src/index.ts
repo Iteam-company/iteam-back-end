@@ -1,16 +1,16 @@
+import {ExpressServer} from './server';
 import {ApplicationConfig, IteamApplication} from './application';
 
 export * from './application';
 
 export async function main(options: ApplicationConfig = {}) {
-  const app = new IteamApplication(options);
-  await app.boot();
-  await app.start();
+  const server = new ExpressServer(options);
+  await server.boot();
+  await server.start();
+  // const url = app.restServer.url;
+  console.log(`Server is running at ${process.env.PORT || 3000}`);
 
-  const url = app.restServer.url;
-  console.log(`Server is running at ${url}`);
-
-  return app;
+  return server
 }
 
 if (require.main === module) {

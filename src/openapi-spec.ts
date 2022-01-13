@@ -1,4 +1,5 @@
 import {ApplicationConfig} from '@loopback/core';
+import bodyParser from 'body-parser';
 import {IteamApplication} from './application';
 
 /**
