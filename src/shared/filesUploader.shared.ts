@@ -12,7 +12,7 @@ cloudinary.config({
 });
 
 const config = {
-  folder: "public/uploads",
+  folder: "./public/uploads",
 };
 
 
