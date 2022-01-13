@@ -37,7 +37,6 @@ export class Users extends Entity {
   })
   isAdmin?: boolean;
 
-
   constructor(data?: Partial<Users>) {
     super(data);
   }

@@ -59,7 +59,7 @@ export class UserController {
     const { email, password, googleId } = credentials;
 
     const isAllowed = await this.allowedEmailsRepository.findOne({where: {email}});
-    if(!isAllowed) return this.response.status(401).json({msg: "You are not allowed to pass, please ask admin to have access"});
+    if(!isAllowed) return this.response.status(403).json({msg: "You are not allowed to pass, please ask admin to have access"});
 
     const user: any = await this.userRepository.findOne({where: {email}});
     if (!user) return this.response.status(401).json({msg: "Credentilas are wrong"});
@@ -67,9 +67,7 @@ export class UserController {
     if ( password ) {
       const isMatched =  await compare(password, user.password);
       if (!isMatched) return this.response.status(401).json({msg: "Credentilas are wrong"});
-    } 
-    
-    if (googleId) {
+    } else  {
       const userByGoogleId: any = await this.userRepository.findOne({where: { googleId }});
       if (!userByGoogleId) return this.response.status(401).json({msg: "Wrong google AUTH"});
     }
