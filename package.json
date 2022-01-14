@@ -27,7 +27,7 @@
     "rebuild": "npm run clean && npm run build && npm run init-uploads",
     "postinstall": "npm run build",
     "init-uploads": "cd dist && npx mkdirp public/uploads",
-    "start:prod": "node dist/index.js"
+    "start:prod": "node dist/index.js && npm run init-uploads"
   },
   "repository": {
     "type": "git",
