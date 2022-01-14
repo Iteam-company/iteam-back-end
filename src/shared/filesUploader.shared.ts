@@ -1,3 +1,5 @@
+import { readdirSync } from "fs";
+
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
 const fs = require("fs");
@@ -18,6 +20,13 @@ const config = {
 fs.access(config.folder, (err: any) => {
   console.log(`Directory ${err ? 'does not exist' : 'exists'}`);
 });
+
+const getDirectories = (source: string) =>
+  readdirSync(source, { withFileTypes: true })
+    .filter(dirent => dirent.isDirectory())
+    .map(dirent => dirent.name)
+
+process.env.PORT && console.log("LISTED DIRS", getDirectories("./app"));
 
 console.log("dirname from shared->filesUploader", __dirname,  );
 
