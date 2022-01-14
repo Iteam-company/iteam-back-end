@@ -12,17 +12,17 @@ cloudinary.config({
 });
 
 const config = {
-  folder: "./public/uploads",
+  folder: !process.env.PORT ? "./public/uploads" : "./dist/public/uploads",
 };
 
-console.log("dirname from shared->filesUploader", __dirname);
+console.log("dirname from shared->filesUploader", __dirname,  );
 
 
 
 const removeFile = (fileName: string) => {
   console.log("FileName", fileName);
 
-  return fs.unlink("public/uploads/" + fileName, function (err: any) {
+  return fs.unlink(config.folder + fileName, function (err: any) {
     if (err && err.code == "ENOENT") {
       console.info("File doesn't exist, won't remove it.");
     } else if (err) {
@@ -33,6 +33,7 @@ const removeFile = (fileName: string) => {
   });
 };
 
+console.log("paths", require.main?.paths, __dirname );
 
 const storage = multer.diskStorage({
   destination: function (req: any, file: any, cb: any) {
