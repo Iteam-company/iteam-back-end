@@ -62,5 +62,5 @@ const multerUpload = multer({
 }).single("file");
 
 
-export const filesUploaderSetup = {cloudinaryUploader :cloudinary.uploader, removeFile, multerUpload };
+export const filesUploaderSetup = {cloudinaryUploader :cloudinary.uploader, removeFile, multerUpload, folderToUpload: config.folder };
 
