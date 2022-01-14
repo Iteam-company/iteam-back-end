@@ -14,7 +14,7 @@ import { resolve } from "dns";
 import imageCloudinaryId from "../schemas/imageCloudinaryId.schema";
 import { filesUploaderSetup } from "../shared/filesUploader.shared";
 
-const {multerUpload, cloudinaryUploader, removeFile} = filesUploaderSetup;
+const { multerUpload, cloudinaryUploader, removeFile, folderToUpload } = filesUploaderSetup;
 
 export class FilesUploadController {
   constructor(@inject(RestBindings.Http.RESPONSE) private response: Response) {}
@@ -43,7 +43,7 @@ export class FilesUploadController {
       }
       try {
         const cloudinaryResponse = await cloudinaryUploader.upload(
-          `./public/uploads/${request.file.filename}`,
+          `${folderToUpload}/${request.file.filename}`,
           {
             public_id: `Iteam/${request.file.filename}`,
           }
