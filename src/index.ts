@@ -1,5 +1,5 @@
-import {ExpressServer} from './server';
-import {ApplicationConfig, IteamApplication} from './application';
+import { ExpressServer } from './server';
+import { ApplicationConfig, IteamApplication } from './application';
 
 export * from './application';
 
@@ -9,7 +9,6 @@ export async function main(options: ApplicationConfig = {}) {
   await server.start(); 
  
   console.log(`Server is running at ${process.env.PORT || 3000}`);
-
   return server
 }
 

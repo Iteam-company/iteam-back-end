@@ -1,4 +1,5 @@
 import { authenticate } from '@loopback/authentication';
+import { intercept } from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -18,6 +19,7 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
+import { request } from 'express';
 import {Projects} from '../models';
 import {ProjectRepository} from '../repositories';
 
@@ -28,7 +30,10 @@ export class ProjectsController {
     public projectRepository : ProjectRepository,
   ) {}
 
+  
   @post('/projects/add')
+  @intercept('actions-interceptor')
+  @intercept('array-parser-interceptor')
   @response(200, {
     description: 'Project model instance',
     content: {'application/json': {schema: getModelSchemaRef(Projects)}},
@@ -46,7 +51,7 @@ export class ProjectsController {
     })
     project: Omit<Projects, 'id'>,
   ): Promise<Projects> {
-    console.log("PROJECT", project);
+    console.log("Project", project);
     return this.projectRepository.create(project);
   }
 

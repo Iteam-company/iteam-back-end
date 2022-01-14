@@ -31,7 +31,7 @@ import UserLoginSchema from "../schemas/userLogin.schema";
 import { AllowedEmailsRepository } from "../repositories";
 
 import { TokenServiceBindings } from "@loopback/authentication-jwt";
-import { TokenService, authenticate } from "@loopback/authentication";
+import { TokenService, authenticate, UserProfileFactory } from "@loopback/authentication";
 
 
 export class UserController {
@@ -54,21 +54,21 @@ export class UserController {
         "application/json": { schema: UserLoginSchema as SchemaObject },
       },
     })
-    credentials: any
-  ): Promise<any> {
+    credentials: {email: string, password: string, googleId: string}
+  ): Promise<Response> {
     const { email, password, googleId } = credentials;
 
-    const isAllowed = await this.allowedEmailsRepository.findOne({where: {email}});
+    const isAllowed = await this.allowedEmailsRepository.findOne({where: { email }});
     if(!isAllowed) return this.response.status(403).json({msg: "You are not allowed to pass, please ask admin to have access"});
 
-    const user: any = await this.userRepository.findOne({where: {email}});
+    const user: any = await this.userRepository.findOne({where: { email }});
     if (!user) return this.response.status(401).json({msg: "Credentilas are wrong"});
 
     if ( password ) {
       const isMatched =  await compare(password, user.password);
       if (!isMatched) return this.response.status(401).json({msg: "Credentilas are wrong"});
     } else  {
-      const userByGoogleId: any = await this.userRepository.findOne({where: { googleId }});
+      const userByGoogleId: Users | unknown = await this.userRepository.findOne({where: { googleId }});
       if (!userByGoogleId) return this.response.status(401).json({msg: "Wrong google AUTH"});
     }
 
@@ -78,10 +78,6 @@ export class UserController {
   }
 
   @post("/users/registration")
-  @response(200, {
-    description: "User model instance",
-    content: { "application/json": { schema: getModelSchemaRef(Users) } },
-  })
   async create(
     @requestBody({
       content: {
@@ -94,22 +90,26 @@ export class UserController {
       },
     })
     user: Omit<Users, "id">
-  ): Promise<any> {
-    console.log("USER", user);
-    const {email, password} = user;
+  ): Promise<Response | Users> {
+    const { email, password } = user;
 
     const isAllowed = await this.allowedEmailsRepository.findOne({where: {email}});
-    if(!isAllowed) return this.response.status(401).json({ msg: "You are not allowed to pass, please ask admin to have access" });
+    if (!isAllowed) return this.response.status(401).json({ msg: "You are not allowed to pass, please ask admin to have access" });
 
-    const checkingExistingUser: any = await this.userRepository.findOne({where: {email}});
+    const checkingExistingUser: Users | unknown = await this.userRepository.findOne({where: {email}});
     if (checkingExistingUser) return this.response.status(401).json({ msg: "This email is already in use" });
 
-    if(password) {
+    if (password) {
       const hashedPassword = await encrypt(password);
       user.password = hashedPassword;
     }
 
-    return this.userRepository.create(user);
+    await this.userRepository.create(user);
+
+    const createdUser: any = await this.userRepository.findOne({where: { email }});
+    const token = await this.jwtService.generateToken(createdUser);
+
+    return this.response.status(200).json({...user, token});
   }
 
   @get("/users")

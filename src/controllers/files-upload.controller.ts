@@ -10,7 +10,6 @@ import {
   SchemaObject,
   del,
 } from "@loopback/rest";
-import { resolve } from "dns";
 import imageCloudinaryId from "../schemas/imageCloudinaryId.schema";
 import { filesUploaderSetup } from "../shared/filesUploader.shared";
 
@@ -33,12 +32,10 @@ export class FilesUploadController {
       },
     })
     request: any
-  ): Promise<any> {
+  ): Promise<object> {
     return new Promise<object>((resolve, reject) => {
-      console.log("dirname", __dirname);
-    multerUpload(request, {}, async (err: any) => {
+    multerUpload(request, {}, async (err: Error) => {
       if (err) {
-        console.log("error!", err);
         return reject(this.response.status(500));
       }
       try {
@@ -48,14 +45,13 @@ export class FilesUploadController {
             public_id: `Iteam/${request.file.filename}`,
           }
         );
-        console.log("Cloudinary response", cloudinaryResponse);
         removeFile(request.file.filename);
         return resolve(this.response.status(200).json(cloudinaryResponse));
       } catch(err) {
         console.log("CATCHED ERROR", err);
       }
     })
-  }).catch((err) => console.log("Promise error!", err))
+  });
   }
 
   @del("/remove-image")
@@ -68,10 +64,10 @@ export class FilesUploadController {
       },
     })
     request: any
-  ): Promise<any> {
+  ): Promise<Response> {
     const { cloudinary_public_id } = request;
     if(! cloudinary_public_id) return this.response.status(400).json({msg: "Cloudinary id was not passed"});
     await cloudinaryUploader.destroy(cloudinary_public_id);
-    this.response.status(204);
+    return this.response.status(204);
   }
 }

@@ -17,6 +17,7 @@ import {
 } from '@loopback/authentication-jwt';
 import { DbDataSource } from './datasources';
 import bodyParser from 'body-parser';
+import {  ActionsInterceptor, ArrayParserInterceptor } from './interceptors';
 
 export { ApplicationConfig };
 
@@ -52,5 +53,8 @@ export class IteamApplication extends BootMixin(RepositoryMixin(RestApplication)
     this.component(JWTAuthenticationComponent);
     // Bind datasource
     this.dataSource(DbDataSource, UserServiceBindings.DATASOURCE_NAME); 
+
+    this.interceptor(ActionsInterceptor, { global: false, group: 'actions', key: 'actions-interceptor' });
+    this.interceptor(ArrayParserInterceptor, { global: false, group: 'parsers', key: 'array-parser-interceptor' });
   }
 }

@@ -50,11 +50,10 @@ export class AllowedEmailsController {
       },
     })
     allowedEmails: Omit<AllowedEmails, "id">
-  ): Promise<any> {
+  ): Promise<Response | AllowedEmails> {
    const { email } = allowedEmails;
 
-    const checkingExistingEmail: any = await this.allowedEmailsRepository.findOne({where: {email}});
-    console.log("Checking", checkingExistingEmail);
+    const checkingExistingEmail = await this.allowedEmailsRepository.findOne({where: {email}});
     if (checkingExistingEmail) return this.response.status(401).json({msg: "This email is already allowed"});
 
     return this.allowedEmailsRepository.create(allowedEmails);
@@ -167,9 +166,10 @@ export class AllowedEmailsController {
       "application/json": { schema: getModelSchemaRef(AllowedEmails, {exclude: ["id"]}) },
     },
   })
-   params: any): Promise<any> {
+   params: any): Promise<Response | void> {
     const { email } = params;
-    const emailEntity = await this.allowedEmailsRepository.findOne({where: {email}})
+    const emailEntity = await this.allowedEmailsRepository.findOne({where: {email}});
+    
     if(!emailEntity) return this.response.status(404).json({msg: "Passed email was not found"});
     await this.allowedEmailsRepository.delete(emailEntity);
   }

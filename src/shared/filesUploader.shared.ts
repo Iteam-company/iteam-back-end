@@ -1,5 +1,3 @@
-import { readdirSync } from "fs";
-
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
 const fs = require("fs");
@@ -17,24 +15,8 @@ const config = {
   folder: !process.env.PORT ? "./public/uploads" : "./dist/public/uploads",
 };
 
-fs.access(config.folder, (err: any) => {
-  console.log(`Directory ${err ? 'does not exist' : 'exists'}`);
-});
 
-const getDirectories = (source: string) =>
-  readdirSync(source, { withFileTypes: true })
-    .filter(dirent => dirent.isDirectory())
-    .map(dirent => dirent.name)
-
-process.env.PORT && console.log("LISTED DIRS", getDirectories("./dist"));
-
-console.log("dirname from shared->filesUploader", __dirname,  );
-
-
-
-const removeFile = (fileName: string) => {
-  console.log("FileName", fileName);
-
+const removeFile = (fileName: string) => {  
   return fs.unlink(config.folder + fileName, function (err: any) {
     if (err && err.code == "ENOENT") {
       console.info("File doesn't exist, won't remove it.");
@@ -46,7 +28,6 @@ const removeFile = (fileName: string) => {
   });
 };
 
-console.log("paths", require.main?.paths, __dirname );
 
 const storage = multer.diskStorage({
   destination: function (req: any, file: any, cb: any) {
@@ -62,5 +43,5 @@ const multerUpload = multer({
 }).single("file");
 
 
-export const filesUploaderSetup = {cloudinaryUploader :cloudinary.uploader, removeFile, multerUpload, folderToUpload: config.folder };
+export const filesUploaderSetup = { cloudinaryUploader :cloudinary.uploader, removeFile, multerUpload, folderToUpload: config.folder };
 
