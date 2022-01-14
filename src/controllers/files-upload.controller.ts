@@ -41,15 +41,19 @@ export class FilesUploadController {
         console.log("error!", err);
         return reject(this.response.status(500));
       }
-      const cloudinaryResponse = await cloudinaryUploader.upload(
-        `./public/uploads/${request.file.filename}`,
-        {
-          public_id: `Iteam/${request.file.filename}`,
-        }
-      );
-      console.log("Cloudinary response", cloudinaryResponse);
-      removeFile(request.file.filename);
-      return resolve(this.response.status(200).json(cloudinaryResponse));
+      try {
+        const cloudinaryResponse = await cloudinaryUploader.upload(
+          `./public/uploads/${request.file.filename}`,
+          {
+            public_id: `Iteam/${request.file.filename}`,
+          }
+        );
+        console.log("Cloudinary response", cloudinaryResponse);
+        removeFile(request.file.filename);
+        return resolve(this.response.status(200).json(cloudinaryResponse));
+      } catch(err) {
+        console.log("CATCHED ERROR", err);
+      }
     })
   }).catch((err) => console.log("Promise error!", err))
   }
