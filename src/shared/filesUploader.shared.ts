@@ -12,7 +12,7 @@ cloudinary.config({
 });
 
 const config = {
-  folder: !process.env.PORT ? "./public/uploads" : ".app/dist/public/uploads",
+  folder: !process.env.PORT ? "./public/uploads" : "./app/dist/public/uploads",
 };
 
 fs.access(config.folder, (err: any) => {
