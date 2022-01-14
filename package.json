@@ -26,8 +26,8 @@
     "clean": "lb-clean dist *.tsbuildinfo .eslintcache",
     "rebuild": "npm run clean && npm run build && npm run init-uploads",
     "postinstall": "npm run build",
-    "init-uploads": "npx mkdirp public/uploads",
-    "start:prod": "node dist/index.js && npm run init-uploads"
+    "init-uploads": "cd dist && npx mkdirp public/uploads",
+    "start:prod": "node dist/index.js"
   },
   "repository": {
     "type": "git",
