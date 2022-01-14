@@ -15,6 +15,10 @@ const config = {
   folder: !process.env.PORT ? "./public/uploads" : "./dist/public/uploads",
 };
 
+fs.access(config.folder, (err: any) => {
+  console.log(`Directory ${err ? 'does not exist' : 'exists'}`);
+});
+
 console.log("dirname from shared->filesUploader", __dirname,  );
 
 
