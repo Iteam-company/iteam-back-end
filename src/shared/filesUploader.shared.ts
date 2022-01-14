@@ -15,6 +15,8 @@ const config = {
   folder: "./public/uploads",
 };
 
+console.log("dirname from shared->filesUploader", __dirname);
+
 
 
 const removeFile = (fileName: string) => {
