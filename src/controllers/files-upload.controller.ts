@@ -33,7 +33,7 @@ export class FilesUploadController {
       },
     })
     request: any
-  ): Promise<object> {
+  ): Promise<any> {
     return new Promise<object>((resolve, reject) => {
       console.log("dirname", __dirname);
     multerUpload(request, {}, async (err: any) => {
@@ -47,10 +47,11 @@ export class FilesUploadController {
           public_id: `Iteam/${request.file.filename}`,
         }
       );
+      console.log("Cloudinary response", cloudinaryResponse);
       removeFile(request.file.filename);
       return resolve(this.response.status(200).json(cloudinaryResponse));
-    });
-  })
+    })
+  }).catch((err) => console.log("Promise error!", err))
   }
 
   @del("/remove-image")
