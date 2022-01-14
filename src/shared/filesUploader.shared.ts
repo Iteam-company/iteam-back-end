@@ -26,7 +26,7 @@ const getDirectories = (source: string) =>
     .filter(dirent => dirent.isDirectory())
     .map(dirent => dirent.name)
 
-process.env.PORT && console.log("LISTED DIRS", getDirectories("./app"));
+process.env.PORT && console.log("LISTED DIRS", getDirectories("./dist"));
 
 console.log("dirname from shared->filesUploader", __dirname,  );
 
