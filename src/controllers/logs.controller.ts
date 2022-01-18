@@ -75,7 +75,7 @@ export class LogsController {
     },
   })
   async findById(
-    @param.path.number('id') id: number,
+    @param.path.number('id') id: string,
     @param.filter(Logs, {exclude: 'where'}) filter?: FilterExcludingWhere<Logs>
   ): Promise<Logs> {
     return this.logsRepository.findById(id, filter);
@@ -86,7 +86,7 @@ export class LogsController {
   @response(204, {
     description: 'Logs DELETE success',
   })
-  async deleteById(@param.path.number('id') id: number): Promise<void> {
+  async deleteById(@param.path.number('id') id: string): Promise<void> {
     await this.logsRepository.deleteById(id);
   }
 }

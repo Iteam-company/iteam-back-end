@@ -1,5 +1,5 @@
 import { authenticate } from '@loopback/authentication';
-import { intercept } from '@loopback/core';
+import { inject, intercept } from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -18,26 +18,30 @@ import {
   del,
   requestBody,
   response,
+  RestBindings,
+  Response
 } from '@loopback/rest';
 import { request } from 'express';
-import {Projects} from '../models';
-import {ProjectRepository} from '../repositories';
+import {Projects, Users} from '../models';
+import {ProjectRepository, UserRepository} from '../repositories';
 
 // @authenticate("jwt")
+
 export class ProjectsController {
   constructor(
     @repository(ProjectRepository)
     public projectRepository : ProjectRepository,
+    @repository(UserRepository)
+    public userRepository: UserRepository,
+    @inject(RestBindings.Http.RESPONSE) private response: Response,
   ) {}
 
-  
   @post('/projects/add')
-  @intercept('actions-interceptor')
-  @intercept('array-parser-interceptor')
   @response(200, {
     description: 'Project model instance',
     content: {'application/json': {schema: getModelSchemaRef(Projects)}},
   })
+  @intercept('actions-interceptor')
   async create(
     @requestBody({
       content: {
@@ -113,10 +117,23 @@ export class ProjectsController {
     },
   })
   async findById(
-    @param.path.number('id') id: number,
+    @param.path.string('id') id: string,
     @param.filter(Projects, {exclude: 'where'}) filter?: FilterExcludingWhere<Projects>
   ): Promise<Projects> {
     return this.projectRepository.findById(id, filter);
+  }
+
+  @get('projects/{id}/participants')
+  async getParticipants (
+    @param.path.string('id') id: string,
+  ): Promise<Response> {
+    const project = await this.projectRepository.findById(id);
+    const {subParticipants, mainParticipantId} = project;
+
+    const mainParticipant = await this.userRepository.findById(mainParticipantId);
+    const participants = await this.userRepository.find({where: {id: {inq: subParticipants}}});
+    
+    return this.response.status(200).json({participants, mainParticipant});
   }
 
   @patch('/projects/{id}')
@@ -124,7 +141,7 @@ export class ProjectsController {
     description: 'Project PATCH success',
   })
   async updateById(
-    @param.path.number('id') id: number,
+    @param.path.string('id') id: string,
     @requestBody({
       content: {
         'application/json': {
@@ -142,7 +159,7 @@ export class ProjectsController {
     description: 'Project PUT success',
   })
   async replaceById(
-    @param.path.number('id') id: number,
+    @param.path.string('id') id: string,
     @requestBody() project: Projects,
   ): Promise<void> {
     await this.projectRepository.replaceById(id, project);
@@ -152,7 +169,7 @@ export class ProjectsController {
   @response(204, {
     description: 'Project DELETE success',
   })
-  async deleteById(@param.path.number('id') id: number): Promise<void> {
+  async deleteById(@param.path.string('id') id: string): Promise<void> {
     await this.projectRepository.deleteById(id);
   }
 }
