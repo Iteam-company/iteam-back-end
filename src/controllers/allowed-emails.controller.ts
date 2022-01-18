@@ -118,7 +118,7 @@ export class AllowedEmailsController {
     },
   })
   async findById(
-    @param.path.number("id") id: number,
+    @param.path.string("id") id: string,
     @param.filter(AllowedEmails, { exclude: "where" })
     filter?: FilterExcludingWhere<AllowedEmails>
   ): Promise<AllowedEmails> {
@@ -130,7 +130,7 @@ export class AllowedEmailsController {
     description: "AllowedEmails PATCH success",
   })
   async updateById(
-    @param.path.number("id") id: number,
+    @param.path.string("id") id: string,
     @requestBody({
       content: {
         "application/json": {
@@ -148,7 +148,7 @@ export class AllowedEmailsController {
     description: "AllowedEmails PUT success",
   })
   async replaceById(
-    @param.path.number("id") id: number,
+    @param.path.string("id") id: string,
     @requestBody() allowedEmails: AllowedEmails
   ): Promise<void> {
     await this.allowedEmailsRepository.replaceById(id, allowedEmails);

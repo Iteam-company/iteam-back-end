@@ -20,7 +20,7 @@ import {
 } from "@loopback/rest";
 
 
-import {inject} from '@loopback/core';
+import {inject, intercept} from '@loopback/core';
 import {Response, RestBindings} from '@loopback/rest';
 import { compare, encrypt } from "../shared/bcrypt.shared";
 
@@ -68,15 +68,17 @@ export class UserController {
       const isMatched =  await compare(password, user.password);
       if (!isMatched) return this.response.status(401).json({msg: "Credentilas are wrong"});
     } else  {
+      console.log(googleId);
       const userByGoogleId: Users | unknown = await this.userRepository.findOne({where: { googleId }});
       if (!userByGoogleId) return this.response.status(401).json({msg: "Wrong google AUTH"});
-    }
+    } 
 
     const token = await this.jwtService.generateToken(user);
 
     return this.response.status(200).json({...user, token});
   }
 
+  @intercept('id-interceptor')
   @post("/users/registration")
   async create(
     @requestBody({
@@ -84,12 +86,11 @@ export class UserController {
         "application/json": {
           schema: getModelSchemaRef(Users, {
             title: "NewUser",
-            exclude: ["id"],
           }),
         },
       },
     })
-    user: Omit<Users, "id">
+    user: Users
   ): Promise<Response | Users> {
     const { email, password } = user;
 
@@ -158,7 +159,7 @@ export class UserController {
     },
   })
   async findById(
-    @param.path.number("id") id: number,
+    @param.path.string("id") id: string,
     @param.filter(Users, { exclude: "where" })
     filter?: FilterExcludingWhere<Users>
   ): Promise<Users> {
@@ -170,7 +171,7 @@ export class UserController {
     description: "User PATCH success",
   })
   async updateById(
-    @param.path.number("id") id: number,
+    @param.path.string("id") id: string,
     @requestBody({
       content: {
         "application/json": {
@@ -188,7 +189,7 @@ export class UserController {
     description: "User PUT success",
   })
   async replaceById(
-    @param.path.number("id") id: number,
+    @param.path.string("id") id: string,
     @requestBody() user: Users
   ): Promise<void> {
     await this.userRepository.replaceById(id, user);
@@ -198,7 +199,7 @@ export class UserController {
   @response(204, {
     description: "User DELETE success",
   })
-  async deleteById(@param.path.number("id") id: number): Promise<void> {
+  async deleteById(@param.path.string("id") id: string): Promise<void> {
     await this.userRepository.deleteById(id);
   }
 }

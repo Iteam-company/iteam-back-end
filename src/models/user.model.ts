@@ -3,11 +3,11 @@ import {Entity, model, property} from '@loopback/repository';
 @model()
 export class Users extends Entity {
   @property({
-    type: 'number',
+    type: 'string',
     id: true,
-    generated: true,
+    generated: false,
   })
-  id?: number;
+  id?: string;
 
   @property({
     type: 'string',
@@ -36,6 +36,12 @@ export class Users extends Entity {
     default: false,
   })
   isAdmin?: boolean;
+
+  @property({
+    type: 'string',
+    required: false
+  })
+  avatarUrl: string
 
   constructor(data?: Partial<Users>) {
     super(data);

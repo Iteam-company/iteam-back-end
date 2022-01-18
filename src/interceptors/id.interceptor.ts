@@ -8,13 +8,15 @@ import {
   ValueOrPromise,
 } from '@loopback/core';
 
+const uuid = require('uuid').v1;
+
 /**
  * This class will be bound to the application as an `Interceptor` during
  * `boot`
  */
-@injectable({tags: { key: ArrayParserInterceptor.BINDING_KEY }})
-export class ArrayParserInterceptor implements Provider<Interceptor> {
-  static readonly BINDING_KEY = `interceptors.${ArrayParserInterceptor.name}`;
+@injectable({tags: {key: IdInterceptor.BINDING_KEY}})
+export class IdInterceptor implements Provider<Interceptor> {
+  static readonly BINDING_KEY = `interceptors.${IdInterceptor.name}`;
 
   /*
   constructor() {}
@@ -39,24 +41,11 @@ export class ArrayParserInterceptor implements Provider<Interceptor> {
     invocationCtx: InvocationContext,
     next: () => ValueOrPromise<InvocationResult>,
   ) {
-    const { args } = invocationCtx;
-
-    console.log('Context', invocationCtx);
-
-    console.log('args', args);
-
-    const argumentsKeys = Object.keys(args[0]).filter((key: string) => Array.isArray(args[key as keyof typeof args]));
-    const arraysArgs = Object.values(args[0]).filter((arg: any) => Array.isArray(arg));
-    const parsedArrays = arraysArgs.map((arr: any) => arr.join(','));
-
-    console.log('Parsed arrays', parsedArrays, argumentsKeys);
-
     try {
       // Add pre-invocation logic here
-      argumentsKeys.forEach((key: string, i) => args[key as keyof typeof args] = parsedArrays[i]);
-
-      console.log("Final args", args);
-
+      const { args } = invocationCtx;
+      args[0].id = uuid();
+      console.log(uuid(), args);
       const result = await next();
       // Add post-invocation logic here
       return result;

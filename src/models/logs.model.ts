@@ -3,11 +3,11 @@ import {Entity, model, property} from '@loopback/repository';
 @model()
 export class Logs extends Entity {
   @property({
-    type: 'number',
+    type: 'string',
     id: true,
-    generated: true,
+    generated: false,
   })
-  id?: number;
+  id?: string;
 
   @property({
     type: 'string',
@@ -20,6 +20,18 @@ export class Logs extends Entity {
     required: true,
   })
   date: number;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  msg: string;
+
+  @property({
+    type: 'number',
+    required: true,
+  })
+  instanceId: string;
 
 
   constructor(data?: Partial<Logs>) {

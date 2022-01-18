@@ -12,12 +12,10 @@ import { MySequence } from './sequence';
 import { AuthenticationComponent } from '@loopback/authentication';
 import {
   JWTAuthenticationComponent,
-  SECURITY_SCHEME_SPEC,
   UserServiceBindings,
 } from '@loopback/authentication-jwt';
 import { DbDataSource } from './datasources';
-import bodyParser from 'body-parser';
-import {  ActionsInterceptor, ArrayParserInterceptor } from './interceptors';
+import {  ActionsInterceptor, IdInterceptor } from './interceptors';
 
 export { ApplicationConfig };
 
@@ -55,6 +53,6 @@ export class IteamApplication extends BootMixin(RepositoryMixin(RestApplication)
     this.dataSource(DbDataSource, UserServiceBindings.DATASOURCE_NAME); 
 
     this.interceptor(ActionsInterceptor, { global: false, group: 'actions', key: 'actions-interceptor' });
-    this.interceptor(ArrayParserInterceptor, { global: false, group: 'parsers', key: 'array-parser-interceptor' });
+    this.interceptor(IdInterceptor, { global: false, group: 'id', key:'id-interceptor' });
   }
 }
