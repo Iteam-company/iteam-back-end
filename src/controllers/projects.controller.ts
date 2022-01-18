@@ -1,5 +1,5 @@
 import { authenticate } from '@loopback/authentication';
-import { intercept } from '@loopback/core';
+import { inject, intercept } from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -18,19 +18,23 @@ import {
   del,
   requestBody,
   response,
+  RestBindings,
+  Response
 } from '@loopback/rest';
 import { request } from 'express';
-import {Projects} from '../models';
-import {ProjectRepository} from '../repositories';
+import {Projects, Users} from '../models';
+import {ProjectRepository, UserRepository} from '../repositories';
 
-// @authenticate("jwt")
+@authenticate("jwt")
 export class ProjectsController {
   constructor(
     @repository(ProjectRepository)
     public projectRepository : ProjectRepository,
+    @repository(UserRepository)
+    public userRepository: UserRepository,
+    @inject(RestBindings.Http.RESPONSE) private response: Response,
   ) {}
 
-  
   @post('/projects/add')
   @intercept('actions-interceptor')
   @intercept('array-parser-interceptor')
@@ -117,6 +121,21 @@ export class ProjectsController {
     @param.filter(Projects, {exclude: 'where'}) filter?: FilterExcludingWhere<Projects>
   ): Promise<Projects> {
     return this.projectRepository.findById(id, filter);
+  }
+
+  @get('projects/{id}/participants')
+  async getParticipants (
+    @param.path.number('id') id: number,
+  ): Promise<Response> {
+    const project = await this.projectRepository.findById(id);
+    const {sub_participants, main_participant_id} = project;
+
+    const participantsIds = sub_participants?.map((id: string) => +id);
+
+    const mainParticipant = await this.userRepository.findById(main_participant_id);
+    const participants = await this.userRepository.find({where: {id: {inq: participantsIds}}});
+    
+    return this.response.status(200).json({participants, mainParticipant});
   }
 
   @patch('/projects/{id}')

@@ -18,7 +18,7 @@ const { multerUpload, cloudinaryUploader, removeFile, folderToUpload } = filesUp
 export class FilesUploadController {
   constructor(@inject(RestBindings.Http.RESPONSE) private response: Response) {}
 
-  // @authenticate("jwt")
+  @authenticate("jwt")
   @post("/upload-image")
   async uploadImage(
     @requestBody({
