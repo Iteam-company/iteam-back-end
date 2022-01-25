@@ -1,52 +1,236 @@
 import {
-  /* inject, */
+  inject,
   injectable,
   Interceptor,
   InvocationContext,
   InvocationResult,
   Provider,
   ValueOrPromise,
-} from '@loopback/core';
-import {ControllerInstance, Response, RestBindings} from '@loopback/rest';
-import { repository } from '@loopback/repository';
-import { Logs } from '../models';
-import { LogsRepository, ProjectRepository, UserRepository } from '../repositories';
+} from "@loopback/core";
+import { Response, RestBindings } from "@loopback/rest";
+import { repository } from "@loopback/repository";
+import { Logs, Projects, Users } from "../models";
+import {
+  LogsRepository,
+  ProjectRepository,
+  UserRepository,
+} from "../repositories";
 
-type actions = 'create' | 'patch' | 'delete';
+import getIdFromUrl from "../shared/getIdFromUrl.shared";
+import { v4 as uuidv4 } from "uuid";
+import compareArrays from "../shared/compareArrays.shared";
+
+enum actionTypes {
+  create = "create",
+  deleteById = "delete",
+  delete = "delete",
+  updateById = "update",
+  update = "update",
+}
 
 enum userActions {
   create = `User was created`,
-  addedToProject = `User was added to project`,
-  removedFromProject = `User was removed from project`,
-  deleted = `User was deleted` 
+  delete = `User was deleted`,
+  update = `User was updated`,
 }
 
 enum projectActions {
-  create = `Projects was created`,
-  deleted = `Project was deleted`
+  create = `Project was created`,
+  delete = `Project was deleted`,
+  update = `Project was updated`,
+  addedToProject = `User was added to project`,
+  removedFromProject = `User was removed from project`,
 }
 
-const actionsMessageGenerator = ( instanceName: string, action: string ) => {
-  return ``;
-};
+class ActionsLogger {
+  public instanceName: string;
+  public instanceActions: any;
+  public logsRepository: LogsRepository;
 
+  public response: Response;
+  public request: Request;
+
+  static actions = {
+    users: userActions,
+    projects: projectActions,
+  };
+
+  constructor(
+    instanceName: string,
+    logsRepository: LogsRepository,
+    response: Response,
+    request: any
+  ) {
+    this.instanceName = instanceName;
+    this.instanceActions =
+      ActionsLogger.actions[
+        this.instanceName as keyof typeof ActionsLogger.actions
+      ];
+    this.logsRepository = logsRepository;
+
+    this.response = response;
+    this.request = request;
+  }
+
+  actionInvoker(
+    method: string,
+    parameters: { body?: any; url?: string }
+  ): Promise<Logs> | unknown {
+    const date = new Date(Date.now());
+    const action =
+      this.instanceActions[method as keyof typeof this.instanceActions];
+    const literalDate = `| ${date.getDate()}.${date.getMonth()}.${date.getFullYear()} at ${date.getHours()}:${date.getMinutes()}`;
+    const msg = `${action} ${literalDate}`;
+
+    const instanceMethod: void | unknown = this[method as keyof typeof this];
+    
+    if (actionTypes[method as keyof typeof actionTypes] && instanceMethod) {
+      return (
+        typeof instanceMethod === "function" &&
+        instanceMethod.call(this, action, parameters, msg)
+      );
+    }
+
+    if (parameters.body)
+      return this.invokeWithBody(action, parameters.body, msg);
+    else
+      return (
+        parameters.url && this.invokeWithUrlParams(action, parameters.url, msg)
+      );
+  }
+
+  invokeWithBody(
+    action: string,
+    body: any,
+    msg: string
+  ): Promise<Logs> | unknown {
+    if (!body) return;
+
+    this.response.once("finish", () => {
+      if (this.request.body) {
+        const { id } = this.request.body as any;
+
+        console.log("body", this.request.body);
+        this.logsRepository.create({
+          id: uuidv4(),
+          action,
+          date: Date.now(),
+          msg,
+          instanceId: id,
+          instanceType: this.instanceName,
+        });
+      }
+    });
+  }
+
+  invokeWithUrlParams(action: string, url: string, msg: string) {
+    const id = getIdFromUrl(url);
+    if (!id) return;
+
+    this.response.once('finish', () => {
+      this.logsRepository.create({
+        id: uuidv4(),
+        action,
+        date: Date.now(),
+        msg,
+        instanceId: id,
+        instanceType: this.instanceName,
+      });
+    });
+  }
+
+  update(action: string, params: any, msg: string) {
+    const { url, body } = params;
+    
+    const id = getIdFromUrl(url) || body.id;
+
+    this.response.once('finish', () => {
+      this.logsRepository.create({
+        id: uuidv4(),
+        action,
+        date: Date.now(),
+        msg,
+        instanceId: id,
+        instanceType: this.instanceName,
+      });
+    });
+  }
+}
+
+class ProjectsLogger extends ActionsLogger {
+  public projectRepository: ProjectRepository;
+
+  constructor(
+    instanceName: string,
+    logsRepository: LogsRepository,
+    response: Response,
+    request: any,
+    projectRepository: ProjectRepository
+  ) {
+    super(instanceName, logsRepository, response, request);
+    this.projectRepository = projectRepository;
+  }
+
+  async update(action: string, params: any, msg: string) {
+    console.log("I was called");
+    const { url, body } = params;
+
+    super.update(action, params, msg);
+
+    const id = getIdFromUrl(url) || body.id;
+
+    const newSubParticipants = body.subParticipants;
+    console.log('New participants', newSubParticipants);
+    const prevProject = await this.projectRepository.findById(id);
+    console.log('Prev project', prevProject);
+    const prevSubParticipants = prevProject.subParticipants;
+
+    const comparation = compareArrays(
+      newSubParticipants,
+      prevSubParticipants as []
+    );
+
+    if (comparation.result) return;
+    else {
+      const { difference } = comparation;
+      console.log("diff", comparation.difference);
+
+      this.response.once('finish', () => {
+        difference.forEach((userId) => {
+          const action = !prevSubParticipants?.includes(userId)
+            ? this.instanceActions["addedToProject"]
+            : this.instanceActions["removedFromProject"];
+
+          const newMsg = `${action} | ${msg.split("|")[1]}`;
+
+          this.logsRepository.create({
+            id: uuidv4(),
+            action,
+            date: Date.now(),
+            msg: newMsg,
+            instanceId: id,
+            instanceType: this.instanceName,
+            subInstanceId: userId,
+            subInstanceType: 'user'
+          });
+        });
+      });
+    }
+  }
+}
 
 /**s
  * This class will be bound to the application as an `Interceptor` during
  * `boot`
  */
-@injectable({tags: {key: ActionsInterceptor.BINDING_KEY}})  
+@injectable({ tags: { key: ActionsInterceptor.BINDING_KEY } })
 export class ActionsInterceptor implements Provider<Interceptor> {
   static readonly BINDING_KEY = `interceptors.${ActionsInterceptor.name}`;
 
-  
   constructor(
     @repository(LogsRepository) public logsRepository: LogsRepository,
-    @repository(UserRepository) public userRepository: UserRepository,
-    @repository(ProjectRepository) public projectRepository: ProjectRepository
-    ) {
-  }
-  
+    @repository(ProjectRepository) public projectsRepository: ProjectRepository
+  ) {}
 
   /**
    * This method is used by LoopBack context to produce an interceptor function
@@ -65,62 +249,58 @@ export class ActionsInterceptor implements Provider<Interceptor> {
    */
   async intercept(
     invocationCtx: InvocationContext,
-    next: () => ValueOrPromise<InvocationResult>,
+    next: () => ValueOrPromise<InvocationResult>
   ) {
     const { args, methodName } = invocationCtx;
 
-    const httpReq = await invocationCtx.get(RestBindings.Http.REQUEST, {optional: true,});
-    const httpRes = await invocationCtx.get(RestBindings.Http.RESPONSE, {optional: true});
+    const httpReq = await invocationCtx.get(RestBindings.Http.REQUEST, {
+      optional: true,
+    });
+    const httpRes = await invocationCtx.get(RestBindings.Http.RESPONSE, {
+      optional: true,
+    });
 
-    const actionsEntities = {
-      users: { userActions, repository: this.userRepository },
-      projects: { projectActions, repository: this.projectRepository }
-    };
-  
     try {
-      // Add pre-invocation logic here
-      if (httpReq) {
-        console.log('Endpoint being called:', httpReq.path);
-      }
-
-      const entityName = httpReq?.baseUrl.split('/')[1];
-      
       console.log("args", args);
-      if (args.length > 0) {
-        const when = Date.now();
-        const date = new Date();
+      if (httpRes && httpReq) {
+        const instanceType = httpReq?.url.split("/")[1];
 
-        const literalDate = `| ${date.getDate()}.${date.getMonth()}.${date.getFullYear()} at ${date.getUTCHours()}:${date.getMinutes()}`
-        const action: string = `Instance of ${invocationCtx.targetClass.name} ${
-          args[0]?.name || "unknown"
-        } was ${methodName}d ${literalDate}`;
+        console.log("name", methodName);
 
-        console.log(action); 
+        const loggers = {
+          users: new ActionsLogger(
+            "users",
+            this.logsRepository,
+            httpRes,
+            httpReq
+          ),
+          projects: new ProjectsLogger(
+            "projects",
+            this.logsRepository,
+            httpRes,
+            httpReq,
+            this.projectsRepository
+          ),
+        };
 
-        this.logsRepository.create({ action: methodName, date: when, msg: action, instanceId: args[0]?.id });
+        const logger = loggers[instanceType as keyof typeof loggers];
+
+        const action = actionTypes[methodName as keyof typeof actionTypes];
+
+        console.log("action", action);
+
+        action &&
+          logger &&
+          logger.actionInvoker(
+            action,
+            { body: httpReq.body && httpReq.body, url: httpReq.url }
+          );
       }
 
       const result = await next();
-     
-      if(entityName) {
 
-      httpRes?.on('finish', async () => {
-        if(!args[0].id ) {
-          const repository = actionsEntities[entityName as keyof typeof actionsEntities].repository;
-          const instance = await repository.findOne({where: {name: args[0].name}});
-        } else {
-
-        }
-      });
-
-      }
-      // Add post-invocation logic here
-
-      console.log("postArgs", args);
-      console.log("postRes", httpRes?.finished,);
       return result;
     } catch (err) {
-      // Add error handling logic here
       throw err;
     }
   }

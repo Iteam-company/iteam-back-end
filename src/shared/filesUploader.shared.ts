@@ -17,7 +17,7 @@ const config = {
 
 
 const removeFile = (fileName: string) => {  
-  return fs.unlink(config.folder + fileName, function (err: any) {
+  return fs.unlink(config.folder + "/" + fileName, function (err: any) {
     if (err && err.code == "ENOENT") {
       console.info("File doesn't exist, won't remove it.");
     } else if (err) {
