@@ -28,11 +28,28 @@ export class Logs extends Entity {
   msg: string;
 
   @property({
-    type: 'number',
+    type: 'string',
     required: true,
   })
   instanceId: string;
 
+  @property({
+    type: 'string',
+    required: true
+  })
+  instanceType: string
+
+  @property({
+    type: 'string',
+    required: false,
+  })
+  subInstanceId: string;
+
+  @property({
+    type: 'string',
+    required: false
+  })
+  subInstanceType: string; 
 
   constructor(data?: Partial<Logs>) {
     super(data);

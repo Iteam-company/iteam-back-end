@@ -15,10 +15,11 @@ import { filesUploaderSetup } from "../shared/filesUploader.shared";
 
 const { multerUpload, cloudinaryUploader, removeFile, folderToUpload } = filesUploaderSetup;
 
+@authenticate("jwt")
 export class FilesUploadController {
   constructor(@inject(RestBindings.Http.RESPONSE) private response: Response) {}
 
-  @authenticate("jwt")
+  
   @post("/upload-image")
   async uploadImage(
     @requestBody({
@@ -33,6 +34,7 @@ export class FilesUploadController {
     })
     request: any
   ): Promise<object> {
+    if (!request.file) return this.response.status(500).json({msg: 'File was not provided'});
     return new Promise<object>((resolve, reject) => {
     multerUpload(request, {}, async (err: Error) => {
       if (err) {

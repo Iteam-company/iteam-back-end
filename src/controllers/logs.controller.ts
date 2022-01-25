@@ -1,3 +1,4 @@
+import { intercept } from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -26,6 +27,7 @@ export class LogsController {
     public logsRepository : LogsRepository,
   ) {}
 
+  @intercept('id-interceptor')
   @post('/logs')
   @response(200, {
     description: 'Logs model instance',
@@ -37,12 +39,11 @@ export class LogsController {
         'application/json': {
           schema: getModelSchemaRef(Logs, {
             title: 'NewLogs',
-            exclude: ['id'],
           }),
         },
       },
     })
-    logs: Omit<Logs, 'id'>,
+    logs: Logs,
   ): Promise<Logs> {
     return this.logsRepository.create(logs);
   }

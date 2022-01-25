@@ -8,7 +8,7 @@ import {
   ValueOrPromise,
 } from '@loopback/core';
 
-const uuid = require('uuid').v1;
+import { v4 as uuidv4 } from 'uuid';
 
 /**
  * This class will be bound to the application as an `Interceptor` during
@@ -44,8 +44,7 @@ export class IdInterceptor implements Provider<Interceptor> {
     try {
       // Add pre-invocation logic here
       const { args } = invocationCtx;
-      args[0].id = uuid();
-      console.log(uuid(), args);
+      args[0].id = uuidv4();
       const result = await next();
       // Add post-invocation logic here
       return result;
