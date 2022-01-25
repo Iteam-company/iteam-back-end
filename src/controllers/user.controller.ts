@@ -31,9 +31,9 @@ import UserLoginSchema from "../schemas/userLogin.schema";
 import { AllowedEmailsRepository } from "../repositories";
 
 import { TokenServiceBindings } from "@loopback/authentication-jwt";
-import { TokenService, authenticate, UserProfileFactory } from "@loopback/authentication";
+import { TokenService, authenticate } from "@loopback/authentication";
 
-
+@intercept('actions-interceptor')
 export class UserController {
   constructor(
     @repository(UserRepository)
@@ -105,7 +105,7 @@ export class UserController {
       user.password = hashedPassword;
     }
 
-    await this.userRepository.create(user);
+    await this.userRepository.create(user); 
 
     const createdUser: any = await this.userRepository.findOne({where: { email }});
     const token = await this.jwtService.generateToken(createdUser);

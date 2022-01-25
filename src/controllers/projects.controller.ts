@@ -25,8 +25,8 @@ import { request } from 'express';
 import {Projects, Users} from '../models';
 import {ProjectRepository, UserRepository} from '../repositories';
 
-// @authenticate("jwt")
-
+@authenticate('jwt')
+@intercept('actions-interceptor')
 export class ProjectsController {
   constructor(
     @repository(ProjectRepository)
@@ -36,24 +36,24 @@ export class ProjectsController {
     @inject(RestBindings.Http.RESPONSE) private response: Response,
   ) {}
 
+  @intercept('id-interceptor')
   @post('/projects/add')
   @response(200, {
     description: 'Project model instance',
     content: {'application/json': {schema: getModelSchemaRef(Projects)}},
   })
-  @intercept('actions-interceptor')
+  
   async create(
     @requestBody({
       content: {
         'application/json': {
           schema: getModelSchemaRef(Projects, {
             title: 'NewProject',
-            exclude: ['id'],
           }),
         },
       },
     })
-    project: Omit<Projects, 'id'>,
+    project: Projects,
   ): Promise<Projects> {
     console.log("Project", project);
     return this.projectRepository.create(project);
