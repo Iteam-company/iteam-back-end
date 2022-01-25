@@ -20,7 +20,7 @@ import {
 } from "@loopback/rest";
 import { AllowedEmails } from "../models";
 import { AllowedEmailsRepository } from "../repositories";
-import { inject } from "@loopback/core";
+import { inject, intercept } from "@loopback/core";
 import { Response, RestBindings } from '@loopback/rest';
 
 @authenticate("jwt")
@@ -31,6 +31,7 @@ export class AllowedEmailsController {
     @inject(RestBindings.Http.RESPONSE) private response: Response,
   ) {}
 
+  @intercept('id-interceptor')
   @post("/allowed-emails/add")
   @response(200, {
     description: "AllowedEmails model instance",
