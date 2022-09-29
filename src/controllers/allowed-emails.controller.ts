@@ -21,17 +21,17 @@ import {
 import { AllowedEmails } from "../models";
 import { AllowedEmailsRepository } from "../repositories";
 import { inject, intercept } from "@loopback/core";
-import { Response, RestBindings } from '@loopback/rest';
+import { Response, RestBindings } from "@loopback/rest";
 
 @authenticate("jwt")
 export class AllowedEmailsController {
   constructor(
     @repository(AllowedEmailsRepository)
     public allowedEmailsRepository: AllowedEmailsRepository,
-    @inject(RestBindings.Http.RESPONSE) private response: Response,
+    @inject(RestBindings.Http.RESPONSE) private response: Response
   ) {}
 
-  @intercept('id-interceptor')
+  @intercept("id-interceptor")
   @post("/allowed-emails/add")
   @response(200, {
     description: "AllowedEmails model instance",
@@ -52,14 +52,18 @@ export class AllowedEmailsController {
     })
     allowedEmails: Omit<AllowedEmails, "id">
   ): Promise<Response | AllowedEmails> {
-   const { email } = allowedEmails;
+    const { email } = allowedEmails;
 
-    const checkingExistingEmail = await this.allowedEmailsRepository.findOne({where: {email}});
-    if (checkingExistingEmail) return this.response.status(401).json({msg: "This email is already allowed"});
+    const checkingExistingEmail = await this.allowedEmailsRepository.findOne({
+      where: { email },
+    });
+    if (checkingExistingEmail)
+      return this.response
+        .status(401)
+        .json({ msg: "This email is already allowed" });
 
     return this.allowedEmailsRepository.create(allowedEmails);
   }
-
 
   @get("/allowed-emails/count")
   @response(200, {
@@ -161,17 +165,25 @@ export class AllowedEmailsController {
   })
   async deleteById(
     @requestBody({
-    description: "Required email to delete",
-    required: true,
-    content: {
-      "application/json": { schema: getModelSchemaRef(AllowedEmails, {exclude: ["id"]}) },
-    },
-  })
-   params: any): Promise<Response | void> {
+      description: "Required email to delete",
+      required: true,
+      content: {
+        "application/json": {
+          schema: getModelSchemaRef(AllowedEmails, { exclude: ["id"] }),
+        },
+      },
+    })
+    params: any
+  ): Promise<Response | void> {
     const { email } = params;
-    const emailEntity = await this.allowedEmailsRepository.findOne({where: {email}});
-    
-    if(!emailEntity) return this.response.status(404).json({msg: "Passed email was not found"});
+    const emailEntity = await this.allowedEmailsRepository.findOne({
+      where: { email },
+    });
+
+    if (!emailEntity)
+      return this.response
+        .status(404)
+        .json({ msg: "Passed email was not found" });
     await this.allowedEmailsRepository.delete(emailEntity);
   }
 }

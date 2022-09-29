@@ -1,11 +1,10 @@
-import { once } from 'events';
-import express from 'express';
-import { Server } from 'http';
+import { once } from "events";
+import express from "express";
+import { Server } from "http";
 
+import { ApplicationConfig, IteamApplication } from "./application";
 
-import {ApplicationConfig, IteamApplication} from './application';
-
-export {ApplicationConfig};
+export { ApplicationConfig };
 
 export class ExpressServer {
   public readonly app: express.Application;
@@ -16,10 +15,10 @@ export class ExpressServer {
     this.app = express();
     this.lbApp = new IteamApplication(options);
 
-    this.app.use(express.urlencoded({extended: true}));
+    this.app.use(express.urlencoded({ extended: true }));
     this.app.use(express.json());
-  
-    this.app.use(express.static('public'));
+
+    this.app.use(express.static("public"));
   }
 
   async boot() {
@@ -29,8 +28,8 @@ export class ExpressServer {
   public async start() {
     await this.lbApp.start();
     const port = this.lbApp.restServer.config.port ?? 3000;
-    const host = this.lbApp.restServer.config.host || '127.0.0.1';
+    const host = this.lbApp.restServer.config.host || "127.0.0.1";
     // this.server = this.app.listen(port, host);
-    await once(this.app, 'listening');
+    await once(this.app, "listening");
   }
 }

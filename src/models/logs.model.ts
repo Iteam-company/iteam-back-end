@@ -1,55 +1,55 @@
-import {Entity, model, property} from '@loopback/repository';
+import { Entity, model, property } from "@loopback/repository";
 
 @model()
 export class Logs extends Entity {
   @property({
-    type: 'string',
+    type: "string",
     id: true,
     generated: false,
   })
   id?: string;
 
   @property({
-    type: 'string',
+    type: "string",
     required: true,
   })
   action: string;
 
   @property({
-    type: 'number',
+    type: "number",
     required: true,
   })
   date: number;
 
   @property({
-    type: 'string',
+    type: "string",
     required: true,
   })
   msg: string;
 
   @property({
-    type: 'string',
+    type: "string",
     required: true,
   })
   instanceId: string;
 
   @property({
-    type: 'string',
-    required: true
+    type: "string",
+    required: true,
   })
-  instanceType: string
+  instanceType: string;
 
   @property({
-    type: 'string',
+    type: "string",
     required: false,
   })
   subInstanceId: string;
 
   @property({
-    type: 'string',
-    required: false
+    type: "string",
+    required: false,
   })
-  subInstanceType: string; 
+  subInstanceType: string;
 
   constructor(data?: Partial<Logs>) {
     super(data);

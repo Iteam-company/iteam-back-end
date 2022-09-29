@@ -1,5 +1,5 @@
-import { authenticate } from '@loopback/authentication';
-import { inject, intercept } from '@loopback/core';
+import { authenticate } from "@loopback/authentication";
+import { inject, intercept } from "@loopback/core";
 import {
   Count,
   CountSchema,
@@ -7,7 +7,7 @@ import {
   FilterExcludingWhere,
   repository,
   Where,
-} from '@loopback/repository';
+} from "@loopback/repository";
 import {
   post,
   param,
@@ -19,157 +19,159 @@ import {
   requestBody,
   response,
   RestBindings,
-  Response
-} from '@loopback/rest';
-import { request } from 'express';
-import {Projects, Users} from '../models';
-import {ProjectRepository, UserRepository} from '../repositories';
+  Response,
+} from "@loopback/rest";
+import { request } from "express";
+import { Projects, Users } from "../models";
+import { ProjectRepository, UserRepository } from "../repositories";
 
-@authenticate('jwt')
-@intercept('actions-interceptor')
+@authenticate("jwt")
+@intercept("actions-interceptor")
 export class ProjectsController {
   constructor(
     @repository(ProjectRepository)
-    public projectRepository : ProjectRepository,
+    public projectRepository: ProjectRepository,
     @repository(UserRepository)
     public userRepository: UserRepository,
-    @inject(RestBindings.Http.RESPONSE) private response: Response,
+    @inject(RestBindings.Http.RESPONSE) private response: Response
   ) {}
 
-  @intercept('id-interceptor')
-  @post('/projects/add')
+  @intercept("id-interceptor")
+  @post("/projects/add")
   @response(200, {
-    description: 'Project model instance',
-    content: {'application/json': {schema: getModelSchemaRef(Projects)}},
+    description: "Project model instance",
+    content: { "application/json": { schema: getModelSchemaRef(Projects) } },
   })
-  
   async create(
     @requestBody({
       content: {
-        'application/json': {
+        "application/json": {
           schema: getModelSchemaRef(Projects, {
-            title: 'NewProject',
+            title: "NewProject",
           }),
         },
       },
     })
-    project: Projects,
+    project: Projects
   ): Promise<Projects> {
     console.log("Project", project);
     return this.projectRepository.create(project);
   }
 
-  @get('/projects/count')
+  @get("/projects/count")
   @response(200, {
-    description: 'Project model count',
-    content: {'application/json': {schema: CountSchema}},
+    description: "Project model count",
+    content: { "application/json": { schema: CountSchema } },
   })
-  async count(
-    @param.where(Projects) where?: Where<Projects>,
-  ): Promise<Count> {
+  async count(@param.where(Projects) where?: Where<Projects>): Promise<Count> {
     return this.projectRepository.count(where);
   }
 
-  @get('/projects')
+  @get("/projects")
   @response(200, {
-    description: 'Array of Project model instances',
+    description: "Array of Project model instances",
     content: {
-      'application/json': {
+      "application/json": {
         schema: {
-          type: 'array',
-          items: getModelSchemaRef(Projects, {includeRelations: true}),
+          type: "array",
+          items: getModelSchemaRef(Projects, { includeRelations: true }),
         },
       },
     },
   })
   async find(
-    @param.filter(Projects) filter?: Filter<Projects>,
+    @param.filter(Projects) filter?: Filter<Projects>
   ): Promise<Projects[]> {
     return this.projectRepository.find(filter);
   }
 
-  @patch('/projects')
+  @patch("/projects")
   @response(200, {
-    description: 'Project PATCH success count',
-    content: {'application/json': {schema: CountSchema}},
+    description: "Project PATCH success count",
+    content: { "application/json": { schema: CountSchema } },
   })
   async updateAll(
     @requestBody({
       content: {
-        'application/json': {
-          schema: getModelSchemaRef(Projects, {partial: true}),
+        "application/json": {
+          schema: getModelSchemaRef(Projects, { partial: true }),
         },
       },
     })
     project: Projects,
-    @param.where(Projects) where?: Where<Projects>,
+    @param.where(Projects) where?: Where<Projects>
   ): Promise<Count> {
     return this.projectRepository.updateAll(project, where);
   }
 
-  @get('/projects/{id}')
+  @get("/projects/{id}")
   @response(200, {
-    description: 'Project model instance',
+    description: "Project model instance",
     content: {
-      'application/json': {
-        schema: getModelSchemaRef(Projects, {includeRelations: true}),
+      "application/json": {
+        schema: getModelSchemaRef(Projects, { includeRelations: true }),
       },
     },
   })
   async findById(
-    @param.path.string('id') id: string,
-    @param.filter(Projects, {exclude: 'where'}) filter?: FilterExcludingWhere<Projects>
+    @param.path.string("id") id: string,
+    @param.filter(Projects, { exclude: "where" })
+    filter?: FilterExcludingWhere<Projects>
   ): Promise<Projects> {
     return this.projectRepository.findById(id, filter);
   }
 
-  @get('projects/{id}/participants')
-  async getParticipants (
-    @param.path.string('id') id: string,
+  @get("projects/{id}/participants")
+  async getParticipants(
+    @param.path.string("id") id: string
   ): Promise<Response> {
     const project = await this.projectRepository.findById(id);
-    const {subParticipants, mainParticipantId} = project;
+    const { subParticipants, mainParticipantId } = project;
 
-    const mainParticipant = await this.userRepository.findById(mainParticipantId);
-    const participants = await this.userRepository.find({where: {id: {inq: subParticipants}}});
-    
-    return this.response.status(200).json({participants, mainParticipant});
+    const mainParticipant = await this.userRepository.findById(
+      mainParticipantId
+    );
+    const participants = await this.userRepository.find({
+      where: { id: { inq: subParticipants } },
+    });
+
+    return this.response.status(200).json({ participants, mainParticipant });
   }
 
-  @patch('/projects/{id}')
+  @patch("/projects/{id}")
   @response(204, {
-    description: 'Project PATCH success',
+    description: "Project PATCH success",
   })
   async updateById(
-    @param.path.string('id') id: string,
+    @param.path.string("id") id: string,
     @requestBody({
       content: {
-        'application/json': {
-          schema: getModelSchemaRef(Projects, {partial: true}),
+        "application/json": {
+          schema: getModelSchemaRef(Projects, { partial: true }),
         },
       },
     })
-    project: Projects,
+    project: Projects
   ): Promise<void> {
     await this.projectRepository.updateById(id, project);
   }
 
-  @put('/projects/{id}')
+  @put("/projects/{id}")
   @response(204, {
-    description: 'Project PUT success',
+    description: "Project PUT success",
   })
   async replaceById(
-    @param.path.string('id') id: string,
-    @requestBody() project: Projects,
+    @param.path.string("id") id: string,
+    @requestBody() project: Projects
   ): Promise<void> {
     await this.projectRepository.replaceById(id, project);
   }
 
-  @del('/projects/{id}')
+  @del("/projects/{id}")
   @response(204, {
-    description: 'Project DELETE success',
+    description: "Project DELETE success",
   })
-  async deleteById(@param.path.string('id') id: string): Promise<void> {
+  async deleteById(@param.path.string("id") id: string): Promise<void> {
     await this.projectRepository.deleteById(id);
   }
 }

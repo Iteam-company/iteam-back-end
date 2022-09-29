@@ -1,2 +1,2 @@
-export * from './actions.interceptor';
-export * from './id.interceptor';
+export * from "./actions.interceptor";
+export * from "./id.interceptor";

@@ -19,9 +19,8 @@ import {
   SchemaObject,
 } from "@loopback/rest";
 
-
-import {inject, intercept} from '@loopback/core';
-import {Response, RestBindings} from '@loopback/rest';
+import { inject, intercept } from "@loopback/core";
+import { Response, RestBindings } from "@loopback/rest";
 import { compare, encrypt } from "../shared/bcrypt.shared";
 
 import { Users } from "../models";
@@ -33,7 +32,7 @@ import { AllowedEmailsRepository } from "../repositories";
 import { TokenServiceBindings } from "@loopback/authentication-jwt";
 import { TokenService, authenticate } from "@loopback/authentication";
 
-@intercept('actions-interceptor')
+@intercept("actions-interceptor")
 export class UserController {
   constructor(
     @repository(UserRepository)
@@ -42,7 +41,7 @@ export class UserController {
     public allowedEmailsRepository: AllowedEmailsRepository,
     @inject(RestBindings.Http.RESPONSE) private response: Response,
     @inject(TokenServiceBindings.TOKEN_SERVICE)
-    public jwtService: TokenService,
+    public jwtService: TokenService
   ) {}
 
   @post("/users/login")
@@ -54,31 +53,47 @@ export class UserController {
         "application/json": { schema: UserLoginSchema as SchemaObject },
       },
     })
-    credentials: {email: string, password: string, googleId: string}
+    credentials: {
+      email: string;
+      password: string;
+      googleId: string;
+    }
   ): Promise<Response> {
     const { email, password, googleId } = credentials;
 
-    const isAllowed = await this.allowedEmailsRepository.findOne({where: { email }});
-    if(!isAllowed) return this.response.status(403).json({msg: "You are not allowed to pass, please ask admin to have access"});
+    const isAllowed = await this.allowedEmailsRepository.findOne({
+      where: { email },
+    });
+    if (!isAllowed)
+      return this.response
+        .status(403)
+        .json({
+          msg: "You are not allowed to pass, please ask admin to have access",
+        });
 
-    const user: any = await this.userRepository.findOne({where: { email }});
-    if (!user) return this.response.status(401).json({msg: "Credentilas are wrong"});
+    const user: any = await this.userRepository.findOne({ where: { email } });
+    if (!user)
+      return this.response.status(401).json({ msg: "Credentilas are wrong" });
 
-    if ( password ) {
-      const isMatched =  await compare(password, user.password);
-      if (!isMatched) return this.response.status(401).json({msg: "Credentilas are wrong"});
-    } else  {
+    if (password) {
+      const isMatched = await compare(password, user.password);
+      if (!isMatched)
+        return this.response.status(401).json({ msg: "Credentilas are wrong" });
+    } else {
       console.log(googleId);
-      const userByGoogleId: Users | unknown = await this.userRepository.findOne({where: { googleId }});
-      if (!userByGoogleId) return this.response.status(401).json({msg: "Wrong google AUTH"});
-    } 
+      const userByGoogleId: Users | unknown = await this.userRepository.findOne(
+        { where: { googleId } }
+      );
+      if (!userByGoogleId)
+        return this.response.status(401).json({ msg: "Wrong google AUTH" });
+    }
 
     const token = await this.jwtService.generateToken(user);
 
-    return this.response.status(200).json({...user, token});
+    return this.response.status(200).json({ ...user, token });
   }
 
-  @intercept('id-interceptor')
+  @intercept("id-interceptor")
   @post("/users/registration")
   async create(
     @requestBody({
@@ -94,27 +109,40 @@ export class UserController {
   ): Promise<Response | Users> {
     const { email, password } = user;
 
-    const isAllowed = await this.allowedEmailsRepository.findOne({where: {email}});
-    if (!isAllowed) return this.response.status(401).json({ msg: "You are not allowed to pass, please ask admin to have access" });
+    const isAllowed = await this.allowedEmailsRepository.findOne({
+      where: { email },
+    });
+    if (!isAllowed)
+      return this.response
+        .status(401)
+        .json({
+          msg: "You are not allowed to pass, please ask admin to have access",
+        });
 
-    const checkingExistingUser: Users | unknown = await this.userRepository.findOne({where: {email}});
-    if (checkingExistingUser) return this.response.status(401).json({ msg: "This email is already in use" });
+    const checkingExistingUser: Users | unknown =
+      await this.userRepository.findOne({ where: { email } });
+    if (checkingExistingUser)
+      return this.response
+        .status(401)
+        .json({ msg: "This email is already in use" });
 
     if (password) {
       const hashedPassword = await encrypt(password);
       user.password = hashedPassword;
     }
 
-    await this.userRepository.create(user); 
+    await this.userRepository.create(user);
 
-    const createdUser: any = await this.userRepository.findOne({where: { email }});
+    const createdUser: any = await this.userRepository.findOne({
+      where: { email },
+    });
     const token = await this.jwtService.generateToken(createdUser);
 
-    return this.response.status(200).json({...user, token});
+    return this.response.status(200).json({ ...user, token });
   }
 
   @get("/users")
-  @authenticate('jwt')
+  @authenticate("jwt")
   @response(200, {
     description: "Array of User model instances",
     content: {

@@ -1,5 +1,4 @@
 import {
-  inject,
   injectable,
   Interceptor,
   InvocationContext,
@@ -7,18 +6,14 @@ import {
   Provider,
   ValueOrPromise,
 } from "@loopback/core";
-import { Response, RestBindings } from "@loopback/rest";
 import { repository } from "@loopback/repository";
-import { Logs, Projects, Users } from "../models";
-import {
-  LogsRepository,
-  ProjectRepository,
-  UserRepository,
-} from "../repositories";
+import { Request, Response, RestBindings } from "@loopback/rest";
+import { Logs } from "../models";
+import { LogsRepository, ProjectRepository } from "../repositories";
 
-import getIdFromUrl from "../shared/getIdFromUrl.shared";
 import { v4 as uuidv4 } from "uuid";
 import compareArrays from "../shared/compareArrays.shared";
+import getIdFromUrl from "../shared/getIdFromUrl.shared";
 
 enum actionTypes {
   create = "create",
@@ -83,7 +78,7 @@ class ActionsLogger {
     const msg = `${action} ${literalDate}`;
 
     const instanceMethod: void | unknown = this[method as keyof typeof this];
-    
+
     if (actionTypes[method as keyof typeof actionTypes] && instanceMethod) {
       return (
         typeof instanceMethod === "function" &&
@@ -127,7 +122,7 @@ class ActionsLogger {
     const id = getIdFromUrl(url);
     if (!id) return;
 
-    this.response.once('finish', () => {
+    this.response.once("finish", () => {
       this.logsRepository.create({
         id: uuidv4(),
         action,
@@ -141,10 +136,10 @@ class ActionsLogger {
 
   update(action: string, params: any, msg: string) {
     const { url, body } = params;
-    
+
     const id = getIdFromUrl(url) || body.id;
 
-    this.response.once('finish', () => {
+    this.response.once("finish", () => {
       this.logsRepository.create({
         id: uuidv4(),
         action,
@@ -180,9 +175,9 @@ class ProjectsLogger extends ActionsLogger {
     const id = getIdFromUrl(url) || body.id;
 
     const newSubParticipants = body.subParticipants;
-    console.log('New participants', newSubParticipants);
+    console.log("New participants", newSubParticipants);
     const prevProject = await this.projectRepository.findById(id);
-    console.log('Prev project', prevProject);
+    console.log("Prev project", prevProject);
     const prevSubParticipants = prevProject.subParticipants;
 
     const comparation = compareArrays(
@@ -195,7 +190,7 @@ class ProjectsLogger extends ActionsLogger {
       const { difference } = comparation;
       console.log("diff", comparation.difference);
 
-      this.response.once('finish', () => {
+      this.response.once("finish", () => {
         difference.forEach((userId) => {
           const action = !prevSubParticipants?.includes(userId)
             ? this.instanceActions["addedToProject"]
@@ -211,7 +206,7 @@ class ProjectsLogger extends ActionsLogger {
             instanceId: id,
             instanceType: this.instanceName,
             subInstanceId: userId,
-            subInstanceType: 'user'
+            subInstanceType: "user",
           });
         });
       });
@@ -229,7 +224,8 @@ export class ActionsInterceptor implements Provider<Interceptor> {
 
   constructor(
     @repository(LogsRepository) public logsRepository: LogsRepository,
-    @repository(ProjectRepository) public projectsRepository: ProjectRepository
+    @repository(ProjectRepository)
+    public projectsRepository: ProjectRepository
   ) {}
 
   /**
@@ -291,10 +287,10 @@ export class ActionsInterceptor implements Provider<Interceptor> {
 
         action &&
           logger &&
-          logger.actionInvoker(
-            action,
-            { body: httpReq.body && httpReq.body, url: httpReq.url }
-          );
+          logger.actionInvoker(action, {
+            body: httpReq.body && httpReq.body,
+            url: httpReq.url,
+          });
       }
 
       const result = await next();

@@ -6,15 +6,15 @@ import {
   InvocationResult,
   Provider,
   ValueOrPromise,
-} from '@loopback/core';
+} from "@loopback/core";
 
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 /**
  * This class will be bound to the application as an `Interceptor` during
  * `boot`
  */
-@injectable({tags: {key: IdInterceptor.BINDING_KEY}})
+@injectable({ tags: { key: IdInterceptor.BINDING_KEY } })
 export class IdInterceptor implements Provider<Interceptor> {
   static readonly BINDING_KEY = `interceptors.${IdInterceptor.name}`;
 
@@ -39,7 +39,7 @@ export class IdInterceptor implements Provider<Interceptor> {
    */
   async intercept(
     invocationCtx: InvocationContext,
-    next: () => ValueOrPromise<InvocationResult>,
+    next: () => ValueOrPromise<InvocationResult>
   ) {
     try {
       // Add pre-invocation logic here

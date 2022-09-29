@@ -1,25 +1,27 @@
-import { BootMixin } from '@loopback/boot';
-import { ApplicationConfig } from '@loopback/core';
-import { RepositoryMixin } from '@loopback/repository';
+import { BootMixin } from "@loopback/boot";
+import { ApplicationConfig } from "@loopback/core";
+import { RepositoryMixin } from "@loopback/repository";
 import {
   RestExplorerBindings,
   RestExplorerComponent,
-} from '@loopback/rest-explorer';
-import { RestApplication } from '@loopback/rest';
-import path from 'path';
-import { MySequence } from './sequence';
+} from "@loopback/rest-explorer";
+import { RestApplication } from "@loopback/rest";
+import path from "path";
+import { MySequence } from "./sequence";
 
-import { AuthenticationComponent } from '@loopback/authentication';
+import { AuthenticationComponent } from "@loopback/authentication";
 import {
   JWTAuthenticationComponent,
   UserServiceBindings,
-} from '@loopback/authentication-jwt';
-import { DbDataSource } from './datasources';
-import {  ActionsInterceptor, IdInterceptor } from './interceptors';
+} from "@loopback/authentication-jwt";
+import { DbDataSource } from "./datasources";
+import { ActionsInterceptor, IdInterceptor } from "./interceptors";
 
 export { ApplicationConfig };
 
-export class IteamApplication extends BootMixin(RepositoryMixin(RestApplication)) {
+export class IteamApplication extends BootMixin(
+  RepositoryMixin(RestApplication)
+) {
   constructor(options: ApplicationConfig = {}) {
     super(options);
 
@@ -27,11 +29,11 @@ export class IteamApplication extends BootMixin(RepositoryMixin(RestApplication)
     this.sequence(MySequence);
 
     // Set up default home page
-    this.static('/', path.join(__dirname, '../public'));
+    this.static("/", path.join(__dirname, "../public"));
 
     // Customize @loopback/rest-explorer configuration here
     this.configure(RestExplorerBindings.COMPONENT).to({
-      path: '/explorer',
+      path: "/explorer",
     });
     this.component(RestExplorerComponent);
 
@@ -40,8 +42,8 @@ export class IteamApplication extends BootMixin(RepositoryMixin(RestApplication)
     this.bootOptions = {
       controllers: {
         // Customize ControllerBooter Conventions here
-        dirs: ['controllers'],
-        extensions: ['.controller.js'],
+        dirs: ["controllers"],
+        extensions: [".controller.js"],
         nested: true,
       },
     };
@@ -50,9 +52,17 @@ export class IteamApplication extends BootMixin(RepositoryMixin(RestApplication)
     // Mount jwt component
     this.component(JWTAuthenticationComponent);
     // Bind datasource
-    this.dataSource(DbDataSource, UserServiceBindings.DATASOURCE_NAME); 
+    this.dataSource(DbDataSource, UserServiceBindings.DATASOURCE_NAME);
 
-    this.interceptor(ActionsInterceptor, { global: false, group: 'actions', key: 'actions-interceptor' });
-    this.interceptor(IdInterceptor, { global: false, group: 'id', key:'id-interceptor' });
+    this.interceptor(ActionsInterceptor, {
+      global: false,
+      group: "actions",
+      key: "actions-interceptor",
+    });
+    this.interceptor(IdInterceptor, {
+      global: false,
+      group: "id",
+      key: "id-interceptor",
+    });
   }
 }
