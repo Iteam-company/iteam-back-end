@@ -2,13 +2,13 @@
 
 #### ITeam back-end
 
-#Setup (Install dependencies and run the application)
+# Setup (Install dependencies and run the application)
 
 ```sh
-Download or clone the repository
-Create and fill .env
-yarn (or npm i)
-yarn start (or npm start)
+1. Download or clone the repository
+2. Create and fill .env
+3. yarn (or npm i)
+4. yarn start (or npm start)
 ```
 
 You can also run `node .` to skip the build step.
@@ -55,18 +55,20 @@ understand how you can continue to add features to this application.
 
 [![LoopBack](<https://github.com/loopbackio/loopback-next/raw/master/docs/site/imgs/branding/Powered-by-LoopBack-Badge-(blue)-@2x.png>)](http://loopback.io/)
 
-#Demo link:
+# Demo link:
+
 [Swagger]("https://iteam-backend.herokuapp.com/explorer/")
 
-#About The App
+# About The App
+
 This is the backend part for organizing and optimizing the internal work of the company
 
-#Technologies
+# Technologies
 
 This application is generated using [LoopBack 4 CLI](https://loopback.io/doc/en/lb4/Command-line-interface.html) with the
 [initial project layout](https://loopback.io/doc/en/lb4/Loopback-application-layout.html).
 
-######We used:
+###### We used:
 
 -   loopback
 -   yarn
@@ -84,10 +86,12 @@ This application is generated using [LoopBack 4 CLI](https://loopback.io/doc/en/
 -   eslint
 -   prettier
 
-#Approach
+# Approach
+
 ...
 
-#Status
+# Status
+
 ITeam is still in progress.
 
 ---
