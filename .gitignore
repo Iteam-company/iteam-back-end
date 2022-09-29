@@ -65,3 +65,6 @@ typings/
 
 .vscode
 .idea
+
+yarn.lock
+package-lock.json
