@@ -56,8 +56,9 @@ export class Logs extends Entity {
 	}
 }
 
-export interface LogsRelations {
-	// describe navigational properties here
-}
+// export interface LogsRelations {
+// describe navigational properties here
+// }
 
-export type LogsWithRelations = Logs & LogsRelations;
+// export type LogsWithRelations = Logs & LogsRelations;
+export type LogsWithRelations = Logs;

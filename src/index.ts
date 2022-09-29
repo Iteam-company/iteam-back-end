@@ -1,5 +1,5 @@
+import { ApplicationConfig } from './application';
 import { ExpressServer } from './server';
-import { ApplicationConfig, IteamApplication } from './application';
 
 export * from './application';
 

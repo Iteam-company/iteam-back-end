@@ -48,8 +48,9 @@ export class Users extends Entity {
 	}
 }
 
-export interface UserRelations {
-	// describe navigational properties here
-}
+// export interface UserRelations {
+// 	// describe navigational properties here
+// }
 
-export type UserWithRelations = Users & UserRelations;
+// export type UserWithRelations = Users & UserRelations;
+export type UserWithRelations = Users;

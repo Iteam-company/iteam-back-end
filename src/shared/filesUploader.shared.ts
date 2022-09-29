@@ -1,11 +1,13 @@
-const multer = require('multer');
-const cloudinary = require('cloudinary').v2;
-const fs = require('fs');
-const dotenv = require('dotenv');
+import cloudinary from 'cloudinary';
+import dotenv from 'dotenv';
+import fs from 'fs';
+import multer from 'multer';
+
+const cloudinaryVariable = cloudinary.v2;
 
 dotenv.config();
 
-cloudinary.config({
+cloudinaryVariable.config({
 	cloud_name: process.env.CLOUDINARY_NAME,
 	api_key: process.env.CLOUDINARY_API_KEY,
 	api_secret: process.env.CLOUDINARY_API_SECRET,
@@ -41,7 +43,7 @@ const multerUpload = multer({
 }).single('file');
 
 export const filesUploaderSetup = {
-	cloudinaryUploader: cloudinary.uploader,
+	cloudinaryUploader: cloudinaryVariable.uploader,
 	removeFile,
 	multerUpload,
 	folderToUpload: config.folder,

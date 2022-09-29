@@ -20,8 +20,9 @@ export class AllowedEmails extends Entity {
 	}
 }
 
-export interface AllowedEmailsRelations {
-	// describe navigational properties here
-}
+// export interface AllowedEmailsRelations {
+// 	// describe navigational properties here
+// }
 
-export type AllowedEmailsWithRelations = AllowedEmails & AllowedEmailsRelations;
+// export type AllowedEmailsWithRelations = AllowedEmails & AllowedEmailsRelations;
+export type AllowedEmailsWithRelations = AllowedEmails;
