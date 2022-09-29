@@ -41,16 +41,11 @@ export class IdInterceptor implements Provider<Interceptor> {
 		invocationCtx: InvocationContext,
 		next: () => ValueOrPromise<InvocationResult>
 	) {
-		try {
-			// Add pre-invocation logic here
-			const { args } = invocationCtx;
-			args[0].id = uuidv4();
-			const result = await next();
-			// Add post-invocation logic here
-			return result;
-		} catch (err) {
-			// Add error handling logic here
-			throw err;
-		}
+		// Add pre-invocation logic here
+		const { args } = invocationCtx;
+		args[0].id = uuidv4();
+		const result = await next();
+		// Add post-invocation logic here
+		return result;
 	}
 }

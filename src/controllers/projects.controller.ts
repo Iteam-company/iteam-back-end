@@ -9,20 +9,20 @@ import {
 	Where,
 } from '@loopback/repository';
 import {
-	post,
-	param,
+	del,
 	get,
 	getModelSchemaRef,
+	param,
 	patch,
+	post,
 	put,
-	del,
 	requestBody,
 	response,
-	RestBindings,
 	Response,
+	RestBindings,
 } from '@loopback/rest';
-import { request } from 'express';
-import { Projects, Users } from '../models';
+// import { request } from 'express';
+import { Projects } from '../models';
 import { ProjectRepository, UserRepository } from '../repositories';
 
 @authenticate('jwt')

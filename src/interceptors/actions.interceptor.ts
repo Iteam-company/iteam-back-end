@@ -249,7 +249,7 @@ export class ActionsInterceptor implements Provider<Interceptor> {
 		invocationCtx: InvocationContext,
 		next: () => ValueOrPromise<InvocationResult>
 	) {
-		const { args, methodName } = invocationCtx;
+		const { methodName } = invocationCtx;
 
 		const httpReq = await invocationCtx.get(RestBindings.Http.REQUEST, {
 			optional: true,
@@ -258,49 +258,43 @@ export class ActionsInterceptor implements Provider<Interceptor> {
 			optional: true,
 		});
 
-		try {
-			console.log('args', args);
-			if (httpRes && httpReq) {
-				const instanceType = httpReq?.url.split('/')[1];
+		if (httpRes && httpReq) {
+			const instanceType = httpReq?.url.split('/')[1];
 
-				console.log('name', methodName);
+			console.log('name', methodName);
 
-				const loggers = {
-					users: new ActionsLogger(
-						'users',
-						this.logsRepository,
-						httpRes,
-						httpReq
-					),
-					projects: new ProjectsLogger(
-						'projects',
-						this.logsRepository,
-						httpRes,
-						httpReq,
-						this.projectsRepository
-					),
-				};
+			const loggers = {
+				users: new ActionsLogger(
+					'users',
+					this.logsRepository,
+					httpRes,
+					httpReq
+				),
+				projects: new ProjectsLogger(
+					'projects',
+					this.logsRepository,
+					httpRes,
+					httpReq,
+					this.projectsRepository
+				),
+			};
 
-				const logger = loggers[instanceType as keyof typeof loggers];
+			const logger = loggers[instanceType as keyof typeof loggers];
 
-				const action =
-					actionTypes[methodName as keyof typeof actionTypes];
+			const action = actionTypes[methodName as keyof typeof actionTypes];
 
-				console.log('action', action);
+			console.log('action', action);
 
-				action &&
-					logger &&
-					logger.actionInvoker(action, {
-						body: httpReq.body && httpReq.body,
-						url: httpReq.url,
-					});
-			}
-
-			const result = await next();
-
-			return result;
-		} catch (err) {
-			throw err;
+			action &&
+				logger &&
+				logger.actionInvoker(action, {
+					body: httpReq.body && httpReq.body,
+					url: httpReq.url,
+				});
 		}
+
+		const result = await next();
+
+		return result;
 	}
 }

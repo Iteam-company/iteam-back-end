@@ -1,5 +1,5 @@
 const compareArrays = (arr1: [], arr2: []) => {
-	const array2Sorted = arr2.slice().sort();
+	// const array2Sorted = arr2.slice().sort();
 	const difference: [] = [];
 
 	const longest = arr1.length >= arr2.length ? arr1 : arr2;
@@ -7,7 +7,7 @@ const compareArrays = (arr1: [], arr2: []) => {
 
 	let result = true;
 
-	longest.forEach((el, i) => {
+	longest.forEach((el) => {
 		if (!shortest.includes(el)) {
 			difference.push(el);
 			result = false;

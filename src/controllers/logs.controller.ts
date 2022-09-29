@@ -1,20 +1,11 @@
 import { intercept } from '@loopback/core';
+import { Filter, FilterExcludingWhere, repository } from '@loopback/repository';
 import {
-	Count,
-	CountSchema,
-	Filter,
-	FilterExcludingWhere,
-	repository,
-	Where,
-} from '@loopback/repository';
-import {
-	post,
-	param,
+	del,
 	get,
 	getModelSchemaRef,
-	patch,
-	put,
-	del,
+	param,
+	post,
 	requestBody,
 	response,
 } from '@loopback/rest';

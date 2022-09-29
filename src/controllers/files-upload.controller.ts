@@ -1,14 +1,12 @@
 import { authenticate } from '@loopback/authentication';
-import { inject, intercept } from '@loopback/core';
+import { inject } from '@loopback/core';
 import {
+	del,
 	post,
 	requestBody,
-	RestBindings,
 	Response,
-	Request,
-	toInterceptor,
+	RestBindings,
 	SchemaObject,
-	del,
 } from '@loopback/rest';
 import imageCloudinaryId from '../schemas/imageCloudinaryId.schema';
 import { filesUploaderSetup } from '../shared/filesUploader.shared';

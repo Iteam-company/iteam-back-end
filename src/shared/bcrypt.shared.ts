@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+import bcrypt from 'bcrypt';
 
 export const encrypt = async (value: string): Promise<string> => {
 	const saltRounds = 10;
