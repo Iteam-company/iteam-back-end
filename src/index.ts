@@ -1,15 +1,15 @@
-import { ExpressServer } from './server';
-import { ApplicationConfig, IteamApplication } from './application';
+import { ExpressServer } from "./server";
+import { ApplicationConfig, IteamApplication } from "./application";
 
-export * from './application';
+export * from "./application";
 
 export async function main(options: ApplicationConfig = {}) {
   const server = new ExpressServer(options);
   await server.boot();
-  await server.start(); 
- 
+  await server.start();
+
   console.log(`Server is running at ${process.env.PORT || 3000}`);
-  return server
+  return server;
 }
 
 if (require.main === module) {
@@ -30,8 +30,8 @@ if (require.main === module) {
       },
     },
   };
-  main(config).catch(err => {
-    console.error('Cannot start the application.', err);
+  main(config).catch((err) => {
+    console.error("Cannot start the application.", err);
     process.exit(1);
   });
 }

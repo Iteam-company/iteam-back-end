@@ -15,8 +15,7 @@ const config = {
   folder: !process.env.PORT ? "./public/uploads" : "./dist/public/uploads",
 };
 
-
-const removeFile = (fileName: string) => {  
+const removeFile = (fileName: string) => {
   return fs.unlink(config.folder + "/" + fileName, function (err: any) {
     if (err && err.code == "ENOENT") {
       console.info("File doesn't exist, won't remove it.");
@@ -27,7 +26,6 @@ const removeFile = (fileName: string) => {
     }
   });
 };
-
 
 const storage = multer.diskStorage({
   destination: function (req: any, file: any, cb: any) {
@@ -42,6 +40,9 @@ const multerUpload = multer({
   storage: storage,
 }).single("file");
 
-
-export const filesUploaderSetup = { cloudinaryUploader :cloudinary.uploader, removeFile, multerUpload, folderToUpload: config.folder };
-
+export const filesUploaderSetup = {
+  cloudinaryUploader: cloudinary.uploader,
+  removeFile,
+  multerUpload,
+  folderToUpload: config.folder,
+};

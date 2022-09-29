@@ -1,4 +1,46 @@
-# iteam
+# ITeam
+
+#Project Title
+Dint.com
+
+#Setup
+
+-   download or clone the repository
+-   create and fill .env
+-   yarn (or npm i)
+-   yarn start (or npm start)
+
+#Demo link:
+[fedev.dint.com](https://fedev.dint.com/")
+
+#About The App
+...
+
+#Technologies
+######We used:
+
+-   yarn
+-   axios
+-   JavaScript
+-   TypeScript
+-   React
+-   MUI
+-   Redux
+-   moment
+-   styled-components
+-   swiper
+-   react-toastify
+-   react-phone-input-2
+-   eslint
+-   prettier
+
+#Approach
+...
+
+#Status
+Dint.com is still in progress.
+
+---
 
 This application is generated using [LoopBack 4 CLI](https://loopback.io/doc/en/lb4/Command-line-interface.html) with the
 [initial project layout](https://loopback.io/doc/en/lb4/Loopback-application-layout.html).
@@ -42,13 +84,12 @@ To force a full build by cleaning up cached artifacts:
 npm run rebuild
 ```
 
-
 ## Other useful commands
 
-- `npm run migrate`: Migrate database schemas for models
-- `npm run openapi-spec`: Generate OpenAPI spec into a file
-- `npm run docker:build`: Build a Docker image for this application
-- `npm run docker:run`: Run this application inside a Docker container
+-   `npm run migrate`: Migrate database schemas for models
+-   `npm run openapi-spec`: Generate OpenAPI spec into a file
+-   `npm run docker:build`: Build a Docker image for this application
+-   `npm run docker:run`: Run this application inside a Docker container
 
 ## Tests
 
@@ -61,4 +102,4 @@ npm test
 Please check out [LoopBack 4 documentation](https://loopback.io/doc/en/lb4/) to
 understand how you can continue to add features to this application.
 
-[![LoopBack](https://github.com/loopbackio/loopback-next/raw/master/docs/site/imgs/branding/Powered-by-LoopBack-Badge-(blue)-@2x.png)](http://loopback.io/)
+[![LoopBack](<https://github.com/loopbackio/loopback-next/raw/master/docs/site/imgs/branding/Powered-by-LoopBack-Badge-(blue)-@2x.png>)](http://loopback.io/)

@@ -1,37 +1,36 @@
-import {Entity, model, property} from '@loopback/repository';
+import { Entity, model, property } from "@loopback/repository";
 
 @model()
 export class Projects extends Entity {
   @property({
-    type: 'string',
+    type: "string",
     id: true,
     generated: false,
   })
   id?: string;
 
   @property({
-    type: 'string',
+    type: "string",
     required: true,
   })
   name: string;
 
   @property({
-    type: 'string',
+    type: "string",
   })
   mainParticipantId?: string;
 
   @property({
-    type: 'array',
-    itemType: 'string'
+    type: "array",
+    itemType: "string",
   })
   subParticipants?: [];
 
   @property({
-    type: 'array',
-    itemType: 'string'
+    type: "array",
+    itemType: "string",
   })
   technologies?: [];
-
 
   constructor(data?: Partial<Projects>) {
     super(data);
