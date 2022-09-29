@@ -9,6 +9,7 @@ export { ApplicationConfig };
 export class ExpressServer {
 	public readonly app: express.Application;
 	public readonly lbApp: IteamApplication;
+
 	private server?: Server;
 
 	constructor(options: ApplicationConfig = {}) {
