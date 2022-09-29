@@ -5,6 +5,7 @@ export * from './application';
 
 export async function main(options: ApplicationConfig = {}) {
 	const server = new ExpressServer(options);
+
 	await server.boot();
 	await server.start();
 
