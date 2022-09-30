@@ -8,7 +8,7 @@ dotenv.config();
 const config = {
 	name: 'db',
 	connector: 'postgresql',
-	url: process.env.POSTGRESQL_URL,
+	url: process.env.POSTGRESQL_URL || '',
 };
 
 // Observe application's life cycle to disconnect the datasource when
