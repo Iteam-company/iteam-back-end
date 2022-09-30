@@ -15,7 +15,7 @@
 	"scripts": {
 		"prestart": "yarn rebuild",
 		"rebuild": "yarn clean && yarn build && yarn init-uploads",
-		"start": "node dist/index.js",
+		"start": "node -r source-map-support/register .",
 		"clean": "lb-clean dist *.tsbuildinfo .eslintcache",
 		"build": "lb-tsc",
 		"build:watch": "lb-tsc --watch",
