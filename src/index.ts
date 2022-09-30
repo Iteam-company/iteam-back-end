@@ -9,7 +9,6 @@ export async function main(options: ApplicationConfig = {}) {
 	await server.boot();
 	await server.start();
 
-	console.log(`Server is running at ${process.env.PORT || 3000}`);
 	return server;
 }
 
