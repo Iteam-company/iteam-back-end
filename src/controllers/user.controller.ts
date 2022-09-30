@@ -233,4 +233,12 @@ export class UserController {
 	async deleteById(@param.path.string('id') id: string): Promise<void> {
 		await this.userRepository.deleteById(id);
 	}
+
+	@get('/')
+	@response(200, {
+		description: 'Root url',
+	})
+	async root(): Promise<void> {
+		return this.response.redirect('index.html');
+	}
 }

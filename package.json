@@ -13,22 +13,23 @@
 		"yarn": "1.22.19"
 	},
 	"scripts": {
+		"prestart": "yarn rebuild",
+		"rebuild": "yarn clean && yarn build && yarn init-uploads",
+		"start": "node -r source-map-support/register .",
+		"clean": "lb-clean dist *.tsbuildinfo .eslintcache",
 		"build": "lb-tsc",
 		"build:watch": "lb-tsc --watch",
 		"pretest": "yarn rebuild",
+		"postinstall": "yarn build",
 		"test": "lb-mocha --allow-console-logs \"dist/__tests__\"",
 		"test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js",
 		"docker:build": "docker build -t iteam .",
 		"docker:run": "docker run -p 3000:3000 -d iteam",
 		"preopenapi-spec": "yarn build",
 		"openapi-spec": "node ./dist/openapi-spec",
-		"prestart": "yarn rebuild",
-		"start": "node -r source-map-support/register .",
-		"clean": "lb-clean dist *.tsbuildinfo .eslintcache",
-		"rebuild": "yarn clean && yarn build && yarn init-uploads",
-		"postinstall": "yarn build",
 		"init-uploads": "cd dist && npx mkdirp public/uploads",
 		"start:prod": "yarn init-uploads && node dist/index.js",
+		"lint": "yarn run eslint src",
 		"prepare": "husky install"
 	},
 	"repository": {
@@ -36,7 +37,7 @@
 		"url": "https://github.com/SpaceHolderdJs/iteam-backend"
 	},
 	"author": "Igor <sergienko339@gmail.com>, Yevhen <jekasemenuk@icloud.com>",
-	"license": "",
+	"license": "MIT",
 	"files": [
 		"README.md",
 		"dist",

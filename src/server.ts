@@ -28,6 +28,12 @@ export class ExpressServer {
 
 	public async start() {
 		await this.lbApp.start();
+		console.log(
+			`Server is running at http://${process.env.HOST || 'localhost'}:${
+				process.env.PORT || 3000
+			}`
+		);
+
 		// const port = this.lbApp.restServer.config.port ?? 3000;
 		// const host = this.lbApp.restServer.config.host || '127.0.0.1';
 		// this.server = this.app.listen(port, host);
