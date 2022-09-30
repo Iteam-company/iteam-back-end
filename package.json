@@ -28,7 +28,7 @@
 		"preopenapi-spec": "yarn build",
 		"openapi-spec": "node ./dist/openapi-spec",
 		"init-uploads": "cd dist && npx mkdirp public/uploads",
-		"start:prod": "node dist/index.js",
+		"start:prod": "node dist/server.js",
 		"lint": "yarn run eslint src",
 		"prepare": "husky install"
 	},
