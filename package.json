@@ -25,7 +25,7 @@
 		"start": "node -r source-map-support/register .",
 		"clean": "lb-clean dist *.tsbuildinfo .eslintcache",
 		"rebuild": "yarn clean && yarn build && yarn init-uploads",
-		"postinstall": "yarn build",
+		"postinstall": "cd dist && yarn build",
 		"init-uploads": "cd dist && npx mkdirp public/uploads",
 		"start:prod": "yarn init-uploads && node dist/index.js",
 		"prepare": "husky install"
