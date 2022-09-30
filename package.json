@@ -9,8 +9,8 @@
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"engines": {
-		"node": "12 || 14 || 16 || 17",
-		"yarn": "1.22.19"
+		"yarn": "1.22.19",
+		"node": "16 || 14 || 12 || 17"
 	},
 	"scripts": {
 		"prestart": "yarn rebuild",
