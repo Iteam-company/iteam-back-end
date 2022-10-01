@@ -10,7 +10,7 @@
 	"types": "dist/index.d.ts",
 	"engines": {
 		"yarn": "1.22.19",
-		"node": "16.17.0"
+		"node": "16.17.0 || 14"
 	},
 	"scripts": {
 		"prestart": "yarn rebuild",
