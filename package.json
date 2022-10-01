@@ -27,7 +27,7 @@
 		"docker:run": "docker run -p 3000:3000 -d iteam",
 		"preopenapi-spec": "yarn build",
 		"openapi-spec": "node ./dist/openapi-spec",
-		"init-uploads": "cd dist && npx mkdirp public/uploads",
+		"init-uploads": "cd dist && npx mkdirp public && npx mkdirp public/uploads",
 		"start:prod": "yarn init-uploads && node dist/index.js",
 		"lint": "yarn run eslint src",
 		"prepare": "husky install"
