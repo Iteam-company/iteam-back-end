@@ -13,7 +13,7 @@
 
 You can also run `node .` to skip the build step.
 
-Open http://127.0.0.1:3000 in your browser.
+Open http://0.0.0.0:3000 in your browser.
 
 To only install resolved dependencies in `package-lock.json`:
 
