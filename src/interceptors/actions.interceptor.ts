@@ -261,8 +261,6 @@ export class ActionsInterceptor implements Provider<Interceptor> {
 		if (httpRes && httpReq) {
 			const instanceType = httpReq?.url.split('/')[1];
 
-			console.log('name', methodName);
-
 			const loggers = {
 				users: new ActionsLogger(
 					'users',
