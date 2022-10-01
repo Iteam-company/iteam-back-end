@@ -10,7 +10,7 @@ export async function setupApplication(): Promise<AppWithClient> {
 		// Customize the server configuration here.
 		// Empty values (undefined, '') will be ignored by the helper.
 		//
-		// host: process.env.HOST || 'localhost',
+		// host: process.env.HOST || '127.0.0.1',
 		// port: +process.env.PORT || 3000,
 	});
 

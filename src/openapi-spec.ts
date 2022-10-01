@@ -8,7 +8,7 @@ async function exportOpenApiSpec(): Promise<void> {
 	const config: ApplicationConfig = {
 		rest: {
 			port: +(process.env.PORT || 3000),
-			host: process.env.HOST || 'localhost',
+			host: process.env.HOST || '127.0.0.1',
 		},
 	};
 	const outFile = process.argv[2] ?? '';
