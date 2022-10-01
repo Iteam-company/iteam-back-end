@@ -15,7 +15,7 @@
 	"scripts": {
 		"prestart": "yarn rebuild",
 		"rebuild": "yarn clean && yarn build && yarn init-uploads",
-		"start": "node index.js",
+		"start": "node -r source-map-support/register .",
 		"clean": "lb-clean dist *.tsbuildinfo .eslintcache",
 		"build": "lb-tsc",
 		"build:watch": "lb-tsc --watch",
@@ -28,13 +28,13 @@
 		"preopenapi-spec": "yarn build",
 		"openapi-spec": "node ./dist/openapi-spec",
 		"init-uploads": "cd dist && npx mkdirp public && npx mkdirp public/uploads",
-		"start:prod": "yarn init-uploads && node index.js",
+		"start:prod": "yarn init-uploads && node -r source-map-support/register .",
 		"lint": "yarn run eslint src",
 		"prepare": "husky install"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/SpaceHolderdJs/iteam-backend"
+		"url": "git+https://github.com/iteam-comp/iteam-back-end"
 	},
 	"author": "Igor <sergienko339@gmail.com>, Yevhen <jekasemenuk@icloud.com>",
 	"license": "MIT",

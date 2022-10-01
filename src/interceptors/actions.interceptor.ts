@@ -281,8 +281,6 @@ export class ActionsInterceptor implements Provider<Interceptor> {
 
 			const action = actionTypes[methodName as keyof typeof actionTypes];
 
-			console.log('action', action);
-
 			action &&
 				logger &&
 				logger.actionInvoker(action, {
