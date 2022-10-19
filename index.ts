@@ -2,6 +2,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import { PORT, DB_PORT, DB_USER, DB_PWD, DB_HOST } from './env';
 import routes from './src/routes/index';
+import * as swaggerUi from 'swagger-ui-express';
+import swaggerDocument from './swagger.json';
 class App {
 	public _app: express.Application;
 	public env: string;
@@ -32,6 +34,19 @@ class App {
 		return this;
 	}
 
+	initSwagger() {
+		const swaggerOptions = {
+			explorer: true,
+		};
+		this._app.use(
+			'/swagger',
+			swaggerUi.serve,
+			swaggerUi.setup(swaggerDocument, swaggerOptions)
+		);
+
+		return this;
+	}
+
 	public async listen() {
 		this._app.listen(this.port, () => {
 			console.log(`======= ENV: ${this.env} ========`);
@@ -41,6 +56,10 @@ class App {
 	}
 }
 
-const appInstance = new App().connectRoutes().connectMongoDb().listen();
+const appInstance = new App()
+	.connectRoutes()
+	.connectMongoDb()
+	.initSwagger()
+	.listen();
 
 export default appInstance;
