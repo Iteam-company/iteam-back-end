@@ -1,11 +1,29 @@
 {
-	"$schema": "http://json.schemastore.org/tsconfig",
-	"extends": "@loopback/build/config/tsconfig.common.json",
-	"experimentalDecorators": "true",
 	"compilerOptions": {
+		"rootDir": "./",
+		"target": "es2020",
+		"module": "commonjs",
+		"allowJs": true,
+		"removeComments": true,
+		"resolveJsonModule": true,
+		"typeRoots": ["./node_modules/@types"],
+		"sourceMap": true,
 		"outDir": "dist",
-		"rootDir": "src",
-		"sourceMap": true
+		"strict": true,
+		"lib": ["es2020"],
+		"baseUrl": ".",
+		"forceConsistentCasingInFileNames": true,
+		"esModuleInterop": true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"moduleResolution": "Node",
+		"skipLibCheck": true,
+		"paths": {
+			"@routes/*": ["./src/routes/*"],
+			"@middlewares/*": ["./src/middlewares/*"]
+		}
 	},
-	"include": ["src"]
+	"include": ["src/**/*"],
+	"exclude": ["node_modules"],
+	"ts-node": { "swc": true }
 }
