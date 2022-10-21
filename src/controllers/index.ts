@@ -1,5 +1,5 @@
 class Controller {
-	constructor() {}
+	// constructor() {}
 }
 
 export default Controller;
