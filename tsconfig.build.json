@@ -1,0 +1,25 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "declaration": true,
+    "jsx": "react",
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "inlineSourceMap": false,
+    "allowJs": true,
+    "skipLibCheck": true
+  },
+  "exclude": [
+    "build",
+    "dist",
+    "node_modules",
+    "coverage",
+    "config",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/**/*.story.tsx"
+  ]
+}
