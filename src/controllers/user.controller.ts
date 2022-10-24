@@ -12,7 +12,7 @@ class UserController extends Controller {
 			return res.send(listUsers);
 		} catch (e) {
 			console.error(e);
-			errorsCatcher(res);
+			return errorsCatcher(res);
 		}
 	}
 
@@ -23,7 +23,7 @@ class UserController extends Controller {
 			return res.send(newUsers);
 		} catch (e) {
 			console.error(e);
-			errorsCatcher(res);
+			return errorsCatcher(res);
 		}
 	}
 
@@ -34,7 +34,7 @@ class UserController extends Controller {
 			return res.send(userByID);
 		} catch (e) {
 			console.error(e);
-			errorsCatcher(res);
+			return errorsCatcher(res);
 		}
 	}
 
@@ -45,7 +45,7 @@ class UserController extends Controller {
 			return res.send(updatedUser);
 		} catch (e) {
 			console.error(e);
-			errorsCatcher(res);
+			return errorsCatcher(res);
 		}
 	}
 
@@ -56,7 +56,7 @@ class UserController extends Controller {
 			return res.send(deletedUser);
 		} catch (e) {
 			console.error(e);
-			errorsCatcher(res);
+			return errorsCatcher(res);
 		}
 	}
 }
