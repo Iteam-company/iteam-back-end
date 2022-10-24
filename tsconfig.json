@@ -1,4 +1,17 @@
 {
+	"extends": "ts-node/node16/tsconfig.json",
+	"ts-node": {
+		"swc": true,
+		// It is faster to skip typechecking.
+		// Remove if you want ts-node to do typechecking.
+		"transpileOnly": true,
+		"files": true,
+		"compilerOptions": {
+			// compilerOptions specified here will override those declared below,
+			// but *only* in ts-node.  Useful if you want ts-node and tsc to use
+			// different options with a single tsconfig.json.
+		}
+	},
 	"compilerOptions": {
 		"rootDir": "./",
 		"target": "es2020",
@@ -6,11 +19,15 @@
 		"allowJs": true,
 		"removeComments": true,
 		"resolveJsonModule": true,
-		"typeRoots": ["./node_modules/@types"],
+		"typeRoots": [
+			"./node_modules/@types"
+		],
 		"sourceMap": true,
 		"outDir": "dist",
 		"strict": true,
-		"lib": ["es2020"],
+		"lib": [
+			"es2020"
+		],
 		"baseUrl": ".",
 		"forceConsistentCasingInFileNames": true,
 		"esModuleInterop": true,
@@ -19,11 +36,18 @@
 		"moduleResolution": "Node",
 		"skipLibCheck": true,
 		"paths": {
-			"@routes/*": ["./src/routes/*"],
-			"@middlewares/*": ["./src/middlewares/*"]
+			"@routes/*": [
+				"./src/routes/*"
+			],
+			"@middlewares/*": [
+				"./src/middlewares/*"
+			]
 		}
 	},
-	"include": ["src/**/*"],
-	"exclude": ["node_modules"],
-	// "ts-node": { "swc": true }
+	"include": [
+		"src/**/*"
+	],
+	"exclude": [
+		"node_modules"
+	],
 }
