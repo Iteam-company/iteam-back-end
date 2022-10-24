@@ -10,7 +10,7 @@ class UserModel extends Model {
 			return await userSchema.find({});
 		} catch (e) {
 			console.error(e);
-			errorsCatcher(res);
+			return errorsCatcher(res);
 		}
 	}
 
@@ -30,7 +30,7 @@ class UserModel extends Model {
 			return newUser;
 		} catch (e) {
 			console.error(e);
-			errorsCatcher(res, 500, 'Wrong data, check and try again');
+			return errorsCatcher(res, 500, 'Wrong data, check and try again');
 		}
 	}
 
@@ -43,7 +43,7 @@ class UserModel extends Model {
 			return await userSchema.findById({ _id: userID });
 		} catch (e) {
 			console.error(e);
-			errorsCatcher(res, 404);
+			return errorsCatcher(res, 404);
 		}
 	}
 
@@ -65,7 +65,7 @@ class UserModel extends Model {
 			return { ...updatedUser?.toObject(), ...dataForUpdate };
 		} catch (e) {
 			console.error(e);
-			errorsCatcher(res);
+			return errorsCatcher(res);
 		}
 	}
 
@@ -78,7 +78,7 @@ class UserModel extends Model {
 			return await userSchema.findOneAndDelete({ _id: userID });
 		} catch (e) {
 			console.error(e);
-			errorsCatcher(res);
+			return errorsCatcher(res);
 		}
 	}
 }
