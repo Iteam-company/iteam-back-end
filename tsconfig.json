@@ -23,7 +23,7 @@
 			"./node_modules/@types"
 		],
 		"sourceMap": true,
-		"outDir": "./dist",
+		"outDir": "dist",
 		"strict": true,
 		"lib": [
 			"es2020"
@@ -48,6 +48,8 @@
 		"src/**/*"
 	],
 	"exclude": [
-		"node_modules"
+		"node_modules",
+		"dist",
+		"build",
 	],
 }
