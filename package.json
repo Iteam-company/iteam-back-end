@@ -3,6 +3,10 @@
 	"version": "1.0.0",
 	"description": "```sh\r 1. Download or clone the repository\r 2. Create and fill .env\r 3. yarn (or npm i)\r 4. yarn start (or npm start)\r ```",
 	"main": "index.ts",
+	"engines": {
+		"node": "16.x",
+		"yarn": "1.22.x"
+	},
 	"homepage": "https://github.com/iteam-comp/iteam-back-end#readme",
 	"scripts": {
 		"dev": "nodemon index.ts",
