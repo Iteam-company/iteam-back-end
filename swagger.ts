@@ -1,6 +1,6 @@
 import * as swaggerUi from 'swagger-ui-express';
-import swaggerDocument from './swagger.json';
-import appInstance from '.';
+import * as swaggerDocument from './swagger';
+
 import { Application } from 'express';
 
 const swaggerOptions = {

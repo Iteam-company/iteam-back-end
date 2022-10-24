@@ -1,5 +1,9 @@
 import testRouter from './test.router';
+import userRouter from './user.router';
 
-const routers = [{ path: '/test', router: testRouter }];
+const routers = [
+	{ path: '/user', router: userRouter },
+	{ path: '/test', router: testRouter },
+];
 
 export default routers;
