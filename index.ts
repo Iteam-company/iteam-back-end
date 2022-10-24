@@ -31,12 +31,12 @@ class App {
 	public _app: express.Application;
 	public env: string;
 	public port: string | number;
-	public API_URL: string;
+	public api_url: string;
 
 	constructor() {
 		this._app = express();
 		this.env = 'development';
-		this.API_URL = API_URL || '0.0.0.0';
+		this.api_url = API_URL || '0.0.0.0';
 		this.port = PORT || 8888;
 
 		this._app.use(cors(corsOptions));
@@ -88,7 +88,7 @@ class App {
 		this._app.listen(this.port, () => {
 			console.log(`======= ENV: ${this.env} ========`);
 			console.log(`🚀 App listening on the port ${this.port}`);
-			console.log(`🎮 http://${this.API_URL}:${this.port}`);
+			console.log(`🎮 http://${this.api_url}:${this.port}`);
 		});
 	}
 }
