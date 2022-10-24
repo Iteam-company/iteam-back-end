@@ -11,7 +11,7 @@
 	"scripts": {
 		"dev": "nodemon index.ts",
 		"start": "cd dist && node index.js",
-		"start:prod": "yarn add typescript && yarn build && cd dist && node index.js",
+		"start:prod": "npm install typescript && yarn && yarn build && cd dist && node index.js",
 		"build": "tsc -p tsconfig.build.json",
 		"postbuild": "cp package*.json dist && cd dist && yarn install --frozen-lockfile",
 		"build:watch": "tsc -w -p tsconfig.build.json",
