@@ -5,8 +5,7 @@
 	"main": "index.ts",
 	"engines": {
 		"node": "16.x",
-		"yarn": "1.22.x",
-		"typescript": "4.8.x"
+		"yarn": "1.22.x"
 	},
 	"homepage": "https://github.com/iteam-comp/iteam-back-end#readme",
 	"scripts": {
