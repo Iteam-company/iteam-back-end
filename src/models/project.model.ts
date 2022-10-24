@@ -10,7 +10,7 @@ class ProjectModel extends Model {
 			return await projectSchema.find({});
 		} catch (e) {
 			console.error(e);
-			errorsCatcher(res);
+			return errorsCatcher(res);
 		}
 	}
 
@@ -30,7 +30,7 @@ class ProjectModel extends Model {
 			return newProject;
 		} catch (e) {
 			console.error(e);
-			errorsCatcher(res, 500, 'Wrong data, check and try again');
+			return errorsCatcher(res, 500, 'Wrong data, check and try again');
 		}
 	}
 
@@ -43,7 +43,7 @@ class ProjectModel extends Model {
 			return await projectSchema.findById({ _id: projectID });
 		} catch (e) {
 			console.error(e);
-			errorsCatcher(res, 404);
+			return errorsCatcher(res, 404);
 		}
 	}
 
@@ -65,7 +65,7 @@ class ProjectModel extends Model {
 			return { ...updatedProject?.toObject(), ...dataForUpdate };
 		} catch (e) {
 			console.error(e);
-			errorsCatcher(res);
+			return errorsCatcher(res);
 		}
 	}
 
@@ -78,7 +78,7 @@ class ProjectModel extends Model {
 			return await projectSchema.findOneAndDelete({ _id: projectID });
 		} catch (e) {
 			console.error(e);
-			errorsCatcher(res);
+			return errorsCatcher(res);
 		}
 	}
 }

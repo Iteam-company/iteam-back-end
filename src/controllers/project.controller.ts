@@ -12,7 +12,7 @@ class ProjectController extends Controller {
 			return res.send(listProjects);
 		} catch (e) {
 			console.error(e);
-			errorsCatcher(res);
+			return errorsCatcher(res);
 		}
 	}
 
@@ -23,7 +23,7 @@ class ProjectController extends Controller {
 			return res.send(newProjects);
 		} catch (e) {
 			console.error(e);
-			errorsCatcher(res);
+			return errorsCatcher(res);
 		}
 	}
 
@@ -34,7 +34,7 @@ class ProjectController extends Controller {
 			return res.send(projectByID);
 		} catch (e) {
 			console.error(e);
-			errorsCatcher(res);
+			return errorsCatcher(res);
 		}
 	}
 
@@ -48,7 +48,7 @@ class ProjectController extends Controller {
 			return res.send(updatedProject);
 		} catch (e) {
 			console.error(e);
-			errorsCatcher(res);
+			return errorsCatcher(res);
 		}
 	}
 
@@ -62,7 +62,7 @@ class ProjectController extends Controller {
 			return res.send(deletedProject);
 		} catch (e) {
 			console.error(e);
-			errorsCatcher(res);
+			return errorsCatcher(res);
 		}
 	}
 }
