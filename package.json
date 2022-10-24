@@ -10,7 +10,7 @@
 		"start:prod": "yarn build && cd dist && node index.js",
 		"prebuild": "rm -rf dist",
 		"build": "tsc -p tsconfig.build.json",
-		"postbuild": "cp package*.json dist && cp .env* dist && cd dist && yarn install --frozen-lockfile",
+		"postbuild": "cp package*.json dist && cd dist && yarn install --frozen-lockfile",
 		"build:watch": "tsc -w -p tsconfig.build.json",
 		"lint": "eslint --ext .ts src",
 		"lint:fix": "eslint --ext .ts src --fix"
