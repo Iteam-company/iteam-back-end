@@ -7,6 +7,7 @@ import UserInterface, {
 	WorkTypes,
 } from '../interfaces/user.interface';
 import { JWT_ACCES_SECRET_KEY, JWT_REFRESH_SECRET_KEY } from '../../../env';
+import Application from './applicationSchema';
 
 const user = new Schema<UserInterface>({
 	email: {
@@ -99,6 +100,17 @@ user.methods.hashPassword = async function () {
 		console.log('err', e);
 	}
 };
+
+user.post('save', async function () {
+	const { email, name, surname } = this;
+	const userApplication = new Application({
+		email,
+		fullName: `${name} ${surname}`,
+		date: Date.now(),
+	});
+
+	await userApplication.save();
+});
 
 user.methods.removePassword = function () {
 	const userCopy = this.toObject();
