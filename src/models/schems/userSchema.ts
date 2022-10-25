@@ -1,11 +1,7 @@
 import mongoose, { Schema, model } from 'mongoose';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import UserInterface, {
-	Roles,
-	Statuses,
-	WorkTypes,
-} from '../interfaces/user.interface';
+import UserInterface, { Roles, WorkTypes } from '../interfaces/user.interface';
 import { JWT_ACCES_SECRET_KEY, JWT_REFRESH_SECRET_KEY } from '../../../env';
 import Application from './applicationSchema';
 
@@ -45,11 +41,6 @@ const user = new Schema<UserInterface>({
 	salary: { type: Number, default: 0 },
 	tokens: { type: Object, default: {} },
 	links: [{ type: String }],
-	status: {
-		type: String,
-		enum: [Statuses.ACTIVE, Statuses.INACTIVE],
-		default: Statuses.ACTIVE,
-	},
 });
 
 user.methods.generateAccessToken = async function () {
