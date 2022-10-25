@@ -40,7 +40,7 @@ class UserModel extends Model {
 		if (!userID) return res.sendStatus(403);
 
 		try {
-			return await userSchema.findById({ _id: userID });
+			return await userSchema.findById(userID);
 		} catch (e) {
 			console.error(e);
 			errorsCatcher(res, 404);
