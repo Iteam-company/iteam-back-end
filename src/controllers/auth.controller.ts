@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import userSchema from '../models/schems/userSchema';
 import errorsCatcher from '../utils/errorsCatcher';
 import Controller from './index';
-import User from '../models/user.model';
+import { JWT_REFRESH_SECRET_KEY } from '../../env';
 
 class AuthController extends Controller {
 	static async signUp(req: Request, res: Response) {
@@ -51,8 +51,10 @@ class AuthController extends Controller {
 			const { refreshToken } = req.body;
 			const data = jwt.verify(
 				refreshToken as string,
-				'secret'
+				JWT_REFRESH_SECRET_KEY as string
 			) as JwtPayload;
+
+			if (!data._id) return res.sendStatus(404);
 
 			const user = await userSchema.findById(data._id);
 
@@ -64,8 +66,8 @@ class AuthController extends Controller {
 			} else {
 				res.sendStatus(404);
 			}
-			res.send({ message: 'Test message' });
 		} catch (e) {
+			console.log(e, 'ERROR');
 			errorsCatcher(res);
 		}
 	}
