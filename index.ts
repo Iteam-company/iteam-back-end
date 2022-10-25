@@ -10,7 +10,7 @@ import routes from './src/routes/index';
 import path from 'path';
 
 const corsOptions: CorsOptions = {
-	origin: ['0.0.0.0', '127.0.0.1', 'localhost', 'http://localhost:3000'],
+	origin: ['0.0.0.0', '127.0.0.1', 'localhost'],
 	credentials: true,
 	methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'PATCH', 'DELETE', 'HEAD'],
 	allowedHeaders: [
@@ -35,7 +35,6 @@ class App {
 
 	constructor() {
 		this._app = express();
-		this.env = 'development';
 		this.api_url = API_URL || '0.0.0.0';
 		this.port = PORT || 8888;
 
@@ -85,10 +84,10 @@ class App {
 	}
 
 	public async listen() {
-		this._app.listen(this.port, () => {
+		this._app.listen(this.port || 8888, () => {
 			console.log(`======= ENV: ${this.env} ========`);
-			console.log(`🚀 App listening on the port ${this.port}`);
-			console.log(`🎮 http://${this.api_url}:${this.port}`);
+			console.log(`🚀 App listening on the port ${this.port || 8888}`);
+			console.log(`🎮 http://${this.api_url || '0.0.0.0'}:${this.port || 8888}`);
 		});
 	}
 }
