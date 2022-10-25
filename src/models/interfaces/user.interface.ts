@@ -22,7 +22,6 @@ interface UserInterface {
 	salary: number;
 	tokens: Tokens;
 	links: string[];
-	status: Statuses;
 
 	generateAccessToken: () => Promise<string>;
 	generateRefreshToken: () => Promise<string>;
