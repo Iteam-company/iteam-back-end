@@ -29,7 +29,6 @@ const corsOptions: CorsOptions = {
 
 class App {
 	public _app: express.Application;
-	public env: string;
 	public port: string | number;
 	public api_url: string;
 
@@ -85,9 +84,11 @@ class App {
 
 	public async listen() {
 		this._app.listen(this.port || 8888, () => {
-			console.log(`======= ENV: ${this.env} ========`);
+			console.log(`======= ENV ========`);
 			console.log(`🚀 App listening on the port ${this.port || 8888}`);
-			console.log(`🎮 http://${this.api_url || '0.0.0.0'}:${this.port || 8888}`);
+			console.log(
+				`🎮 http://${this.api_url || '0.0.0.0'}:${this.port || 8888}`
+			);
 		});
 	}
 }
