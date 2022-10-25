@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import userSchema from '../models/schems/userSchema';
 import errorsCatcher from '../utils/errorsCatcher';
 import Controller from './index';
+import User from '../models/user.model';
 
 class AuthController extends Controller {
 	static async signUp(req: Request, res: Response) {
@@ -44,8 +46,24 @@ class AuthController extends Controller {
 		}
 	}
 
-	static async getTestRequest(req: Request, res: Response) {
+	static async regenerateTokens(req: Request, res: Response) {
 		try {
+			const { refreshToken } = req.body;
+			const data = jwt.verify(
+				refreshToken as string,
+				'secret'
+			) as JwtPayload;
+
+			const user = await userSchema.findById(data._id);
+
+			if (user) {
+				const accessToken = await user.generateAccessToken();
+				const refreshToken = await user.generateRefreshToken();
+
+				res.status(200).send({ accessToken, refreshToken });
+			} else {
+				res.sendStatus(404);
+			}
 			res.send({ message: 'Test message' });
 		} catch (e) {
 			errorsCatcher(res);
