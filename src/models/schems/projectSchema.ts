@@ -1,9 +1,12 @@
-import { Schema, model } from 'mongoose';
+import mongoose, { Schema, model } from 'mongoose';
+import ProjectInterface from '../interfaces/project.interface';
+import { Statuses } from '../interfaces/user.interface';
 
-const project = new Schema({
+const project = new Schema<ProjectInterface>({
 	name: { type: String, required: true },
 	iconUrl: { type: String, default: '/img/default.webp' },
-	mainDevID: { type: String },
+	mainDevID: { type: mongoose.Schema.Types.ObjectId, ref: 'Users' },
+
 	subDevsID: { type: Array },
 	history: { type: Array },
 	technologies: { type: Array },
@@ -11,8 +14,8 @@ const project = new Schema({
 	endTime: { type: Date },
 	status: {
 		type: String,
-		enum: ['ACTIVE', 'INACTIVE'],
-		default: 'ACTIVE',
+		enum: [Statuses.ACTIVE, Statuses.INACTIVE],
+		default: Statuses.ACTIVE,
 	},
 });
 
