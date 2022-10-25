@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 import * as swaggerUi from 'swagger-ui-express';
 import cors, { CorsOptions } from 'cors';
 import cookieParser from 'cookie-parser';
-
 import * as swaggerDocument from './swagger';
 import { PORT, API_URL, DB_PORT, DB_USER, DB_PWD, DB_HOST } from './env';
 import routes from './src/routes/index';
