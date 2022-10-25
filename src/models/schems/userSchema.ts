@@ -6,7 +6,7 @@ import UserInterface, {
 	Statuses,
 	WorkTypes,
 } from '../interfaces/user.interface';
-import { JWT_ACCES_SECRET_KEY, JWT_REFRESH_SERCET_KEY } from '../../../env';
+import { JWT_ACCES_SECRET_KEY, JWT_REFRESH_SECRET_KEY } from '../../../env';
 
 const user = new Schema<UserInterface>({
 	email: {
@@ -74,7 +74,7 @@ user.methods.generateRefreshToken = async function () {
 	try {
 		const token = jwt.sign(
 			{ _id: this._id },
-			JWT_REFRESH_SERCET_KEY as string,
+			JWT_REFRESH_SECRET_KEY as string,
 			{
 				expiresIn: '30d',
 			}
