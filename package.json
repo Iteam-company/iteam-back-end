@@ -10,10 +10,8 @@
 	"homepage": "https://github.com/iteam-comp/iteam-back-end#readme",
 	"scripts": {
 		"dev": "nodemon -r dotenv/config index.ts --watch . --ext \"js,json,ts\"",
-		"start": "ts-node index.ts",
-		"start:prod": "node dist/index.js",
-		"build": "tsc -p tsconfig.build.json",
-		"postbuild": "cp package*.json dist && cd dist && yarn install --frozen-lockfile",
+		"start": "node dist/index.js",
+		"start:prod": "ts-node index.ts",
 		"build:watch": "tsc -w -p tsconfig.build.json",
 		"lint": "eslint --ext .ts src",
 		"lint:fix": "eslint --ext .ts src --fix"
