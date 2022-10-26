@@ -6,7 +6,7 @@ interface ProjectInterface {
 	mainDevID?: string;
 	subDevsID?: ObjectId[];
 	history?: [];
-	technologies?: [];
+	technologies?: ObjectId[];
 	startTime: Date;
 	endTime?: Date;
 	status: string;
