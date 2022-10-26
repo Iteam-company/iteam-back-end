@@ -1,9 +1,10 @@
-import mongoose, { Schema, model } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import UserInterface, { Roles, WorkTypes } from '../interfaces/user.interface';
 import { JWT_ACCES_SECRET_KEY, JWT_REFRESH_SECRET_KEY } from '../../../env';
 import Application from './applicationSchema';
+import { ObjectId } from 'mongodb';
 
 const user = new Schema<UserInterface>({
 	email: {
@@ -33,14 +34,14 @@ const user = new Schema<UserInterface>({
 	birthday: { type: Date },
 	expirience: { type: String },
 	skills: { type: String },
-	stack: [{ type: String }],
+	stack: [{ type: ObjectId, ref: 'Stack' }],
 	addres: { type: String },
 	city: { type: Number },
-	team: [{ type: String, default: [] }],
-	company: { type: mongoose.Schema.Types.ObjectId, ref: 'Company' },
+	team: [{ type: ObjectId, ref: 'Teams' }],
+	company: { type: ObjectId, ref: 'Company' },
 	salary: { type: Number, default: 0 },
 	tokens: { type: Object, default: {} },
-	links: [{ type: String }],
+	links: [{ type: ObjectId, ref: 'Links' }],
 });
 
 user.methods.generateAccessToken = async function () {
