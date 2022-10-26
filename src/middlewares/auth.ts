@@ -3,7 +3,6 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import UserInterface from '../models/interfaces/user.interface';
 import Application from '../models/schems/applicationSchema';
 import userSchema from '../models/schems/userSchema';
-import User from '../models/user.model';
 
 const auth = async (
 	req: Request & { user?: UserInterface },
