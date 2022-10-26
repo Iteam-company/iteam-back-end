@@ -9,7 +9,7 @@ import routes from './src/routes/index';
 import path from 'path';
 
 const corsOptions: CorsOptions = {
-	origin: ['0.0.0.0', '127.0.0.1', 'localhost','*'],
+	origin: ['0.0.0.0', '127.0.0.1', 'localhost', '*'],
 	credentials: true,
 	methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'PATCH', 'DELETE', 'HEAD'],
 	allowedHeaders: [
