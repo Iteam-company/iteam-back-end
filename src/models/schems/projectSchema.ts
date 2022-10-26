@@ -1,11 +1,12 @@
-import mongoose, { Schema, model } from 'mongoose';
+import { ObjectId } from 'mongodb';
+import { Schema, model } from 'mongoose';
 import ProjectInterface from '../interfaces/project.interface';
 import { Statuses } from '../interfaces/user.interface';
 
 const project = new Schema<ProjectInterface>({
 	name: { type: String, required: true },
 	iconUrl: { type: String, default: '/img/default.webp' },
-	mainDevID: { type: mongoose.Schema.Types.ObjectId, ref: 'Users' },
+	mainDevID: { type: ObjectId, ref: 'Users' },
 
 	subDevsID: { type: Array },
 	history: { type: Array },
