@@ -8,6 +8,8 @@ import { PORT, API_URL, DB_PORT, DB_USER, DB_PWD, DB_HOST } from './env';
 import routes from './src/routes/index';
 import path from 'path';
 
+import { allLayoutsForTest } from './src/utils/emailLayouts';
+
 const corsOptions: CorsOptions = {
 	origin: ['0.0.0.0', '127.0.0.1', 'localhost', 'http://localhost:3000'],
 	credentials: true,
@@ -46,6 +48,11 @@ class App {
 		// for access to images
 		const dir = path.join(__dirname, 'public');
 		this._app.use(express.static(dir));
+
+		//temporary needed for test email`s layout
+		this._app.get('/test-email-layout', (req, res) => {
+			res.send(`${allLayoutsForTest()}`);
+		});
 	}
 
 	connectMongoDb() {
