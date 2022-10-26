@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import  { Schema, model } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import ProjectInterface from '../interfaces/project.interface';
 import { Statuses } from '../interfaces/user.interface';
 

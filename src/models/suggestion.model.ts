@@ -75,7 +75,9 @@ class SuggestionModel extends Model {
 		if (!suggestionID) return res.sendStatus(403);
 
 		try {
-			return await suggestionSchema.findOneAndDelete({ _id: suggestionID });
+			return await suggestionSchema.findOneAndDelete({
+				_id: suggestionID,
+			});
 		} catch (e) {
 			console.error(e);
 			return errorsCatcher(res);
