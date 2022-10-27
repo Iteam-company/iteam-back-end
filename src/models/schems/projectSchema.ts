@@ -3,11 +3,10 @@ import { Schema, model } from 'mongoose';
 import ProjectInterface from '../interfaces/project.interface';
 import { Statuses } from '../interfaces/user.interface';
 
-const project = new Schema<ProjectInterface>({
+const ProjectSchema = new Schema<ProjectInterface>({
 	name: { type: String, required: true },
 	iconUrl: { type: String, default: '/img/default.webp' },
 	mainDevID: { type: ObjectId, ref: 'Users' },
-
 	subDevsID: { type: Array },
 	history: { type: Array },
 	technologies: { type: Array },
@@ -20,4 +19,6 @@ const project = new Schema<ProjectInterface>({
 	},
 });
 
-export default model('projects', project);
+const Project = model('projects', ProjectSchema);
+
+export default Project;
