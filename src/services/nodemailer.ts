@@ -54,23 +54,6 @@ class NodemailerService {
 			console.error(error);
 		}
 	}
-
-	async remindPassword(toMail: string | string[] = maillist, html: string) {
-
-		try {
-			await this.transporter.sendMail({
-				from: SMTP_USER,
-				to: toMail,
-				subject: "Password reminder",
-				html,
-			});
-			console.log('Sent!');
-		} catch (error) {
-			console.log('Send => error !');
-
-			console.error(error);
-		}
-	}
 }
 
 export default new NodemailerService();
