@@ -2,12 +2,12 @@ import { Request, Response } from 'express';
 
 import Model from '.';
 import errorsCatcher from '../utils/errorsCatcher';
-import userSchema from './schems/userSchema';
+import UserSchema from './schems/userSchema';
 
 class UserModel extends Model {
 	static async getAllUsers(req: Request, res: Response) {
 		try {
-			return await userSchema.find({});
+			return await UserSchema.find({});
 		} catch (e) {
 			console.error(e);
 			return errorsCatcher(res);
@@ -18,7 +18,7 @@ class UserModel extends Model {
 		try {
 			const { email, password, name, surname } = req.body;
 
-			const newUser = new userSchema({
+			const newUser = new UserSchema({
 				email,
 				password,
 				name,
@@ -40,7 +40,7 @@ class UserModel extends Model {
 		if (!userID) return res.sendStatus(403);
 
 		try {
-			return await userSchema.findById(userID);
+			return await UserSchema.findById(userID);
 		} catch (e) {
 			console.error(e);
 			return errorsCatcher(res, 404);
@@ -57,7 +57,7 @@ class UserModel extends Model {
 		if (!dataForUpdate) return res.sendStatus(200);
 
 		try {
-			const updatedUser = await userSchema.findOneAndUpdate(
+			const updatedUser = await UserSchema.findOneAndUpdate(
 				{ _id: userID },
 				dataForUpdate
 			);
@@ -75,7 +75,7 @@ class UserModel extends Model {
 		if (!userID) return res.sendStatus(403);
 
 		try {
-			return await userSchema.findOneAndDelete({ _id: userID });
+			return await UserSchema.findOneAndDelete({ _id: userID });
 		} catch (e) {
 			console.error(e);
 			return errorsCatcher(res);
