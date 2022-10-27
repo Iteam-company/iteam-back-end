@@ -110,4 +110,23 @@ user.methods.removePassword = function () {
 	return userCopy;
 };
 
+user.methods.generatePasswordResetionToken = async function () {
+	try {
+		const token = jwt.sign(
+			{ _id: this._id },
+			JWT_REFRESH_SECRET_KEY as string,
+			{
+				expiresIn: '2h',
+			}
+		);
+
+		this.tokens.refreshToken = token;
+		await this.save();
+
+		return token;
+	} catch (e) {
+		console.log('err', e);
+	}
+};
+
 export default model('users', user);

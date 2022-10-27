@@ -25,8 +25,10 @@ interface UserInterface {
 
 	generateAccessToken: () => Promise<string>;
 	generateRefreshToken: () => Promise<string>;
+	generatePasswordResetionToken: () => Promise<string>;
 	hashPassword: () => Promise<string>;
 	removePassword: () => Omit<UserInterface, 'password'>;
+	
 }
 
 export enum Roles {
@@ -51,6 +53,7 @@ export enum Statuses {
 export interface Tokens {
 	accessToken: string;
 	refreshToken: string;
+	resetionToken: string;
 }
 
 export default UserInterface;
