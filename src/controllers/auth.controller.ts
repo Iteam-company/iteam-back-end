@@ -18,7 +18,6 @@ class AuthController extends Controller {
 
 			res.status(200).send(user.removePassword());
 		} catch (e) {
-			console.log(e, 'ERROR');
 			errorsCatcher(res);
 		}
 	}
@@ -67,7 +66,42 @@ class AuthController extends Controller {
 				res.sendStatus(404);
 			}
 		} catch (e) {
-			console.log(e, 'ERROR');
+			errorsCatcher(res);
+		}
+	}
+
+	static async createResetPasswordSession(req: Request, res: Response) {
+		try {
+			const { email } = req.body;
+			const user = await userSchema.findOne({email});
+
+			if (user) {
+				const resetionToken = await user.generatePasswordResetionToken();
+				return res.status(200).send({ resetionToken });
+			}
+
+			res.sendStatus(404);
+		} catch (e) {
+			errorsCatcher(res);
+		}
+	}
+
+	static async resetPassword(req: Request, res: Response) {
+		try {
+			const { resetionToken, password } = req.body;
+			const user = await userSchema.findOne({'tokens.resetionToken': resetionToken });
+			
+			if (user) {
+				user.password = password;
+				await user.hashPassword();
+
+				const accessToken = await user.generateAccessToken();
+				const refreshToken = await user.generateRefreshToken();
+
+				return res.status(200).send({accessToken, refreshToken});
+			}
+
+		} catch (e) {
 			errorsCatcher(res);
 		}
 	}
