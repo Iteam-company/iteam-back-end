@@ -1,12 +1,13 @@
+import { ObjectId } from 'mongodb';
 import { Schema, model } from 'mongoose';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import UserInterface, { Roles, WorkTypes } from '../interfaces/user.interface';
-import { JWT_ACCES_SECRET_KEY, JWT_REFRESH_SECRET_KEY } from '../../../env';
-import Application from './applicationSchema';
-import { ObjectId } from 'mongodb';
 
-const user = new Schema<UserInterface>({
+import UserInterface, { Roles, WorkTypes } from '../interfaces/user.interface';
+import ApplicationSchema from './applicationSchema';
+import { JWT_ACCES_SECRET_KEY, JWT_REFRESH_SECRET_KEY } from '../../../env';
+
+const UserSchema = new Schema<UserInterface>({
 	email: {
 		type: String,
 		required: true,
@@ -44,7 +45,7 @@ const user = new Schema<UserInterface>({
 	links: [{ type: ObjectId, ref: 'Links' }],
 });
 
-user.methods.generateAccessToken = async function () {
+UserSchema.methods.generateAccessToken = async function () {
 	try {
 		const token = jwt.sign(
 			{ _id: this._id },
@@ -63,7 +64,7 @@ user.methods.generateAccessToken = async function () {
 	}
 };
 
-user.methods.generateRefreshToken = async function () {
+UserSchema.methods.generateRefreshToken = async function () {
 	try {
 		const token = jwt.sign(
 			{ _id: this._id },
@@ -82,7 +83,7 @@ user.methods.generateRefreshToken = async function () {
 	}
 };
 
-user.methods.hashPassword = async function () {
+UserSchema.methods.hashPassword = async function () {
 	const rounds = 10;
 	try {
 		const hashedPassword = await bcrypt.hash(this.password, rounds);
@@ -93,9 +94,10 @@ user.methods.hashPassword = async function () {
 	}
 };
 
-user.post('save', async function () {
+UserSchema.post('save', async function () {
 	const { email, name, surname } = this;
-	const userApplication = new Application({
+
+	const userApplication = new ApplicationSchema({
 		email,
 		fullName: `${name} ${surname}`,
 		date: Date.now(),
@@ -104,10 +106,12 @@ user.post('save', async function () {
 	await userApplication.save();
 });
 
-user.methods.removePassword = function () {
+UserSchema.methods.removePassword = function () {
 	const userCopy = this.toObject();
 	delete userCopy.password;
 	return userCopy;
 };
 
-export default model('users', user);
+const User = model('users', UserSchema);
+
+export default User;

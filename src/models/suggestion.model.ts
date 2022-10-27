@@ -2,12 +2,12 @@ import { Request, Response } from 'express';
 
 import Model from '.';
 import errorsCatcher from '../utils/errorsCatcher';
-import suggestionSchema from './schems/suggestionSchema';
+import SuggestionSchema from './schems/suggestionSchema';
 
 class SuggestionModel extends Model {
 	static async getAllSuggestions(req: Request, res: Response) {
 		try {
-			return await suggestionSchema.find({});
+			return await SuggestionSchema.find({});
 		} catch (e) {
 			console.error(e);
 			return errorsCatcher(res);
@@ -16,13 +16,17 @@ class SuggestionModel extends Model {
 
 	static async createSuggestion(req: Request, res: Response) {
 		try {
-			const { email, password, name, surname } = req.body;
+			const { title, text, variants, comments, isApproved, file, image } =
+				req.body;
 
-			const newSuggestion = new suggestionSchema({
-				email,
-				password,
-				name,
-				surname,
+			const newSuggestion = new SuggestionSchema({
+				title,
+				text,
+				variants,
+				comments,
+				isApproved,
+				file,
+				image,
 			});
 
 			await newSuggestion.save();
@@ -40,7 +44,7 @@ class SuggestionModel extends Model {
 		if (!suggestionID) return res.sendStatus(403);
 
 		try {
-			return await suggestionSchema.findById(suggestionID);
+			return await SuggestionSchema.findById(suggestionID);
 		} catch (e) {
 			console.error(e);
 			return errorsCatcher(res, 404);
@@ -57,7 +61,7 @@ class SuggestionModel extends Model {
 		if (!dataForUpdate) return res.sendStatus(200);
 
 		try {
-			const updatedSuggestion = await suggestionSchema.findOneAndUpdate(
+			const updatedSuggestion = await SuggestionSchema.findOneAndUpdate(
 				{ _id: suggestionID },
 				dataForUpdate
 			);
@@ -75,7 +79,7 @@ class SuggestionModel extends Model {
 		if (!suggestionID) return res.sendStatus(403);
 
 		try {
-			return await suggestionSchema.findOneAndDelete({
+			return await SuggestionSchema.findOneAndDelete({
 				_id: suggestionID,
 			});
 		} catch (e) {

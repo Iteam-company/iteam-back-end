@@ -2,12 +2,12 @@ import { Request, Response } from 'express';
 
 import Model from '.';
 import errorsCatcher from '../utils/errorsCatcher';
-import Application from './schems/applicationSchema';
+import ApplicationSchema from './schems/applicationSchema';
 
 class ApplicationModel extends Model {
 	static async getAllApplications(req: Request, res: Response) {
 		try {
-			return await Application.find({});
+			return await ApplicationSchema.find({});
 		} catch (e) {
 			console.error(e);
 			return errorsCatcher(res);
@@ -20,7 +20,7 @@ class ApplicationModel extends Model {
 		if (!applicationID) return res.sendStatus(403);
 
 		try {
-			return await Application.findById(applicationID);
+			return await ApplicationSchema.findById(applicationID);
 		} catch (e) {
 			console.error(e);
 			return errorsCatcher(res, 404);
@@ -37,7 +37,7 @@ class ApplicationModel extends Model {
 		if (!dataForUpdate) return res.sendStatus(200);
 
 		try {
-			const updatedApplication = await Application.findOneAndUpdate(
+			const updatedApplication = await ApplicationSchema.findOneAndUpdate(
 				{ _id: applicationID },
 				dataForUpdate
 			);
@@ -55,7 +55,9 @@ class ApplicationModel extends Model {
 		if (!applicationID) return res.sendStatus(403);
 
 		try {
-			return await Application.findOneAndDelete({ _id: applicationID });
+			return await ApplicationSchema.findOneAndDelete({
+				_id: applicationID,
+			});
 		} catch (e) {
 			console.error(e);
 			return errorsCatcher(res);

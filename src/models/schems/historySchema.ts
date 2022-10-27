@@ -1,9 +1,11 @@
 import { Schema, model } from 'mongoose';
 
-const history = new Schema({
+const HistorySchema = new Schema({
 	who: { type: String, required: true },
 	when: { type: Date, default: Date.now() },
 	what: { type: String },
 });
 
-export default model('historys', history);
+const History = model('historys', HistorySchema);
+
+export default History;
