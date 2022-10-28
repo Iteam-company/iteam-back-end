@@ -1,12 +1,10 @@
-import mongoose, { Schema, model } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import UserInterface, {
-	Roles,
-	Statuses,
-	WorkTypes,
-} from '../interfaces/user.interface';
-import { JWT_ACCES_SECRET_KEY, JWT_REFRESH_SERCET_KEY } from '../../../env';
+import UserInterface, { Roles, WorkTypes } from '../interfaces/user.interface';
+import { JWT_ACCES_SECRET_KEY, JWT_REFRESH_SECRET_KEY } from '../../../env';
+import Application from './applicationSchema';
+import { ObjectId } from 'mongodb';
 
 const user = new Schema<UserInterface>({
 	email: {
@@ -36,19 +34,14 @@ const user = new Schema<UserInterface>({
 	birthday: { type: Date },
 	expirience: { type: String },
 	skills: { type: String },
-	stack: [{ type: String }],
+	stack: [{ type: ObjectId, ref: 'Stack' }],
 	addres: { type: String },
 	city: { type: Number },
-	team: [{ type: String, default: [] }],
-	company: { type: mongoose.Schema.Types.ObjectId, ref: 'Company' },
+	team: [{ type: ObjectId, ref: 'Teams' }],
+	company: { type: ObjectId, ref: 'Company' },
 	salary: { type: Number, default: 0 },
 	tokens: { type: Object, default: {} },
-	links: [{ type: String }],
-	status: {
-		type: String,
-		enum: [Statuses.ACTIVE, Statuses.INACTIVE],
-		default: Statuses.ACTIVE,
-	},
+	links: [{ type: ObjectId, ref: 'Links' }],
 });
 
 user.methods.generateAccessToken = async function () {
@@ -74,7 +67,7 @@ user.methods.generateRefreshToken = async function () {
 	try {
 		const token = jwt.sign(
 			{ _id: this._id },
-			JWT_REFRESH_SERCET_KEY as string,
+			JWT_REFRESH_SECRET_KEY as string,
 			{
 				expiresIn: '30d',
 			}
@@ -100,10 +93,40 @@ user.methods.hashPassword = async function () {
 	}
 };
 
+user.post('save', async function () {
+	const { email, name, surname } = this;
+	const userApplication = new Application({
+		email,
+		fullName: `${name} ${surname}`,
+		date: Date.now(),
+	});
+
+	await userApplication.save();
+});
+
 user.methods.removePassword = function () {
 	const userCopy = this.toObject();
 	delete userCopy.password;
 	return userCopy;
+};
+
+user.methods.generatePasswordResetionToken = async function () {
+	try {
+		const token = jwt.sign(
+			{ _id: this._id },
+			JWT_REFRESH_SECRET_KEY as string,
+			{
+				expiresIn: '2h',
+			}
+		);
+
+		this.tokens.refreshToken = token;
+		await this.save();
+
+		return token;
+	} catch (e) {
+		console.log('err', e);
+	}
 };
 
 export default model('users', user);

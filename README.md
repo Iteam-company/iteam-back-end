@@ -20,7 +20,6 @@ Open http://0.0.0.0:3000 in your browser.
 -   `npm run docker:build`: Build a Docker image for this application
 -   `npm run docker:run`: Run this application inside a Docker container
 
-
 # Demo link:
 
 [Swagger](#)
@@ -35,6 +34,7 @@ This application is generated using [LoopBack 4 CLI](https://loopback.io/doc/en/
 [initial project layout](https://loopback.io/doc/en/lb4/Loopback-application-layout.html).
 
 ###### We used:
+
 -   yarn
 -   dotenv
 -   uuid
