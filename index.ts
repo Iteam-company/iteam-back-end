@@ -7,7 +7,6 @@ import * as swaggerDocument from './swagger';
 import { PORT, API_URL, DB_PORT, DB_USER, DB_PWD, DB_HOST } from './env';
 import routes from './src/routes/index';
 import path from 'path';
-
 import { allLayoutsForTest } from './src/utils/emailLayouts';
 
 const corsOptions: CorsOptions = {
@@ -20,7 +19,6 @@ const corsOptions: CorsOptions = {
 		'authorization',
 		'X-Requested-With',
 		'content-type',
-		'sentry-trace',
 		'Accept',
 		'Referer',
 		'User-Agent',
