@@ -3,7 +3,7 @@ import { Schema, model } from 'mongoose';
 
 import SuggestionInterface from '../interfaces/suggestion.interface';
 
-const suggestion = new Schema<SuggestionInterface>({
+const SuggestionSchema = new Schema<SuggestionInterface>({
 	title: { type: String, required: true },
 	text: { type: String },
 	variants: [
@@ -18,4 +18,6 @@ const suggestion = new Schema<SuggestionInterface>({
 	image: { type: String },
 });
 
-export default model('suggestions', suggestion);
+const Suggestion = model('suggestions', SuggestionSchema);
+
+export default Suggestion;
