@@ -141,17 +141,30 @@
 			},
 			"Application": {
 				"type": "object",
-				"email": {
-					"type": "string"
-				},
-				"fullName": {
-					"type": "string"
-				},
-				"date": {
-					"type": "string"
-				},
-				"isApproved": {
-					"type": "boolean"
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"fullName": {
+						"type": "string"
+					},
+					"date": {
+						"type": "string"
+					},
+					"isApproved": {
+						"type": "boolean"
+					}
+				}
+			},
+			"Technology": {
+				"type": "object",
+				"properties": {
+					"title": {
+						"type": "string"
+					},
+					"ico": {
+						"type": "string"
+					}
 				}
 			}
 		}
@@ -434,7 +447,7 @@
 			"patch": {
 				"tags": ["project"],
 				"produces": ["application/json"],
-				"description": "Modify user",
+				"description": "Modify project",
 				"parameters": [
 					{
 						"name": "Project id",
@@ -472,6 +485,236 @@
 						"description": "Returns deleted project",
 						"schema": {
 							"$ref": "#/components/schemas/Project"
+						}
+					},
+					"500": { "description": "Error for bad data" }
+				}
+			}
+		},
+
+		"/application": {
+			"get": {
+				"tags": ["application"],
+				"produces": ["application/json"],
+				"description": "Getting all applications",
+				"responses": {
+					"200": {
+						"description": "Returns applications array",
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/components/schemas/Application"
+							}
+						}
+					},
+					"500": { "description": "Error for bad data" }
+				}
+			},
+			"post": {
+				"tags": ["application"],
+				"produces": ["application/json"],
+				"description": "Creating new application",
+				"parameters": [
+					{
+						"name": "Application data",
+						"in": "body",
+						"schema": {
+							"$ref": "#/components/schemas/Application"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns application object",
+						"schema": {
+							"$ref": "#/components/schemas/Application"
+						}
+					},
+					"500": { "description": "Error" }
+				}
+			}
+		},
+
+		"application/{applicationID}": {
+			"get": {
+				"tags": ["application"],
+				"produces": ["application/json"],
+				"description": "Getting the application by id",
+				"parameters": [
+					{
+						"name": "Application id",
+						"in": "params",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns application by id",
+						"schema": {
+							"$ref": "#/components/schemas/Application"
+						}
+					},
+					"500": { "description": "Error for bad data" }
+				}
+			},
+			"patch": {
+				"tags": ["application"],
+				"produces": ["application/json"],
+				"description": "Modify application",
+				"parameters": [
+					{
+						"name": "Application id",
+						"in": "params",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns application by id",
+						"schema": {
+							"$ref": "#/components/schemas/Application"
+						}
+					},
+					"500": { "description": "Error for bad data" }
+				}
+			},
+			"delete": {
+				"tags": ["application"],
+				"produces": ["application/json"],
+				"description": "Delete application by id",
+				"parameters": [
+					{
+						"name": "Project id",
+						"in": "params",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns deleted application",
+						"schema": {
+							"$ref": "#/components/schemas/Application"
+						}
+					},
+					"500": { "description": "Error for bad data" }
+				}
+			}
+		},
+
+		"/technology": {
+			"get": {
+				"tags": ["technology"],
+				"produces": ["application/json"],
+				"description": "Getting all technologies",
+				"responses": {
+					"200": {
+						"description": "Returns technologies array",
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/components/schemas/Technology"
+							}
+						}
+					},
+					"500": { "description": "Error for bad data" }
+				}
+			},
+			"post": {
+				"tags": ["technology"],
+				"produces": ["application/json"],
+				"description": "Creating new technology",
+				"parameters": [
+					{
+						"name": "Application data",
+						"in": "body",
+						"schema": {
+							"$ref": "#/components/schemas/Technology"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns technology object",
+						"schema": {
+							"$ref": "#/components/schemas/Technology"
+						}
+					},
+					"500": { "description": "Error" }
+				}
+			}
+		},
+
+		"technology/{technologyID}": {
+			"get": {
+				"tags": ["technology"],
+				"produces": ["application/json"],
+				"description": "Getting the technology by id",
+				"parameters": [
+					{
+						"name": "Technology id",
+						"in": "params",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns technology by id",
+						"schema": {
+							"$ref": "#/components/schemas/Technology"
+						}
+					},
+					"500": { "description": "Error for bad data" }
+				}
+			},
+			"patch": {
+				"tags": ["technology"],
+				"produces": ["application/json"],
+				"description": "Modify technology",
+				"parameters": [
+					{
+						"name": "Technology id",
+						"in": "params",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns technology by id",
+						"schema": {
+							"$ref": "#/components/schemas/Technology"
+						}
+					},
+					"500": { "description": "Error for bad data" }
+				}
+			},
+			"delete": {
+				"tags": ["technology"],
+				"produces": ["application/json"],
+				"description": "Delete technology by id",
+				"parameters": [
+					{
+						"name": "Technology id",
+						"in": "params",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns deleted technology",
+						"schema": {
+							"$ref": "#/components/schemas/Technology"
 						}
 					},
 					"500": { "description": "Error for bad data" }
