@@ -2,12 +2,12 @@ import { Request, Response } from 'express';
 
 import Model from '.';
 import errorsCatcher from '../utils/errorsCatcher';
-import projectSchema from './schems/projectSchema';
+import ProjectSchema from './schems/projectSchema';
 
 class ProjectModel extends Model {
 	static async getAllProjects(req: Request, res: Response) {
 		try {
-			return await projectSchema.find({});
+			return await ProjectSchema.find({});
 		} catch (e) {
 			console.error(e);
 			return errorsCatcher(res);
@@ -16,13 +16,28 @@ class ProjectModel extends Model {
 
 	static async createProject(req: Request, res: Response) {
 		try {
-			const { email, password, name, surname } = req.body;
-
-			const newProject = new projectSchema({
-				email,
-				password,
+			const {
 				name,
-				surname,
+				iconUrl,
+				mainDevID,
+				subDevsID,
+				history,
+				technologies,
+				startTime,
+				endTime,
+				status,
+			} = req.body;
+
+			const newProject = new ProjectSchema({
+				name,
+				iconUrl,
+				mainDevID,
+				subDevsID,
+				history,
+				technologies,
+				startTime,
+				endTime,
+				status,
 			});
 
 			await newProject.save();
@@ -40,7 +55,7 @@ class ProjectModel extends Model {
 		if (!projectID) return res.sendStatus(403);
 
 		try {
-			return await projectSchema.findById({ _id: projectID });
+			return await ProjectSchema.findById({ _id: projectID });
 		} catch (e) {
 			console.error(e);
 			return errorsCatcher(res, 404);
@@ -57,7 +72,7 @@ class ProjectModel extends Model {
 		if (!dataForUpdate) return res.sendStatus(200);
 
 		try {
-			const updatedProject = await projectSchema.findOneAndUpdate(
+			const updatedProject = await ProjectSchema.findOneAndUpdate(
 				{ _id: projectID },
 				dataForUpdate
 			);
@@ -75,7 +90,7 @@ class ProjectModel extends Model {
 		if (!projectID) return res.sendStatus(403);
 
 		try {
-			return await projectSchema.findOneAndDelete({ _id: projectID });
+			return await ProjectSchema.findOneAndDelete({ _id: projectID });
 		} catch (e) {
 			console.error(e);
 			return errorsCatcher(res);
