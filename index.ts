@@ -10,7 +10,7 @@ import path from 'path';
 import { allLayoutsForTest } from './src/utils/emailLayouts';
 
 const corsOptions: CorsOptions = {
-	origin: ['0.0.0.0', '127.0.0.1', 'localhost', '*'],
+	origin: ['*'],
 	credentials: true,
 	methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'PATCH', 'DELETE', 'HEAD'],
 	allowedHeaders: [
