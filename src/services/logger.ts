@@ -16,14 +16,14 @@ class LoggerService {
 			console.error(e);
 		}
 	}
-	static async getLogByProjectID(projectID: string) {
+	static async getLogsByProjectID(projectID: string) {
 		try {
 			return await Event.find({ project: projectID });
 		} catch (e) {
 			console.error(e);
 		}
 	}
-	static async getLogByUserID(userID: string) {
+	static async getLogsByUserID(userID: string) {
 		try {
 			return await Event.find({ user: userID });
 		} catch (e) {
