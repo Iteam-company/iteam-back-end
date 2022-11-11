@@ -14,6 +14,6 @@ const EventSchema = new Schema<EventInterface>(
 );
 Promise;
 
-const Event = model('technologys', EventSchema);
+const Event = model('events', EventSchema);
 
 export default Event;
