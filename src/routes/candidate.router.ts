@@ -1,9 +1,14 @@
 import express from 'express';
+import checkDuplicateCandidate from '../middlewares/checkDuplicateCandidate.middlewear';
 import CandidateController from '../controllers/candidate.controller';
 
 const candidateRouter = express.Router();
 
-candidateRouter.post('/', CandidateController.createCandidate);
+candidateRouter.post(
+	'/',
+	checkDuplicateCandidate,
+	CandidateController.createCandidate
+);
 
 candidateRouter.get('/', CandidateController.getAllCandidates);
 
