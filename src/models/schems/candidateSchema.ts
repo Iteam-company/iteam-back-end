@@ -4,15 +4,15 @@ import { CandidateInterface } from '../interfaces/candidate.interface';
 const CandateSchema = new Schema<CandidateInterface>({
 	email: {
 		type: String,
-		required: false,
+		required: true,
 		unique: true,
 		trim: true,
 		lowercase: true,
 	},
 	name: { type: String, required: true },
-	surname: { type: String, required: false },
+	surname: { type: String, required: true },
+	phone: { type: String, required: true },
 	site: { type: String, required: false },
-	phone: { type: String, required: false },
 	expirienceInIt: { type: String, required: false },
 	english: { type: String, required: false },
 	addres: { type: String, required: false },

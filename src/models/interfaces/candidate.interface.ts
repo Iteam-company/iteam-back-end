@@ -1,11 +1,11 @@
 import { ObjectId } from 'mongodb';
 
 export interface CandidateInterface {
-	email?: string;
-	name?: string;
-	surname?: string;
+	email: string;
+	name: string;
+	surname: string;
+	phone: string;
 	site?: string;
-	phone?: string;
 	expirienceInIt?: string;
 	english?: string;
 	addres?: string;
