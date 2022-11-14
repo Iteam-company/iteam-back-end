@@ -9,7 +9,7 @@ const CandateSchema = new Schema<CandidateInterface>({
 		trim: true,
 		lowercase: true,
 	},
-	name: { type: String, required: false },
+	name: { type: String, required: true },
 	surname: { type: String, required: false },
 	site: { type: String, required: false },
 	phone: { type: String, required: false },
@@ -20,8 +20,8 @@ const CandateSchema = new Schema<CandidateInterface>({
 	dateInterview: { type: String, required: false },
 	cvLink: { type: String, required: false },
 	cvFile: { type: String, required: false },
-	status: { type: String },
-	comments: { type: Array, default: [] },
+	status: { type: String, required: false },
+	comments: { type: Array, default: [], required: false },
 });
 
 const Candidates = model('candidates', CandateSchema);
