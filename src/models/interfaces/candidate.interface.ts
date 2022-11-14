@@ -14,11 +14,11 @@ export interface CandidateInterface {
 	cvLink?: string;
 	cvFile?: string;
 	status?: string;
-	comments?: Array<CommentsInterface>;
 }
 
 export interface CommentsInterface {
 	text: string;
-	author: ObjectId;
+	userID: ObjectId;
+	authorID: ObjectId;
 	date: string;
 }

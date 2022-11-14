@@ -21,7 +21,6 @@ const CandateSchema = new Schema<CandidateInterface>({
 	cvLink: { type: String, required: false },
 	cvFile: { type: String, required: false },
 	status: { type: String, required: false },
-	comments: { type: Array, default: [], required: false },
 });
 
 const Candidates = model('candidates', CandateSchema);
