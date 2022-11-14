@@ -3,6 +3,7 @@ import projectRouter from './project.router';
 import userRouter from './user.router';
 import applicationRouter from './application.router';
 import technologyRouter from './technology.router';
+import candidateRouter from './candidate.router';
 
 const routers = [
 	{ path: '/project', router: projectRouter },
@@ -10,6 +11,7 @@ const routers = [
 	{ path: '/auth', router: authRouter },
 	{ path: '/application', router: applicationRouter },
 	{ path: '/technology', router: technologyRouter },
+	{ path: '/candidate', router: candidateRouter },
 ];
 
 export default routers;
