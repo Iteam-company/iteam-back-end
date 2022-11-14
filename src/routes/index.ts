@@ -4,6 +4,7 @@ import userRouter from './user.router';
 import applicationRouter from './application.router';
 import technologyRouter from './technology.router';
 import candidateRouter from './candidate.router';
+import commentRouter from './comment.router';
 
 const routers = [
 	{ path: '/project', router: projectRouter },
@@ -12,6 +13,7 @@ const routers = [
 	{ path: '/application', router: applicationRouter },
 	{ path: '/technology', router: technologyRouter },
 	{ path: '/candidate', router: candidateRouter },
+	{ path: '/comment', router: commentRouter },
 ];
 
 export default routers;
