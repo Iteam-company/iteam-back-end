@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { Schema, model } from 'mongoose';
-import { CommentsInterface } from '../interfaces/candidate.interface';
+import { CommentsInterface } from '../interfaces/comment.interface';
 
 const CommentSchema = new Schema<CommentsInterface>({
 	text: { type: String, required: false },
