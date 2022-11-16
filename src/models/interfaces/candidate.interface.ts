@@ -1,9 +1,7 @@
-import { ObjectId } from 'mongodb';
-
 export interface CandidateInterface {
-	email: string;
-	name: string;
 	surname: string;
+	name: string;
+	email: string;
 	phone: string;
 	site?: string;
 	expirienceInIt?: string;
@@ -16,9 +14,17 @@ export interface CandidateInterface {
 	status?: string;
 }
 
-export interface CommentsInterface {
-	text: string;
-	userID: ObjectId;
-	authorID: ObjectId;
-	date: string;
+export interface ExelCandidateInterface {
+	Status: string;
+	Number: string;
+	FullName: string;
+	Site: string;
+	Email: string;
+	Phone: string;
+	Experience: string;
+	English: string;
+	Address: string;
+	Salary: string;
+	'Date interview': string;
+	CV: string;
 }
