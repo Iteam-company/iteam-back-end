@@ -1,9 +1,8 @@
 import e, { NextFunction, Request, Response } from 'express';
 import { CandidateInterface } from '../models/interfaces/candidate.interface';
 
-import ImportFiles from '../services/ImportFiles';
+import FileEvents from '../services/fileEvents';
 
-import fs from 'fs';
 const importFromExelCandidates = async (
 	req: Request,
 	res: Response,
@@ -13,36 +12,20 @@ const importFromExelCandidates = async (
 
 	try {
 		const candidateInJSON: [] | null =
-			await ImportFiles.candidatesFormExelToJson(linkToFile);
+			await FileEvents.candidatesFormExelToJson(linkToFile);
 
 		if (!candidateInJSON || candidateInJSON.length < 1) res.sendStatus(401);
 
 		const formatedcandidateInJson: CandidateInterface[] =
-			ImportFiles.formatingCandidateInJson(candidateInJSON);
+			FileEvents.formatingCandidateInJson(candidateInJSON);
 
-		const insertedData = await ImportFiles.insertCandidateToDB(
+		const insertedData = await FileEvents.insertCandidateToDB(
 			formatedcandidateInJson
 		);
 
 		// deleting files "xmls,json"
-		fs.unlink(linkToFile, (err) => {
-			if (err) {
-				console.error(err);
-			} else {
-				console.log('File deleted from: --> ', linkToFile);
-			}
-		});
-
-		fs.unlink(linkToFile.replace('xlsx', 'json'), (err) => {
-			if (err) {
-				console.error(err);
-			} else {
-				console.log(
-					'File deleted from: --> ',
-					linkToFile.replace('xlsx', 'json')
-				);
-			}
-		});
+		FileEvents.deleteFileByPath(linkToFile);
+		FileEvents.deleteFileByPath(linkToFile.replace('xlsx', 'json'));
 
 		if (insertedData) {
 			console.log('Inserted!!!');
