@@ -1,13 +1,13 @@
-import Candidates from '../models/schems/candidateSchema';
-
 import xlsxj from 'xlsx-to-json';
+import fs from 'fs';
 
+import Candidates from '../models/schems/candidateSchema';
 import {
 	CandidateInterface,
 	ExelCandidateInterface,
 } from '../models/interfaces/candidate.interface';
 
-class ImportFiles {
+class FileEvents {
 	static async candidatesFormExelToJson(filePath: string): Promise<[]> {
 		return new Promise((res, rej) => {
 			xlsxj(
@@ -74,6 +74,16 @@ class ImportFiles {
 			}
 		});
 	}
+
+	static deleteFileByPath(linkToFile: string) {
+		fs.unlink(linkToFile, (err) => {
+			if (err) {
+				console.error('Error: --> ', err);
+			} else {
+				console.log('File deleted from: --> ', linkToFile);
+			}
+		});
+	}
 }
 
-export default ImportFiles;
+export default FileEvents;
