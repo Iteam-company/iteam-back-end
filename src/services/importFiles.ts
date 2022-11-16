@@ -1,6 +1,11 @@
 import Candidates from '../models/schems/candidateSchema';
+
 import xlsxj from 'xlsx-to-json';
-import { CandidateInterface } from '../models/interfaces/candidate.interface';
+
+import {
+	CandidateInterface,
+	ExelCandidateInterface,
+} from '../models/interfaces/candidate.interface';
 
 class ImportFiles {
 	static async candidatesFormExelToJson(filePath: string): Promise<[]> {
@@ -20,22 +25,54 @@ class ImportFiles {
 			);
 		});
 	}
-	//////////////////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// static async formatingcandidateInJson(arr: []): CandidateInterface[] {}
 
-	static async insertCandidateToDB(arrCandidates: CandidateInterface[]) {
-		try {
+	static formatingCandidateInJson(
+		arr: ExelCandidateInterface[] //for export change object of exel candidates !!!
+	): CandidateInterface[] {
+		const formatedArray: CandidateInterface[] = arr.map((el) => {
+			return {
+				surname:
+					el['FullName'].split(' ').length < 2
+						? ''
+						: el['FullName'].split(' ')[0],
+				name:
+					el['FullName'].split(' ').length < 2
+						? el['FullName'].split(' ')[0]
+						: el['FullName'].split(' ')[1],
+				email: el['Email'],
+				phone: el['Phone'],
+				site: el['Site'],
+				expirienceInIt: el['Experience'],
+				english: el['English'],
+				addres: el['Address'],
+				salary: el['Salary'],
+				dateInterview: el['Date interview'],
+				cvLink: el['CV'].split('')[0] !== '/' ? el['CV'] : '',
+				cvFile: el['CV'].split('')[0] === '/' ? el['CV'] : '',
+				status: el['Status'],
+			};
+		});
+
+		return formatedArray;
+	}
+
+	static insertCandidateToDB(arrCandidates: CandidateInterface[]) {
+		return new Promise((res, rej) => {
 			// inserting into the table candidates
-			return Candidates.insertMany(arrCandidates, (err, result) => {
-				if (err) console.error(err);
-				if (result) {
-					console.log('File imported successfully.');
-					// res.redirect('/');
-				}
-			});
-		} catch (e) {
-			console.error(e);
-		}
+			try {
+				Candidates.insertMany(arrCandidates, (err, result) => {
+					if (err) {
+						console.error(err);
+						return rej(null);
+					}
+
+					return res(result);
+				});
+			} catch (e) {
+				console.error(e);
+				return rej(null);
+			}
+		});
 	}
 }
 

@@ -13,3 +13,18 @@ export interface CandidateInterface {
 	cvFile?: string;
 	status?: string;
 }
+
+export interface ExelCandidateInterface {
+	Status: string;
+	Number: string;
+	FullName: string;
+	Site: string;
+	Email: string;
+	Phone: string;
+	Experience: string;
+	English: string;
+	Address: string;
+	Salary: string;
+	'Date interview': string;
+	CV: string;
+}

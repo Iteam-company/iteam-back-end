@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 import { CandidateInterface } from '../interfaces/candidate.interface';
 
 const CandateSchema = new Schema<CandidateInterface>({
-	surname: { type: String, required: true },
+	surname: { type: String, required: false },
 	name: { type: String, required: true },
 	site: { type: String, required: false },
 	email: {
