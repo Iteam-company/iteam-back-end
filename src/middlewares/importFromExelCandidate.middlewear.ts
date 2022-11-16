@@ -1,36 +1,53 @@
-import { NextFunction, Request, Response } from 'express';
-import { CandidateInterface } from 'src/models/interfaces/candidate.interface';
+import e, { NextFunction, Request, Response } from 'express';
+import { CandidateInterface } from '../models/interfaces/candidate.interface';
 
 import ImportFiles from '../services/ImportFiles';
 
+import fs from 'fs';
 const importFromExelCandidates = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
 ) => {
+	const linkToFile = `./public/uploadsFiles/${req?.file?.originalname}`;
+
 	try {
 		const candidateInJSON: [] | null =
-			await ImportFiles.candidatesFormExelToJson(
-				'./public/uploadsFiles/' + req?.file?.originalname
-			);
-		///////?!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		// if (!candidateInJSON || candidateInJSON.length < 1)
-		// 	return res.status(400);
+			await ImportFiles.candidatesFormExelToJson(linkToFile);
 
-		// const formatedcandidateInJson: CandidateInterface[] | null =
-		// 	await ImportFiles.formatingcandidateInJson(candidateInJSON);
+		if (!candidateInJSON || candidateInJSON.length < 1) res.sendStatus(401);
 
-		// const res = await ImportFiles.insertCandidateToDB(
-		// 	formatedcandidateInJson
-		// );
-		// console.log(res);
+		const formatedcandidateInJson: CandidateInterface[] =
+			ImportFiles.formatingCandidateInJson(candidateInJSON);
 
-		// 	if (application && application.isApproved) {
-		// 		return next();
-		// 	} else {
-		// 		return res.status(401);
-		// 	}
-		// }
+		const insertedData = await ImportFiles.insertCandidateToDB(
+			formatedcandidateInJson
+		);
+
+		// deleting files "xmls,json"
+		fs.unlink(linkToFile, (err) => {
+			if (err) {
+				console.error(err);
+			} else {
+				console.log('File deleted from: --> ', linkToFile);
+			}
+		});
+
+		fs.unlink(linkToFile.replace('xlsx', 'json'), (err) => {
+			if (err) {
+				console.error(err);
+			} else {
+				console.log(
+					'File deleted from: --> ',
+					linkToFile.replace('xlsx', 'json')
+				);
+			}
+		});
+
+		if (insertedData) {
+			console.log('Inserted!!!');
+			return res.send(insertedData).status(201);
+		}
 	} catch (err) {
 		res.sendStatus(401);
 		console.error(err, 'err');
