@@ -1,3 +1,5 @@
+import auth from '../middlewares/auth';
+import logger from '../middlewares/logger';
 import express from 'express';
 import ProjectController from '../controllers/project.controller';
 
@@ -9,7 +11,12 @@ projectRouter.get('/', ProjectController.getAllProjects);
 
 projectRouter.get('/:projectID', ProjectController.getProjectByID);
 
-projectRouter.patch('/update/:projectID', ProjectController.updateProjectByID);
+projectRouter.patch(
+	'/update/:projectID',
+	auth,
+	logger,
+	ProjectController.updateProjectByID
+);
 
 projectRouter.delete('/delete/:projectID', ProjectController.deleteProjectByID);
 

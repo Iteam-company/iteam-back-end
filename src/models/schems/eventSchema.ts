@@ -1,10 +1,13 @@
 import { ObjectId } from 'mongodb';
 import { Schema, model } from 'mongoose';
-import EventInterface from '../interfaces/event.interface';
+import EventInterface, { LoggerActions } from '../interfaces/event.interface';
 
 const EventSchema = new Schema<EventInterface>(
 	{
-		action: { type: String },
+		action: {
+			type: String,
+			enum: Object.values(LoggerActions),
+		},
 		date: { typre: String },
 		project: { type: ObjectId, ref: 'projects', required: false },
 		actionPerformer: { type: ObjectId, ref: 'users' },
