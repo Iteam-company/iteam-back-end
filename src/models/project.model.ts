@@ -7,7 +7,24 @@ import ProjectSchema from './schems/projectSchema';
 class ProjectModel extends Model {
 	static async getAllProjects(req: Request, res: Response) {
 		try {
-			return await ProjectSchema.find({});
+			const {
+				sortBy,
+				sortType = 1,
+				limit = 10,
+				offset = 0,
+			}: {
+				sortBy?: string;
+				sortType?: 1 | -1;
+				limit?: number;
+				offset?: number;
+			} = req.query;
+
+			const projects = await ProjectSchema.find({})
+				.skip(+offset)
+				.limit(+limit)
+				.sort(sortBy && { [sortBy]: sortType });
+
+			return projects;
 		} catch (e) {
 			console.error(e);
 			return errorsCatcher(res);
