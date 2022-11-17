@@ -7,7 +7,24 @@ import CandidateSchema from './schems/candidateSchema';
 class CandidateModel extends Model {
 	static async getAllCandidates(req: Request, res: Response) {
 		try {
-			return await CandidateSchema.find({});
+			const {
+				sortBy,
+				sortType = 1,
+				limit = 10,
+				offset = 0,
+			}: {
+				sortBy?: string;
+				sortType?: 1 | -1;
+				limit?: number;
+				offset?: number;
+			} = req.query;
+
+			const candidates = await CandidateSchema.find({})
+				.skip(+offset)
+				.limit(+limit)
+				.sort(sortBy && { [sortBy]: sortType });
+
+			return candidates;
 		} catch (e) {
 			console.error(e);
 			return errorsCatcher(res);

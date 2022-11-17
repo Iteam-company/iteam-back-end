@@ -7,7 +7,24 @@ import UserSchema from './schems/userSchema';
 class UserModel extends Model {
 	static async getAllUsers(req: Request, res: Response) {
 		try {
-			return await UserSchema.find({});
+			const {
+				sortBy,
+				sortType = 1,
+				limit = 10,
+				offset = 0,
+			}: {
+				sortBy?: string;
+				sortType?: 1 | -1;
+				limit?: number;
+				offset?: number;
+			} = req.query;
+
+			const users = await UserSchema.find({})
+				.skip(+offset)
+				.limit(+limit)
+				.sort(sortBy && { [sortBy]: sortType });
+
+			return users;
 		} catch (e) {
 			console.error(e);
 			return errorsCatcher(res);
