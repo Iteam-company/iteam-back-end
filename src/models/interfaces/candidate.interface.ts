@@ -1,4 +1,7 @@
+import { ObjectId } from 'mongodb';
+
 export interface CandidateInterface {
+	_id?: ObjectId;
 	surname: string;
 	name: string;
 	email: string;
@@ -27,4 +30,5 @@ export interface ExelCandidateInterface {
 	Salary: string;
 	'Date interview': string;
 	CV: string;
+	comments: string;
 }
