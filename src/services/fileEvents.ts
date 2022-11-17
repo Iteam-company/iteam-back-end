@@ -1,3 +1,4 @@
+// unexisting package types it's ok
 import xlsxj from 'xlsx-to-json';
 import fs from 'fs';
 
@@ -6,8 +7,12 @@ import {
 	CandidateInterface,
 	ExelCandidateInterface,
 } from '../models/interfaces/candidate.interface';
+import Comments from '../models/schems/commentSchema';
+import { CommentsInterface } from '../models/interfaces/comment.interface';
+import { ObjectId } from 'mongodb';
 
 class FileEvents {
+	// candidates
 	static async candidatesFormExelToJson(filePath: string): Promise<[]> {
 		return new Promise((res, rej) => {
 			xlsxj(
@@ -50,15 +55,18 @@ class FileEvents {
 				cvLink: el['CV'].split('')[0] !== '/' ? el['CV'] : '',
 				cvFile: el['CV'].split('')[0] === '/' ? el['CV'] : '',
 				status: el['Status'],
+				comments: el['comments'],
 			};
 		});
 
 		return formatedArray;
 	}
 
-	static insertCandidateToDB(arrCandidates: CandidateInterface[]) {
+	// inserting into the table candidates
+	static insertCandidateToDB(
+		arrCandidates: CandidateInterface[]
+	): Promise<CandidateInterface[]> {
 		return new Promise((res, rej) => {
-			// inserting into the table candidates
 			try {
 				Candidates.insertMany(arrCandidates, (err, result) => {
 					if (err) {
@@ -75,6 +83,43 @@ class FileEvents {
 		});
 	}
 
+	//comments
+	static formatingCommentsInJson(
+		insertedData: CandidateInterface[],
+		candidateInJSON: ExelCandidateInterface[]
+	): CommentsInterface[] {
+		// inserting into the table comments
+		const clearArr = insertedData.map((cand, i) => ({
+			text: candidateInJSON[i].comments,
+			userID: new ObjectId(cand?._id?.toString()),
+			authorID: new ObjectId('637619d444740f2fe4a98f23'),
+		}));
+
+		return clearArr.filter((el) => el.text);
+	}
+
+	// inserting into the table candidates
+	static insertCommentsToDB(
+		arrComments: CommentsInterface[]
+	): Promise<CommentsInterface[]> {
+		return new Promise((res, rej) => {
+			try {
+				Comments.insertMany(arrComments, (err, result) => {
+					if (err) {
+						console.error(err);
+						return rej(null);
+					}
+
+					return res(result);
+				});
+			} catch (e) {
+				console.error(e);
+				return rej(null);
+			}
+		});
+	}
+
+	//	other
 	static deleteFileByPath(linkToFile: string) {
 		fs.unlink(linkToFile, (err) => {
 			if (err) {
