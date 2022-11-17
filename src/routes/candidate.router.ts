@@ -24,7 +24,7 @@ candidateRouter.patch(
 
 candidateRouter.post(
 	'/uploadExcelFile',
-	fileUpload.single('uploadExelfile'),
+	fileUpload.single('uploadExelFile'),
 	importFromExelCandidates
 );
 
