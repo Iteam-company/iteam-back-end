@@ -11,5 +11,14 @@
 		"sourceType": "module"
 	},
 	"plugins": ["@typescript-eslint"],
-	"rules": {}
+	"rules": {
+		// would be good to add it in the future
+		// "import/no-cycle": [
+		// 	"error",
+		// 	{
+		// 	  "maxDepth": 10,
+		// 	  "ignoreExternal": true
+		// 	}
+		//   ]
+	}
 }

@@ -18,7 +18,7 @@ class AuthController extends Controller {
 
 			res.status(200).send(user.removePassword());
 		} catch (e) {
-			console.log(e, 'ERROR');
+			console.error(e);
 			errorsCatcher(res);
 		}
 	}
@@ -42,6 +42,7 @@ class AuthController extends Controller {
 
 			return res.status(200).send(user.removePassword());
 		} catch (e) {
+			console.error(e);
 			errorsCatcher(res);
 		}
 	}

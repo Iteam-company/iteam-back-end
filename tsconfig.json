@@ -14,7 +14,7 @@
 	},
 	"compilerOptions": {
 		"rootDir": "./",
-		"target": "es2020",
+		"target": "ES2018",
 		"module": "commonjs",
 		"allowJs": true,
 		"removeComments": true,
