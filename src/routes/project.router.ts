@@ -1,4 +1,4 @@
-import auth from '../middlewares/auth';
+import auth from '../middlewares/auth.middlewear';
 import logger from '../middlewares/logger';
 import express from 'express';
 import ProjectController from '../controllers/project.controller';
