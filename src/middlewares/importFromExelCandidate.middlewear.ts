@@ -6,8 +6,11 @@ import {
 	CandidateInterface,
 	ExelCandidateInterface,
 } from '../models/interfaces/candidate.interface';
+import FirebaseService from '../services/firebase';
 
 const importFromExelCandidates = async (req: Request, res: Response) => {
+	if (!req.file) return res.sendStatus(401);
+
 	const linkToFile = `./public/uploadsFiles/${req?.file?.originalname}`;
 
 	try {
@@ -34,6 +37,8 @@ const importFromExelCandidates = async (req: Request, res: Response) => {
 
 			console.log('Inserted!!!');
 		}
+
+		await FirebaseService.uploadFile(req.file.path);
 
 		// deleting files "xmls,json"
 		FileEvents.deleteFileByPath(linkToFile);
