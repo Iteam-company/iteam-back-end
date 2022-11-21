@@ -11,6 +11,7 @@ const checkDuplicateCandidate = async (
 	const { email, phone, name, surname } = req.body;
 
 	try {
+		// refactoring
 		const checkEmails = await CheckerDuplicateCandidate.checkEmails(email);
 
 		const checkPhones = await CheckerDuplicateCandidate.checkPhones(phone);

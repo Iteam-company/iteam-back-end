@@ -1,6 +1,7 @@
 import Candidates from '../models/schems/candidateSchema';
 
 class CheckerDuplicateCandidate {
+	// refactoring
 	static async checkPhones(phone: string) {
 		try {
 			return await Candidates.find({ phone });
@@ -8,6 +9,7 @@ class CheckerDuplicateCandidate {
 			console.error(e);
 		}
 	}
+
 	static async checkEmails(email: string) {
 		try {
 			return await Candidates.find({ email });
