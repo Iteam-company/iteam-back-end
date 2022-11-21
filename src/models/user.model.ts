@@ -65,13 +65,10 @@ class UserModel extends Model {
 	}
 
 	static async updateUserByID(req: Request, res: Response) {
-		const userID = req.params.userID;
-
-		if (!userID) return res.sendStatus(403);
-
+		const { userID } = req.params;
 		const dataForUpdate = req.body;
 
-		if (!dataForUpdate) return res.sendStatus(200);
+		if (!userID || !dataForUpdate) return res.sendStatus(403);
 
 		try {
 			const updatedUser = await UserSchema.findOneAndUpdate(

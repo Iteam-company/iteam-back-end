@@ -52,8 +52,8 @@ class FileEvents {
 				addres: el['Address'],
 				salary: el['Salary'],
 				dateInterview: el['Date interview'],
-				cvLink: el['CV'].split('')[0] !== '/' ? el['CV'] : '',
-				cvFile: el['CV'].split('')[0] === '/' ? el['CV'] : '',
+				cvLink: el['CV'].split('')[0] !== '/' ? el['CV'] : '', //change!!!!
+				cvFile: el['CV'].split('')[0] === '/' ? el['CV'] : '', //change!!!!
 				status: el['Status'],
 				comments: el['comments'],
 			};
