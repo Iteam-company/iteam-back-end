@@ -30,8 +30,20 @@ class UserController extends Controller {
 	static async getUserByID(req: Request, res: Response) {
 		try {
 			const userByID = await UserModel.getUserByID(req, res);
+			console.log(123);
 
 			return res.send(userByID);
+		} catch (e) {
+			console.error(e);
+			return errorsCatcher(res);
+		}
+	}
+
+	static async uploadUserAvatar(req: Request, res: Response) {
+		try {
+			const uploadedAvatar = await UserModel.updateUserByID(req, res);
+
+			return res.send(uploadedAvatar);
 		} catch (e) {
 			console.error(e);
 			return errorsCatcher(res);

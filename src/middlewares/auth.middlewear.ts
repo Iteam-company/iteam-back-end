@@ -19,7 +19,6 @@ const auth = async (
 			req.user = user as UserInterface;
 
 			//checking that user allowed to pass
-
 			const application = await Application.findOne({
 				email: user.email,
 			});

@@ -28,7 +28,12 @@ const UserSchema = new Schema<UserInterface>({
 		enum: [WorkTypes.REMOUTE, WorkTypes.OFFICE, WorkTypes.MIX],
 		default: WorkTypes.OFFICE,
 	},
-	avatarUrl: { type: String, default: '/img/default.webp' },
+	avatarUrl: {
+		type: String,
+		default:
+			'/img/default.webp' ||
+			'https://res.cloudinary.com/iteam-cloud/image/upload/v1643381088/Iteam/iteam.logo_lrlwkj.jpg',
+	},
 	file: { type: String },
 	phone: { type: String },
 	offerDay: { type: Date, default: Date.now() },
