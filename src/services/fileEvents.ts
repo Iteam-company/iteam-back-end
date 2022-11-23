@@ -1,6 +1,7 @@
 // unexisting package types it's ok
 import xlsxj from 'xlsx-to-json';
 import fs from 'fs';
+import { ObjectId } from 'mongodb';
 
 import Candidates from '../models/schems/candidateSchema';
 import {
@@ -9,7 +10,6 @@ import {
 } from '../models/interfaces/candidate.interface';
 import Comments from '../models/schems/commentSchema';
 import { CommentsInterface } from '../models/interfaces/comment.interface';
-import { ObjectId } from 'mongodb';
 
 class FileEvents {
 	// candidates
