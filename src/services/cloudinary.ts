@@ -12,7 +12,7 @@ cloudinary.config({
 });
 
 interface CloudinatyServiceResult {
-	src: string;
+	url: string;
 	public_id: string;
 	format: string;
 }
@@ -22,15 +22,18 @@ const { uploader } = cloudinary;
 class CloudinaryService {
 	static async uploadBinary(
 		binary: string,
-		fileName: string
+		fileName: string,
+		folder: string
 	): Promise<Partial<CloudinatyServiceResult | { error: string }>> {
 		try {
 			const result = await uploader.upload(binary, {
 				public_id: fileName,
+				folder,
 			});
-			const { src, public_id, format } = result;
 
-			return { src, public_id, format };
+			const { url, public_id, format } = result;
+
+			return { url, public_id, format };
 		} catch (e: any) {
 			console.error(e);
 			return { error: e.message };
