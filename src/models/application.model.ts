@@ -7,7 +7,24 @@ import ApplicationSchema from './schems/applicationSchema';
 class ApplicationModel extends Model {
 	static async getAllApplications(req: Request, res: Response) {
 		try {
-			return await ApplicationSchema.find({});
+			const {
+				sortBy,
+				sortType = 1,
+				limit = 10,
+				offset = 0,
+			}: {
+				sortBy?: string;
+				sortType?: 1 | -1;
+				limit?: number;
+				offset?: number;
+			} = req.query;
+
+			const applications = await ApplicationSchema.find({})
+				.skip(+offset)
+				.limit(+limit)
+				.sort(sortBy && { [sortBy]: sortType });
+
+			return applications;
 		} catch (e) {
 			console.error(e);
 			return errorsCatcher(res);
