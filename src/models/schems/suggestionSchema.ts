@@ -14,7 +14,6 @@ const SuggestionSchema = new Schema<SuggestionInterface>({
 	],
 	comments: [{ type: { user: ObjectId, text: String } }],
 	isApproved: { type: Boolean, default: false, required: false },
-	file: { type: String, required: false },
 	image: { type: String, required: false },
 });
 
