@@ -47,6 +47,20 @@ class SuggestionController extends Controller {
 		}
 	}
 
+	static async uploadSuggestionImage(req: Request, res: Response) {
+		try {
+			const uploadedImage = await SuggestionModel.updateSuggestionByID(
+				req,
+				res
+			);
+
+			return res.send(uploadedImage);
+		} catch (e) {
+			console.error(e);
+			return errorsCatcher(res);
+		}
+	}
+
 	static async updateSuggestionByID(req: Request, res: Response) {
 		try {
 			const updatedSuggestion =
