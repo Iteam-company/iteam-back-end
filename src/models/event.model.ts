@@ -15,11 +15,11 @@ class EventModel extends Model {
 			}
 
 			if (projectID) {
-				return await LoggerService.getLogByProjectID(projectID);
+				return await LoggerService.getLogsByProjectID(projectID);
 			}
 
 			if (userID) {
-				return await LoggerService.getLogByUserID(userID);
+				return await LoggerService.getLogsByUserID(userID);
 			}
 
 			// in case if nothing passed

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import LoggerService from 'src/services/logger';
-import errorsCatcher from 'src/utils/errorsCatcher';
+import LoggerService from '../services/logger';
+import errorsCatcher from '../utils/errorsCatcher';
 import Controller from '.';
 
 class EventsController extends Controller {

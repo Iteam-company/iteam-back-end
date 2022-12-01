@@ -11,16 +11,17 @@ const checkDuplicateCandidate = async (
 	const { email, phone, name, surname } = req.body;
 
 	try {
-		// refactoring
-		const checkEmails = await CheckerDuplicateCandidate.checkEmails(email);
+		const checkEmails = await CheckerDuplicateCandidate.checkData({
+			email: email,
+		});
 
-		const checkPhones = await CheckerDuplicateCandidate.checkPhones(phone);
+		const checkPhones = await CheckerDuplicateCandidate.checkData({
+			phone: phone,
+		});
 
-		const checkNamesAndSurnames =
-			await CheckerDuplicateCandidate.checkNamesAndSurnames(
-				name,
-				surname
-			);
+		const checkNamesAndSurnames = await CheckerDuplicateCandidate.checkData(
+			{ name: name, surname: surname }
+		);
 
 		if (checkEmails && checkEmails?.length > 0) {
 			return res
