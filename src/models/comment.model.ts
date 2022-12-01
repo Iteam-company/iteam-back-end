@@ -1,13 +1,17 @@
 import { Request, Response } from 'express';
 
 import Model from '.';
+import PaginationService from '../services/pagination';
 import errorsCatcher from '../utils/errorsCatcher';
 import CommentSchema from './schems/commentSchema';
 
 class CommentModel extends Model {
 	static async getAllComments(req: Request, res: Response) {
 		try {
-			return await CommentSchema.find({});
+			return await PaginationService.paginationAndSort(
+				req,
+				CommentSchema
+			);
 		} catch (e) {
 			console.error(e);
 			return errorsCatcher(res);
