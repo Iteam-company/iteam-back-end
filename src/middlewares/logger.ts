@@ -1,9 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import LoggerService from '../services/logger';
 import Project from '../models/schems/projectSchema';
-import { ObjectId } from 'mongodb';
+
 import UserInterface from '../models/interfaces/user.interface';
 import { LoggerActions } from '../models/interfaces/event.interface';
+
+import { ObjectId } from 'mongodb';
 
 const logger = async (
 	req: Request & { user?: UserInterface },
@@ -25,15 +27,15 @@ const logger = async (
 				if (key === 'mainDevID') {
 					await LoggerService.createLog({
 						action: LoggerActions.userBecomesMainProjectDev,
-						project: _id,
-						user: req.body[key],
+						project: new ObjectId(_id.toString()),
+						user: new ObjectId(req.body[key]),
 						actionPerformer: new ObjectId(user._id.toString()),
 						date: Date.now().toString(),
 					});
 					// adding replacement log for old main dev
 					await LoggerService.createLog({
 						action: LoggerActions.userLeavedProject,
-						project: _id,
+						project: new ObjectId(_id.toString()),
 						user: new ObjectId(oldProject.mainDevID),
 						actionPerformer: new ObjectId(user._id.toString()),
 						date: Date.now().toString(),
@@ -67,7 +69,7 @@ const logger = async (
 					addedProjectDevs.forEach(async (devId) => {
 						await LoggerService.createLog({
 							action: LoggerActions.userAssignedToProject,
-							project: _id,
+							project: new ObjectId(_id.toString()),
 							user: new ObjectId(devId.toString()),
 							actionPerformer: new ObjectId(user._id.toString()),
 							date: Date.now().toString(),

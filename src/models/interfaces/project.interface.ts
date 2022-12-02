@@ -1,6 +1,6 @@
-import { ObjectId } from 'mongoose';
+import { Document, ObjectId } from 'mongodb';
 
-interface ProjectInterface {
+interface ProjectInterface extends Document {
 	name: string;
 	iconUrl?: string;
 	mainDevID?: string;

@@ -1,6 +1,6 @@
-import { ObjectId } from 'mongoose';
+import { Document, ObjectId } from 'mongodb';
 
-interface TechnologyInterface {
+interface TechnologyInterface extends Document {
 	_id: ObjectId;
 	title: string;
 	ico: string;

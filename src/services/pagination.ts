@@ -1,5 +1,7 @@
 import { Request } from 'express';
 
+import Service from '.';
+
 interface ResponseInterface {
 	status: number;
 	totalCount: number;
@@ -8,10 +10,11 @@ interface ResponseInterface {
 	data: unknown[] | null;
 }
 
-class PaginationService {
+class PaginationService extends Service {
 	static async paginationAndSort(
 		req: Request,
-		someSchema: any
+		someSchema: any,
+		filterParams: object = {}
 	): Promise<ResponseInterface> {
 		try {
 			const {
@@ -28,7 +31,8 @@ class PaginationService {
 
 			const totalCount = await someSchema.countDocuments();
 
-			const totalPages = limit > 0 ? Math.ceil(totalCount / limit) : 1;
+			const totalPages =
+				limit > 0 && totalCount > 0 ? Math.ceil(totalCount / limit) : 1;
 
 			let currentPage = +page || 1;
 
@@ -37,7 +41,7 @@ class PaginationService {
 			const offset = (currentPage - 1) * limit;
 
 			const data = await someSchema
-				.find({})
+				.find(filterParams)
 				.skip(+offset)
 				.limit(+limit)
 				.sort(sortBy && { [sortBy]: sortType })

@@ -10,8 +10,9 @@ import {
 } from '../models/interfaces/candidate.interface';
 import Comments from '../models/schems/commentSchema';
 import { CommentsInterface } from '../models/interfaces/comment.interface';
+import Service from '.';
 
-class FileEvents {
+class FileEvents extends Service {
 	// candidates
 	static async candidatesFormExelToJson(filePath: string): Promise<[]> {
 		return new Promise((res, rej) => {
