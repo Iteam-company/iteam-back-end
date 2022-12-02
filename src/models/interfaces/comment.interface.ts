@@ -1,6 +1,6 @@
-import { ObjectId } from 'mongodb';
+import { Document, ObjectId } from 'mongodb';
 
-export interface CommentsInterface {
+export interface CommentsInterface extends Document {
 	_id?: ObjectId;
 	text: string;
 	userID: ObjectId;

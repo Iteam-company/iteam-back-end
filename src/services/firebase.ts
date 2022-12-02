@@ -3,6 +3,7 @@ import { initializeApp } from 'firebase/app';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
 import fs from 'fs';
 
+import Service from '.';
 import {
 	API_KEY,
 	AUTH_DOMAIN,
@@ -35,7 +36,7 @@ initializeApp(firebaseConfig);
 // Initialize Storage
 const storage = getStorage();
 
-class FirebaseService {
+class FirebaseService extends Service {
 	static async uploadFile(pathFile: string) {
 		const fileData = fs.readFileSync(pathFile);
 
