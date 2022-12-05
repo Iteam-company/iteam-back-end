@@ -2,23 +2,39 @@
 
 #### ITeam back-end
 
-# Setup (Install dependencies and run the application)
+## Setup (Install dependencies and run the application)
+
+## RUN with Dockerfile
 
 ```sh
-1. Download or clone the repository
-2. Create and fill .env
-3. yarn (or npm i)
-4. yarn start (or npm start)
+docker run -p 8888:8888 --name iteam iteamcompany/iteam:latest
 ```
 
-Open http://0.0.0.0:3000 in your browser.
+### OR
 
-## Other useful commands
+## RUN with Makefile
 
--   `npm run migrate`: Migrate database schemas for models
--   `npm run openapi-spec`: Generate OpenAPI spec into a file
--   `npm run docker:build`: Build a Docker image for this application
--   `npm run docker:run`: Run this application inside a Docker container
+```sh
+make run-dev
+```
+
+## RUN default
+
+1. Download or clone the repository
+2. Create and fill .env
+3.
+
+```sh
+yarn
+```
+
+4.
+
+```sh
+yarn dev
+```
+
+Open [0.0.0.0:8888](http://0.0.0.0:8888) in your browser.
 
 # Demo link:
 
@@ -30,19 +46,16 @@ This is the backend part for organizing and optimizing the internal work of the 
 
 # Technologies
 
-This application is generated using [LoopBack 4 CLI](https://loopback.io/doc/en/lb4/Command-line-interface.html) with the
-[initial project layout](https://loopback.io/doc/en/lb4/Loopback-application-layout.html).
-
 ###### We used:
 
--   yarn
--   dotenv
--   uuid
--   jsonwebtoken
+-   Yarn
+-   Dotenv
+-   Uuid
+-   JsonWebToken
 -   JavaScript
 -   TypeScript
--   eslint
--   prettier
+-   Eslint
+-   Prettier
 
 # Approach
 
