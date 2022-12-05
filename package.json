@@ -18,7 +18,7 @@
 		"prepare": "husky install"
 	},
 	"dependencies": {
-		"@swc/core": "^1.3.9",
+		"@swc/core": "^1.3.21",
 		"@swc/helpers": "^0.4.12",
 		"@types/bcrypt": "^5.0.0",
 		"@types/cookie-parser": "^1.4.3",
