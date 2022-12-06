@@ -1,13 +1,16 @@
 import { createTransport, Transporter, TransportOptions } from 'nodemailer';
+
+import Service from '.';
 import { SMTP_HOST, SMTP_PASSWORD, SMTP_PORT, SMTP_USER } from '../../env';
 
 const maillist = ['jekasemenuk@ukr.net', 'sergienko339@gmail.com'];
 
-class NodemailerService {
+class NodemailerService extends Service {
 	transporter: Transporter;
 	layout: string;
 
 	constructor() {
+		super();
 		this.layout = ``;
 
 		this.transporter = createTransport({

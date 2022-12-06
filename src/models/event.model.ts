@@ -11,19 +11,21 @@ class EventModel extends Model {
 			const { _id, projectID, userID } = req.body;
 
 			if (_id) {
-				return await LoggerService.getLogByID(_id);
+				return await LoggerService.getLogsBy(req, { _id });
 			}
 
 			if (projectID) {
-				return await LoggerService.getLogByProjectID(projectID);
+				return await LoggerService.getLogsBy(req, {
+					project: projectID,
+				});
 			}
 
 			if (userID) {
-				return await LoggerService.getLogByUserID(userID);
+				return await LoggerService.getLogsBy(req, { user: userID });
 			}
 
 			// in case if nothing passed
-			return null;
+			return res.status(400);
 		} catch (e) {
 			console.error(e);
 			return errorsCatcher(res);
