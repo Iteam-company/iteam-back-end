@@ -1,26 +1,10 @@
+import Service from '.';
 import Candidates from '../models/schems/candidateSchema';
 
-class CheckerDuplicateCandidate {
-	// refactoring
-	static async checkPhones(phone: string) {
+class CheckerDuplicateCandidate extends Service {
+	static async checkData(data: object) {
 		try {
-			return await Candidates.find({ phone });
-		} catch (e) {
-			console.error(e);
-		}
-	}
-
-	static async checkEmails(email: string) {
-		try {
-			return await Candidates.find({ email });
-		} catch (e) {
-			console.error(e);
-		}
-	}
-
-	static async checkNamesAndSurnames(name: string, surname: string) {
-		try {
-			return await Candidates.find({ name, surname });
+			return await Candidates.find({ ...data });
 		} catch (e) {
 			console.error(e);
 		}

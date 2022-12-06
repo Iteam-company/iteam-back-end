@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import PaginationService from '../services/pagination';
 
 import Model from '.';
 import errorsCatcher from '../utils/errorsCatcher';
@@ -7,7 +8,10 @@ import SuggestionSchema from './schems/suggestionSchema';
 class SuggestionModel extends Model {
 	static async getAllSuggestions(req: Request, res: Response) {
 		try {
-			return await SuggestionSchema.find({});
+			return await PaginationService.paginationAndSort(
+				req,
+				SuggestionSchema
+			);
 		} catch (e) {
 			console.error(e);
 			return errorsCatcher(res);

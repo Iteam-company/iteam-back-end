@@ -1,6 +1,6 @@
-import { ObjectId } from 'mongoose';
+import { Document, ObjectId } from 'mongodb';
 
-interface SuggestionInterface {
+interface SuggestionInterface extends Document {
 	_id: ObjectId;
 	title: string;
 	text?: string;

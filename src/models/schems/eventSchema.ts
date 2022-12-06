@@ -9,13 +9,12 @@ const EventSchema = new Schema<EventInterface>(
 			enum: Object.values(LoggerActions),
 		},
 		date: { typre: String },
-		project: { type: ObjectId, ref: 'projects', required: false },
-		actionPerformer: { type: ObjectId, ref: 'users' },
-		user: { type: ObjectId, ref: 'users', required: false },
+		project: { type: ObjectId, ref: 'Projects', required: false },
+		actionPerformer: { type: ObjectId, ref: 'Users' },
+		user: { type: ObjectId, ref: 'Users', required: false },
 	},
 	{ timestamps: { createdAt: true, updatedAt: false } }
 );
-Promise;
 
 const Event = model('events', EventSchema);
 

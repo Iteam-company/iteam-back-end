@@ -1,30 +1,17 @@
 import { Request, Response } from 'express';
 
 import Model from '.';
+import PaginationService from '../services/pagination';
 import errorsCatcher from '../utils/errorsCatcher';
 import ProjectSchema from './schems/projectSchema';
 
 class ProjectModel extends Model {
 	static async getAllProjects(req: Request, res: Response) {
 		try {
-			const {
-				sortBy,
-				sortType = 1,
-				limit = 10,
-				offset = 0,
-			}: {
-				sortBy?: string;
-				sortType?: 1 | -1;
-				limit?: number;
-				offset?: number;
-			} = req.query;
-
-			const projects = await ProjectSchema.find({})
-				.skip(+offset)
-				.limit(+limit)
-				.sort(sortBy && { [sortBy]: sortType });
-
-			return projects;
+			return await PaginationService.paginationAndSort(
+				req,
+				ProjectSchema
+			);
 		} catch (e) {
 			console.error(e);
 			return errorsCatcher(res);

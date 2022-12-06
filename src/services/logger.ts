@@ -1,6 +1,10 @@
+import { Request } from 'express';
+
+import Service from '.';
 import EventInterface from '../models/interfaces/event.interface';
 import Event from '../models/schems/eventSchema';
-class LoggerService {
+import PaginationService from './pagination';
+class LoggerService extends Service {
 	static async createLog(event: EventInterface) {
 		try {
 			return await Event.create(event);
@@ -8,23 +12,14 @@ class LoggerService {
 			console.error(e);
 		}
 	}
-	static async getLogByID(_id: string) {
+
+	static async getLogsBy(req: Request, params: object) {
 		try {
-			return await Event.findById(_id);
-		} catch (e) {
-			console.error(e);
-		}
-	}
-	static async getLogsByProjectID(projectID: string) {
-		try {
-			return await Event.find({ project: projectID });
-		} catch (e) {
-			console.error(e);
-		}
-	}
-	static async getLogsByUserID(userID: string) {
-		try {
-			return await Event.find({ user: userID });
+			return await PaginationService.paginationAndSort(
+				req,
+				Event,
+				params
+			);
 		} catch (e) {
 			console.error(e);
 		}

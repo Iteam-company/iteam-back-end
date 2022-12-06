@@ -1,4 +1,6 @@
 import { v2 as cloudinary } from 'cloudinary';
+
+import Service from '.';
 import {
 	CLOUDINARY_API_KEY,
 	CLOUDINARY_API_SECRET,
@@ -19,7 +21,7 @@ interface CloudinatyServiceResult {
 
 const { uploader } = cloudinary;
 
-class CloudinaryService {
+class CloudinaryService extends Service {
 	static async uploadBinary(
 		binary: string,
 		fileName: string,

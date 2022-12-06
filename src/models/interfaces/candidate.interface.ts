@@ -1,6 +1,6 @@
-import { ObjectId } from 'mongodb';
+import { Document, ObjectId } from 'mongodb';
 
-export interface CandidateInterface {
+export interface CandidateInterface extends Document {
 	_id?: ObjectId;
 	surname: string;
 	name: string;
@@ -17,7 +17,7 @@ export interface CandidateInterface {
 	status?: string;
 }
 
-export interface ExelCandidateInterface {
+export interface ExelCandidateInterface extends Document {
 	Status: string;
 	Number: string;
 	FullName: string;
