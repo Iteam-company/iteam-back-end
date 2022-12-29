@@ -4,7 +4,15 @@ import * as swaggerUi from 'swagger-ui-express';
 import cors, { CorsOptions } from 'cors';
 import cookieParser from 'cookie-parser';
 import * as swaggerDocument from './swagger';
-import { PORT, API_URL, DB_PORT, DB_USER, DB_PWD, DB_HOST } from './env';
+import {
+	PORT,
+	API_URL,
+	DB_PORT,
+	DB_USER,
+	DB_PWD,
+	DB_HOST,
+	NODE_ENV,
+} from './env';
 import routes from './src/routes/index';
 import path from 'path';
 import { allLayoutsForTest } from './src/utils/emailLayouts';
@@ -77,11 +85,34 @@ class App {
 		const swaggerOptions = {
 			explorer: true,
 		};
+
+		console.log(NODE_ENV, 'NODE_ENVNODE_ENVNODE_ENVNODE_ENV');
+
+		switch (NODE_ENV) {
+			case 'production':
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				(swaggerDocument as any).host = 'iteam-back-end.onrender.com';
+				break;
+			case 'development':
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				(swaggerDocument as any).host = `${this.api_url || '0.0.0.0'}:${
+					this.port || 8888
+				}`;
+				break;
+
+			default:
+				(swaggerDocument as any).host = `${this.api_url || '0.0.0.0'}:${
+					this.port || 8888
+				}`;
+				break;
+		}
 		this._app.use(
 			'/swagger',
 			swaggerUi.serve,
 			swaggerUi.setup(swaggerDocument, swaggerOptions)
 		);
+
+		// console.log(swaggerDocument,'swaggerDocumentswaggerDocumentswaggerDocumentswaggerDocument')
 
 		return this;
 	}
