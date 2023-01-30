@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import {
+  NODE_ENV,
   POSTGRES_DB,
   POSTGRES_HOST,
   POSTGRES_PASSWORD,
@@ -9,11 +10,12 @@ import {
   POSTGRES_USER,
 } from '@/constants/env';
 import { UsersModule } from '@/users/users.module';
-
+console.log(`.${process.env.NODE_ENV}.env`);
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: '.env',
+      envFilePath: `.${process.env.NODE_ENV}.env`,
+      isGlobal: true,
     }),
     SequelizeModule.forRoot({
       dialect: 'postgres',

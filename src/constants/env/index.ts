@@ -1,7 +1,7 @@
 import { config } from 'dotenv';
 import { env } from 'process';
 
-config();
+config({ path: `../../../.${env.NODE_ENV}.env` });
 
 export const {
   NODE_ENV,
