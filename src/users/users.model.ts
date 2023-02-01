@@ -1,5 +1,14 @@
+import { Role } from '@/roles/roles.model';
+import { UserRole } from '@/util-models/user-role.model';
 import { ApiProperty } from '@nestjs/swagger/dist/decorators';
-import { Column, DataType, Model, Table, Default } from 'sequelize-typescript';
+import {
+  Column,
+  DataType,
+  Model,
+  Table,
+  Default,
+  BelongsToMany,
+} from 'sequelize-typescript';
 
 interface UserCreationAttributes {
   email: string;
@@ -110,6 +119,9 @@ export class User extends Model<User, UserCreationAttributes> {
     allowNull: true,
   })
   experience: string;
+
+  @BelongsToMany(() => Role, () => UserRole)
+  roles: Role[];
 }
 
 // role: {
