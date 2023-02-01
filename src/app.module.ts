@@ -5,6 +5,9 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { UsersModule } from '@/users/users.module';
 import { EnviromentNames, getEnviroment } from '@/utils/evniromentGetter';
 import { User } from '@/users/users.model';
+import { RolesModule } from '@/roles/roles.module';
+import { Role } from '@/roles/roles.model';
+import { UserRole } from '@/util-models/user-role.model';
 console.log(`.${process.env.NODE_ENV}.env`);
 @Module({
   imports: [
@@ -19,10 +22,12 @@ console.log(`.${process.env.NODE_ENV}.env`);
       username: getEnviroment(EnviromentNames.POSTGRES_USER),
       password: getEnviroment(EnviromentNames.POSTGRES_PASSWORD),
       database: getEnviroment(EnviromentNames.POSTGRES_DB),
-      models: [User],
+      models: [User, Role, UserRole],
       autoLoadModels: true,
     }),
     UsersModule,
+    RolesModule,
   ],
+  providers: [],
 })
 export class AppModule {}
