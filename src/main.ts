@@ -12,10 +12,16 @@ const start = async () => {
     .setTitle('iteam-back-end')
     .setDescription('REST API documentation')
     .setVersion('0.0.1')
-    .addTag('beta version')
+    // .addSecurity('basic', {
+    //   type: 'http',
+    //   scheme: 'basic',
+    // })
+    .addBearerAuth()
     .build();
 
-  const document = SwaggerModule.createDocument(app, config);
+  const document = SwaggerModule.createDocument(app, config, {
+    deepScanRoutes: true,
+  });
   SwaggerModule.setup('/api/docs', app, document);
 
   await app.listen(PORT ?? 5000, () =>
