@@ -1,5 +1,5 @@
 import { Role } from '@/roles/role.model';
-import { User } from '@/users/user.model';
+import { User } from '@/users/users.model';
 import { ApiProperty } from '@nestjs/swagger/dist/decorators';
 import {
   Column,

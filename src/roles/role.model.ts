@@ -1,4 +1,4 @@
-import { User } from '@/users/user.model';
+import { User } from '@/users/users.model';
 import { UserRole } from '@/util-models/user-role.model';
 import { ApiProperty } from '@nestjs/swagger/dist/decorators';
 import {

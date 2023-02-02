@@ -4,10 +4,11 @@ import { SequelizeModule } from '@nestjs/sequelize';
 
 import { UsersModule } from '@/users/users.module';
 import { EnviromentNames, getEnviroment } from '@/utils/evniromentGetter';
-import { User } from '@/users/user.model';
+import { User } from '@/users/users.model';
 import { RolesModule } from '@/roles/roles.module';
 import { Role } from '@/roles/role.model';
 import { UserRole } from '@/util-models/user-role.model';
+import { AuthModule } from './auth/auth.module';
 console.log(`.${process.env.NODE_ENV}.env`);
 @Module({
   imports: [
@@ -27,6 +28,7 @@ console.log(`.${process.env.NODE_ENV}.env`);
     }),
     UsersModule,
     RolesModule,
+    AuthModule,
   ],
   providers: [],
 })
