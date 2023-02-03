@@ -120,15 +120,31 @@ export class User extends Model<User, UserCreationAttributes> {
   })
   experience: string;
 
+  @Default(false)
+  @ApiProperty({
+    example: false,
+    description: 'is user banned',
+  })
+  @Column({
+    type: DataType.BOOLEAN,
+    allowNull: false,
+  })
+  isBanned: string;
+
+  @ApiProperty({
+    example: 'za to chto dolboeb',
+    description: 'user ban reason description',
+  })
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  banReason: string;
+
   @BelongsToMany(() => Role, () => UserRole)
   roles: Role[];
 }
 
-// role: {
-//   type: String,
-//   enum: [Roles.ADMIN, Roles.HR, Roles.RECRUTIER, Roles.DEV, Roles.INTERN],
-//   default: Roles.DEV,
-// },
 // workType: {
 //   type: String,
 //   enum: [WorkTypes.REMOUTE, WorkTypes.OFFICE, WorkTypes.MIX],
