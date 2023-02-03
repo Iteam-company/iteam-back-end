@@ -18,10 +18,10 @@ export class RolesGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     try {
-      const requiredRoles = this.reflector.getAllAndOverride(ROLES_KEY, [
-        context.getHandler(),
-        context.getClass(),
-      ]);
+      const requiredRoles = this.reflector.getAllAndOverride<Array<string>>(
+        ROLES_KEY,
+        [context.getHandler(), context.getClass()],
+      );
 
       if (!requiredRoles) {
         return true;
@@ -47,7 +47,9 @@ export class RolesGuard implements CanActivate {
 
       return isUserHaveAccess;
     } catch (error) {
-      throw new ForbiddenException({ message: 'not authorized' });
+      throw new ForbiddenException(error, {
+        description: "don't have permissions",
+      });
     }
   }
 }
