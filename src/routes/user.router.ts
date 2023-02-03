@@ -3,14 +3,15 @@ import express from 'express';
 
 import UserController from '../controllers/user.controller';
 import uploadAvatar from '../middlewares/uploadAvatar.middlewear';
+import auth from '../middlewares/auth.middlewear';
 
 const userRouter = express.Router();
 
-userRouter.post('/', UserController.createUser);
+userRouter.post('/',auth, UserController.createUser);
 
-userRouter.get('/', UserController.getAllUsers);
+userRouter.get('/',auth, UserController.getAllUsers);
 
-userRouter.get('/:userID', UserController.getUserByID);
+userRouter.get('/:userID',auth, UserController.getUserByID);
 
 userRouter.post(
 	'/uploadAvatar/:userID',

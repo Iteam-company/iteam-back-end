@@ -5,11 +5,11 @@ import ProjectController from '../controllers/project.controller';
 
 const projectRouter = express.Router();
 
-projectRouter.post('/', ProjectController.createProject);
+projectRouter.post('/', auth, ProjectController.createProject);
 
-projectRouter.get('/', ProjectController.getAllProjects);
+projectRouter.get('/',auth, ProjectController.getAllProjects);
 
-projectRouter.get('/:projectID', ProjectController.getProjectByID);
+projectRouter.get('/:projectID',auth, ProjectController.getProjectByID);
 
 projectRouter.patch(
 	'/update/:projectID',
