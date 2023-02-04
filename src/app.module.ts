@@ -10,6 +10,7 @@ import { Role } from '@/roles/role.model';
 import { UserRole } from '@/util-models/user-role.model';
 import { AuthModule } from './auth/auth.module';
 import { WorkTypesModule } from './work-types/work-types.module';
+import { WorkType } from '@/work-types/work-types.model';
 console.log(`.${process.env.NODE_ENV}.env`);
 @Module({
   imports: [
@@ -24,7 +25,7 @@ console.log(`.${process.env.NODE_ENV}.env`);
       username: getEnviroment(EnviromentNames.POSTGRES_USER),
       password: getEnviroment(EnviromentNames.POSTGRES_PASSWORD),
       database: getEnviroment(EnviromentNames.POSTGRES_DB),
-      models: [User, Role, UserRole],
+      models: [User, Role, UserRole, WorkType],
       autoLoadModels: true,
     }),
     UsersModule,

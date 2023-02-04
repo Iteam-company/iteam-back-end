@@ -1,5 +1,6 @@
 import { Role } from '@/roles/role.model';
 import { UserRole } from '@/util-models/user-role.model';
+import { WorkType } from '@/work-types/work-types.model';
 import { ApiProperty } from '@nestjs/swagger/dist/decorators';
 import {
   Column,
@@ -8,6 +9,8 @@ import {
   Table,
   Default,
   BelongsToMany,
+  BelongsTo,
+  ForeignKey,
 } from 'sequelize-typescript';
 
 interface UserCreationAttributes {
@@ -141,17 +144,20 @@ export class User extends Model<User, UserCreationAttributes> {
   })
   banReason: string;
 
-  // workType: string;
+  @ForeignKey(() => WorkType)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: true,
+  })
+  workTypeId: number;
+
+  @BelongsTo(() => WorkType)
+  workType: WorkType;
 
   @BelongsToMany(() => Role, () => UserRole)
   roles: Role[];
 }
 
-// workType: {
-//   type: String,
-//   enum: [WorkTypes.REMOUTE, WorkTypes.OFFICE, WorkTypes.MIX],
-//   default: WorkTypes.OFFICE,
-// },
 // file: { type: String },
 // offerDay: { type: Date, default: Date.now() },
 // birthday: { type: Date },
