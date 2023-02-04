@@ -7,12 +7,15 @@ import { BanUserDto } from './dto/ban-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './users.model';
 import { HttpStatus } from '@nestjs/common/enums';
+import { SetUserWorkTypeDto } from './dto/set-user-work-type.dto';
+import { WorkTypesService } from '@/work-types/work-types.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User) private userRepository: typeof User,
     private rolesService: RolesService,
+    private workTypesService: WorkTypesService,
   ) {}
   async createUser(dto: CreateUserDto) {
     const candidate = await this.getUserByEmail(dto.email);
@@ -47,13 +50,29 @@ export class UsersService {
     const user = await this.userRepository.findByPk(dto.userId);
     const role = await this.rolesService.getRoleByValue(dto.value);
 
-    if (role && user) {
+    if (user && role) {
       await user.$add('roles', role.id);
 
       return dto;
     }
 
-    throw new HttpException('user or role not fount', HttpStatus.NOT_FOUND);
+    throw new HttpException('user or role not found', HttpStatus.NOT_FOUND);
+  }
+
+  async setUserWorkType(dto: SetUserWorkTypeDto) {
+    const user = await this.userRepository.findByPk(dto.userId);
+    const workType = await this.workTypesService.getWorkTypeByValue(dto.value);
+
+    if (user && workType) {
+      await user.$set('workType', workType);
+
+      return dto;
+    }
+
+    throw new HttpException(
+      'user or work type not found',
+      HttpStatus.NOT_FOUND,
+    );
   }
 
   async banUser(dto: BanUserDto) {
