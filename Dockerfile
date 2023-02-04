@@ -21,7 +21,7 @@ CMD ["npm", "run", "start:dev-docker"]
 FROM common-build-stage as production-build-stage
 
 ENV NODE_ENV production
-ENV PORT=1337
-EXPOSE ${PORT}
+# ENV PORT=1337
+# EXPOSE ${PORT}
 
 CMD ["npm", "run", "start"]
