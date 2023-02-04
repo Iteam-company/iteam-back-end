@@ -144,6 +144,29 @@ export class User extends Model<User, UserCreationAttributes> {
   })
   banReason: string;
 
+  @ApiProperty({
+    example:
+      'Sat Feb 04 2023 14:02:55 GMT+0200 (Eastern European Standard Time)',
+    description: 'date of birth',
+  })
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+  })
+  birthday: Date;
+
+  @ApiProperty({
+    example:
+      'Sat Feb 04 2023 14:02:55 GMT+0200 (Eastern European Standard Time)',
+    description: 'date of offer',
+  })
+  @Default(new Date())
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+  })
+  offerDay: Date;
+
   @ForeignKey(() => WorkType)
   @Column({
     type: DataType.INTEGER,
@@ -159,8 +182,6 @@ export class User extends Model<User, UserCreationAttributes> {
 }
 
 // file: { type: String },
-// offerDay: { type: Date, default: Date.now() },
-// birthday: { type: Date },
 
 // stack: [{ type: ObjectId, ref: 'Stack' }],
 // team: [{ type: ObjectId, ref: 'Teams' }],
