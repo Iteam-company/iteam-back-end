@@ -35,3 +35,12 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## Docker-compose
+
+```bash
+# build
+$ docker-compose build
+# run dev
+$ docker-compose up
+```

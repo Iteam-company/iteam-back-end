@@ -16,10 +16,6 @@ const start = async () => {
     .setTitle('iteam-back-end')
     .setDescription('REST API documentation')
     .setVersion('0.0.1')
-    // .addSecurity('basic', {
-    //   type: 'http',
-    //   scheme: 'basic',
-    // })
     .addBearerAuth()
     .build();
 
