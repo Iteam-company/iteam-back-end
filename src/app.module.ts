@@ -11,6 +11,7 @@ import { UserRole } from '@/util-models/user-role.model';
 import { AuthModule } from './auth/auth.module';
 import { WorkTypesModule } from './work-types/work-types.module';
 import { WorkType } from '@/work-types/work-types.model';
+import { FilesModule } from './files/files.module';
 console.log(`.${process.env.NODE_ENV}.env`);
 @Module({
   imports: [
@@ -32,6 +33,7 @@ console.log(`.${process.env.NODE_ENV}.env`);
     RolesModule,
     AuthModule,
     WorkTypesModule,
+    FilesModule,
   ],
   providers: [],
 })
