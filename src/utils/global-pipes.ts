@@ -1,3 +1,3 @@
-import { ValidationPipe } from '@/pipes/validation.pipe';
+import { ValidationBodyPipe } from '@/pipes/validation.pipe';
 
-export const globalPipes = [new ValidationPipe()];
+export const globalPipes = [new ValidationBodyPipe()];
