@@ -156,6 +156,16 @@ export class User extends Model<User, UserCreationAttributes> {
   birthday: Date;
 
   @ApiProperty({
+    example: 'https://path-to-download-cv/',
+    description: 'url to download cv',
+  })
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  cv: string;
+
+  @ApiProperty({
     example:
       'Sat Feb 04 2023 14:02:55 GMT+0200 (Eastern European Standard Time)',
     description: 'date of offer',
@@ -180,8 +190,6 @@ export class User extends Model<User, UserCreationAttributes> {
   @BelongsToMany(() => Role, () => UserRole)
   roles: Role[];
 }
-
-// file: { type: String },
 
 // stack: [{ type: ObjectId, ref: 'Stack' }],
 // team: [{ type: ObjectId, ref: 'Teams' }],
