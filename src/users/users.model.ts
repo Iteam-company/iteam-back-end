@@ -129,7 +129,7 @@ export class User extends Model<User, UserCreationAttributes> {
     type: DataType.BOOLEAN,
     allowNull: false,
   })
-  isBanned: string;
+  isBanned: boolean;
 
   @ApiProperty({
     example: 'za to chto dolboeb',
@@ -140,6 +140,8 @@ export class User extends Model<User, UserCreationAttributes> {
     allowNull: true,
   })
   banReason: string;
+
+  // workType: string;
 
   @BelongsToMany(() => Role, () => UserRole)
   roles: Role[];
