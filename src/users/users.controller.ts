@@ -2,7 +2,16 @@ import { JwtAuthGuard } from '@/auth/jwt-auth.guard';
 import { Roles } from '@/auth/roles-auth.decorator';
 import { RolesGuard } from '@/auth/roles.guard';
 import { roles } from '@/constants/auth/roles';
-import { Controller, Post, Body, Get, HttpCode } from '@nestjs/common';
+import { ValidationPipe } from '@/pipes/validation.pipe';
+
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  HttpCode,
+  UsePipes,
+} from '@nestjs/common';
 import { UseGuards } from '@nestjs/common/decorators/core/use-guards.decorator';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger/dist';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger/dist/decorators';

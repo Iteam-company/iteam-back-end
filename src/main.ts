@@ -3,11 +3,15 @@ import { AppModule } from '@/app.module';
 import { EnviromentNames, getEnviroment } from './utils/evniromentGetter';
 import { DocumentBuilder } from '@nestjs/swagger';
 import { SwaggerModule } from '@nestjs/swagger/dist';
+import { globalPipes } from '@/utils/global-pipes';
 
 const start = async () => {
   const app = await NestFactory.create(AppModule);
   const PORT = getEnviroment(EnviromentNames.PORT);
 
+  globalPipes.forEach((pipe) => app.useGlobalPipes(pipe));
+
+  // swagger documentation config
   const config = new DocumentBuilder()
     .setTitle('iteam-back-end')
     .setDescription('REST API documentation')

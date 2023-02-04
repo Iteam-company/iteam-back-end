@@ -15,6 +15,12 @@ export class UsersService {
     private rolesService: RolesService,
   ) {}
   async createUser(dto: CreateUserDto) {
+    const candidate = await this.getUserByEmail(dto.email);
+
+    if (candidate) {
+      throw new HttpException('Email already took', HttpStatus.BAD_REQUEST);
+    }
+
     const user = await this.userRepository.create(dto);
     const role = await this.rolesService.getRoleByValue('GUEST');
     await user.$set('roles', [role.id]);
@@ -52,5 +58,14 @@ export class UsersService {
 
   async banUser(dto: BanUserDto) {
     const user = await this.userRepository.findByPk(dto.userId);
+    if (!user) {
+      throw new HttpException('user not fount', HttpStatus.NOT_FOUND);
+    }
+    user.isBanned = true;
+    user.banReason = dto.banReason;
+
+    await user.save();
+
+    return user;
   }
 }
