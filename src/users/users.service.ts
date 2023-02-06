@@ -29,6 +29,11 @@ export class UsersService {
     await user.$set('roles', [role.id]);
     user.roles = [role];
 
+    // set work type to OFFICE by default
+    // const workType = await this.workTypesService.getWorkTypeByValue('OFFICE');
+    // await user.$set('workType', [workType.id]);
+    // user.workType = workType;
+
     return user;
   }
 

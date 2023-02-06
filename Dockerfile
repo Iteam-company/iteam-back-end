@@ -9,19 +9,19 @@ RUN npm install
 COPY . .
 
 # Development build stage
-FROM common-build-stage as development-build-stage
+# FROM common-build-stage as development-build-stage
 
 ENV NODE_ENV development
-ENV PORT=1488
+ENV PORT=5001
 EXPOSE ${PORT}
 
 CMD ["npm", "run", "start:dev-docker"]
 
 # Production build stage
-FROM common-build-stage as production-build-stage
+# FROM common-build-stage as production-build-stage
 
-ENV NODE_ENV production
-# ENV PORT=1337
-# EXPOSE ${PORT}
+# ENV NODE_ENV production
+# # ENV PORT=1337
+# # EXPOSE ${PORT}
 
-CMD ["npm", "run", "start"]
+# CMD ["npm", "run", "start"]

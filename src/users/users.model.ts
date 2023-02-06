@@ -104,7 +104,7 @@ export class User extends Model<User, UserCreationAttributes> {
   address: string;
 
   @ApiProperty({
-    example: "JS TS NODE.JS REACT ANGULAR GOVNO!!! (it's a joke!)",
+    example: 'JS TS NODE.JS REACT ANGULAR',
     description: 'user skills',
   })
   @Column({
@@ -184,9 +184,17 @@ export class User extends Model<User, UserCreationAttributes> {
   })
   workTypeId: number;
 
+  @ApiProperty({
+    type: [WorkType],
+    description: 'user work type',
+  })
   @BelongsTo(() => WorkType)
   workType: WorkType;
 
+  @ApiProperty({
+    type: [Role],
+    description: 'user roles',
+  })
   @BelongsToMany(() => Role, () => UserRole)
   roles: Role[];
 }

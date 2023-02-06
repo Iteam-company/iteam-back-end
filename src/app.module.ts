@@ -28,6 +28,11 @@ console.log(`.${process.env.NODE_ENV}.env`);
       database: getEnviroment(EnviromentNames.POSTGRES_DB),
       models: [User, Role, UserRole, WorkType],
       autoLoadModels: true,
+      protocol: 'postgres',
+      dialectOptions: {
+        ssl: true,
+        native: true,
+      },
     }),
     UsersModule,
     RolesModule,
