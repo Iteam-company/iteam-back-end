@@ -1,15 +1,17 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '@/app.module';
-import { EnviromentNames, getEnviroment } from './utils/evniromentGetter';
+import { EnviromentNames, getEnviroment } from './utils/evniroment-getter';
 import { DocumentBuilder } from '@nestjs/swagger';
 import { SwaggerModule } from '@nestjs/swagger/dist';
 import { globalPipes } from '@/utils/global-pipes';
+import { globalMiddlewares } from './utils/global-middlewares';
 
 const start = async () => {
   const app = await NestFactory.create(AppModule);
   const PORT = getEnviroment(EnviromentNames.PORT);
 
   globalPipes.forEach((pipe) => app.useGlobalPipes(pipe));
+  globalMiddlewares.forEach((middleware) => app.use(middleware));
 
   // swagger documentation config
   const config = new DocumentBuilder()
