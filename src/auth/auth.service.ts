@@ -1,23 +1,31 @@
+import { TokensService } from '@/tokens/tokens.service';
 import { CreateUserDto } from '@/users/dto/create-user.dto';
-import { User } from '@/users/users.model';
 import { UsersService } from '@/users/users.service';
 import { Injectable } from '@nestjs/common';
 import { HttpStatus } from '@nestjs/common/enums';
 import { HttpException } from '@nestjs/common/exceptions';
-import { JwtService } from '@nestjs/jwt/dist';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UsersService,
-    private jwtService: JwtService,
+    private tokensService: TokensService,
   ) {}
 
   async singIn(userDto: CreateUserDto) {
     const user = await this.validateUser(userDto);
 
-    return this.generateToken(user);
+    const tokens = await this.tokensService.generateTokens(user);
+
+    await this.tokensService.saveRefreshToken({
+      userId: user.id,
+      token: tokens.refreshToken,
+    });
+
+    await user.reload({ include: { all: true } });
+
+    return { tokens, user };
   }
 
   async registration(userDto: CreateUserDto) {
@@ -33,16 +41,42 @@ export class AuthService {
       password: hashPassword,
     });
 
-    return this.generateToken(user);
+    const tokens = await this.tokensService.generateTokens(user);
+
+    await this.tokensService.saveRefreshToken({
+      userId: user.id,
+      token: tokens.refreshToken,
+    });
+
+    await user.reload({ include: { all: true } });
+    return { tokens, user };
   }
 
-  private async generateToken(user: User) {
-    const payload = { email: user.email, id: user.id, roles: user.roles };
-    const token = this.jwtService.sign(payload);
+  async refresh(refreshToken: string) {
+    try {
+      if (!refreshToken) {
+        throw new HttpException(
+          'refresh token not provided',
+          HttpStatus.UNAUTHORIZED,
+        );
+      }
 
-    return {
-      token,
-    };
+      const user = this.tokensService.validateToken(refreshToken);
+      const tokenFromDb = await this.tokensService.findToken({
+        token: refreshToken,
+      });
+
+      if (!user || !tokenFromDb) {
+        throw new HttpException(
+          'refresh token not valid or token from db not finded',
+          HttpStatus.UNAUTHORIZED,
+        );
+      }
+
+      /////////////////////////// dsad adhsyfyfjirtguohaesuighyufpqirghf
+    } catch (error) {
+      throw new HttpException('token not valid', HttpStatus.UNAUTHORIZED);
+    }
   }
 
   private async validateUser(userDto: CreateUserDto) {

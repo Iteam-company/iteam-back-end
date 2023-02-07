@@ -1,4 +1,5 @@
 import { Role } from '@/roles/role.model';
+import { Token } from '@/tokens/token.model';
 import { UserRole } from '@/util-models/user-role.model';
 import { WorkType } from '@/work-types/work-types.model';
 import { ApiProperty } from '@nestjs/swagger/dist/decorators';
@@ -11,6 +12,7 @@ import {
   BelongsToMany,
   BelongsTo,
   ForeignKey,
+  HasOne,
 } from 'sequelize-typescript';
 
 interface UserCreationAttributes {
@@ -197,10 +199,12 @@ export class User extends Model<User, UserCreationAttributes> {
   })
   @BelongsToMany(() => Role, () => UserRole)
   roles: Role[];
+
+  @HasOne(() => Token)
+  token: Token;
 }
 
 // stack: [{ type: ObjectId, ref: 'Stack' }],
 // team: [{ type: ObjectId, ref: 'Teams' }],
 // company: { type: ObjectId, ref: 'Company' },
-// tokens: { type: Object, default: {} },
 // links: [{ type: ObjectId, ref: 'Links' }],

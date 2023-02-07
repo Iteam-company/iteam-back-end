@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 
 import { UsersModule } from '@/users/users.module';
-import { EnviromentNames, getEnviroment } from '@/utils/evniromentGetter';
+import { EnviromentNames, getEnviroment } from '@/utils/evniroment-getter';
 import { User } from '@/users/users.model';
 import { RolesModule } from '@/roles/roles.module';
 import { Role } from '@/roles/role.model';
@@ -12,6 +12,8 @@ import { AuthModule } from './auth/auth.module';
 import { WorkTypesModule } from './work-types/work-types.module';
 import { WorkType } from '@/work-types/work-types.model';
 import { FilesModule } from './files/files.module';
+import { TokensModule } from './tokens/tokens.module';
+import { Token } from '@/tokens/token.model';
 console.log(`.${process.env.NODE_ENV}.env`);
 @Module({
   imports: [
@@ -26,11 +28,11 @@ console.log(`.${process.env.NODE_ENV}.env`);
       username: getEnviroment(EnviromentNames.POSTGRES_USER),
       password: getEnviroment(EnviromentNames.POSTGRES_PASSWORD),
       database: getEnviroment(EnviromentNames.POSTGRES_DB),
-      models: [User, Role, UserRole, WorkType],
+      models: [User, Role, UserRole, WorkType, Token],
       autoLoadModels: true,
       protocol: 'postgres',
       dialectOptions: {
-        ssl: true,
+        // ssl: true,
         native: true,
       },
     }),
@@ -39,6 +41,7 @@ console.log(`.${process.env.NODE_ENV}.env`);
     AuthModule,
     WorkTypesModule,
     FilesModule,
+    TokensModule,
   ],
   providers: [],
 })
