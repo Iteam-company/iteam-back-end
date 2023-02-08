@@ -1,23 +1,16 @@
 import { User } from '@/users/user.model';
-import { UserRole } from '@/util-models/user-role.model';
 import { ApiProperty } from '@nestjs/swagger/dist/decorators';
-import {
-  BelongsToMany,
-  Column,
-  DataType,
-  Model,
-  Table,
-} from 'sequelize-typescript';
+import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
 
-interface RoleCreationAttributes {
+interface WorkTypeCreationAttributes {
   value: string;
   description: string;
 }
 
 @Table({
-  tableName: 'roles',
+  tableName: 'work_types',
 })
-export class Role extends Model<Role, RoleCreationAttributes> {
+export class WorkType extends Model<WorkType, WorkTypeCreationAttributes> {
   @ApiProperty({ example: '1', description: 'unique identifier' })
   @Column({
     type: DataType.INTEGER,
@@ -28,8 +21,8 @@ export class Role extends Model<Role, RoleCreationAttributes> {
   id: number;
 
   @ApiProperty({
-    example: 'GUEST',
-    description: 'value of role',
+    example: 'OFFICE',
+    description: 'value of work type enum',
   })
   @Column({
     type: DataType.STRING,
@@ -39,8 +32,8 @@ export class Role extends Model<Role, RoleCreationAttributes> {
   value: string;
 
   @ApiProperty({
-    example: 'that is base role',
-    description: 'description of role',
+    example: 'mix type of work',
+    description: 'description of work type',
   })
   @Column({
     type: DataType.STRING,
@@ -48,6 +41,6 @@ export class Role extends Model<Role, RoleCreationAttributes> {
   })
   description: string;
 
-  @BelongsToMany(() => User, () => UserRole)
+  @HasMany(() => User)
   users: User[];
 }

@@ -1,7 +1,7 @@
 import { Role } from '@/roles/role.model';
 import { Token } from '@/tokens/token.model';
 import { UserRole } from '@/util-models/user-role.model';
-import { WorkType } from '@/work-types/work-types.model';
+import { WorkType } from '@/work-types/work-type.model';
 import { ApiProperty } from '@nestjs/swagger/dist/decorators';
 import {
   Column,

@@ -5,7 +5,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { AssignUserRoleDto } from './dto/assign-user-role.dto';
 import { BanUserDto } from './dto/ban-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './users.model';
+import { User } from './user.model';
 import { HttpStatus } from '@nestjs/common/enums';
 import { SetUserWorkTypeDto } from './dto/set-user-work-type.dto';
 import { WorkTypesService } from '@/work-types/work-types.service';
