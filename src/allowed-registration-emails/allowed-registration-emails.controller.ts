@@ -1,15 +1,17 @@
-import { JwtAuthGuard } from '@/auth/jwt-auth.guard';
-import { Roles } from '@/auth/roles-auth.decorator';
-import { RolesGuard } from '@/auth/roles.guard';
-import { roles } from '@/constants/auth/roles';
+// import { JwtAuthGuard } from '@/auth/jwt-auth.guard';
+// import { Roles } from '@/auth/roles-auth.decorator';
+// import { RolesGuard } from '@/auth/roles.guard';
+// import { roles } from '@/constants/auth/roles';
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
+  Param,
   Post,
-  UseGuards,
+  // UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -46,5 +48,15 @@ export class AllowedRegistrationEmailsController {
   @Get()
   getAllowedEmails() {
     return this.allowedRegistrationEmailsService.getAllAllowedEmails();
+  }
+
+  @ApiOperation({ summary: 'delete email from whitelist by id' })
+  @ApiResponse({ status: HttpStatus.CREATED })
+  // @Roles(roles.GUEST.value)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  @HttpCode(HttpStatus.ACCEPTED)
+  @Delete('/:id')
+  deleteAllowedEmailById(@Param('id') id: string) {
+    return this.allowedRegistrationEmailsService.deleteAllowedEmailById(id);
   }
 }
