@@ -1,4 +1,4 @@
-import { User } from '@/users/users.model';
+import { User } from '@/users/user.model';
 import { ApiProperty } from '@nestjs/swagger/dist/decorators';
 import {
   BelongsTo,

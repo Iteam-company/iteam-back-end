@@ -1,4 +1,4 @@
-import { User } from '@/users/users.model';
+import { User } from '@/users/user.model';
 import { ApiProperty } from '@nestjs/swagger/dist/decorators';
 import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
 
@@ -8,7 +8,7 @@ interface WorkTypeCreationAttributes {
 }
 
 @Table({
-  tableName: 'work_types',
+  tableName: 'teams',
 })
 export class WorkType extends Model<WorkType, WorkTypeCreationAttributes> {
   @ApiProperty({ example: '1', description: 'unique identifier' })
@@ -19,28 +19,4 @@ export class WorkType extends Model<WorkType, WorkTypeCreationAttributes> {
     primaryKey: true,
   })
   id: number;
-
-  @ApiProperty({
-    example: 'OFFICE',
-    description: 'value of work type enum',
-  })
-  @Column({
-    type: DataType.STRING,
-    unique: true,
-    allowNull: false,
-  })
-  value: string;
-
-  @ApiProperty({
-    example: 'mix type of work',
-    description: 'description of work type',
-  })
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
-  })
-  description: string;
-
-  @HasMany(() => User)
-  users: User[];
 }

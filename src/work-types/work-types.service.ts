@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { CreateWorkTypeDto } from './dto/create-work-type.dto';
-import { WorkType } from './work-types.model';
+import { WorkType } from './work-type.model';
 
 @Injectable()
 export class WorkTypesService {
