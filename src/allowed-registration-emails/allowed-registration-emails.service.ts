@@ -33,4 +33,14 @@ export class AllowedRegistrationEmailsService {
 
     return allowedEmail;
   }
+
+  async deleteAllowedEmailById(id: string) {
+    const allowedEmail = await this.allowedRegistrationEmailRepository.findByPk(
+      id,
+    );
+
+    if (allowedEmail) {
+      await allowedEmail.destroy();
+    }
+  }
 }
