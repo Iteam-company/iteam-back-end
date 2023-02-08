@@ -1,3 +1,4 @@
+import { RemoveTokenDto } from '@/tokens/dto/delete-token.dto';
 import { TokensService } from '@/tokens/tokens.service';
 import { CreateUserDto } from '@/users/dto/create-user.dto';
 import { UsersService } from '@/users/users.service';
@@ -26,6 +27,10 @@ export class AuthService {
     await user.reload({ include: { all: true } });
 
     return { tokens, user };
+  }
+
+  async signOut(dto: RemoveTokenDto) {
+    await this.tokensService.removeToken(dto);
   }
 
   async registration(userDto: CreateUserDto) {
@@ -61,19 +66,30 @@ export class AuthService {
         );
       }
 
-      const user = this.tokensService.validateToken(refreshToken);
+      const decodedPayload = await this.tokensService.validateToken(
+        refreshToken,
+      );
       const tokenFromDb = await this.tokensService.findToken({
         token: refreshToken,
       });
 
-      if (!user || !tokenFromDb) {
+      if (!decodedPayload || !tokenFromDb) {
         throw new HttpException(
           'refresh token not valid or token from db not finded',
           HttpStatus.UNAUTHORIZED,
         );
       }
+      const userFromDb = await this.userService.getUserById(decodedPayload.id);
+      const tokens = await this.tokensService.generateTokens(userFromDb);
 
-      /////////////////////////// dsad adhsyfyfjirtguohaesuighyufpqirghf
+      await this.tokensService.saveRefreshToken({
+        userId: userFromDb.id,
+        token: tokens.refreshToken,
+      });
+
+      await userFromDb.reload({ include: { all: true } });
+
+      return { tokens, user: userFromDb };
     } catch (error) {
       throw new HttpException('token not valid', HttpStatus.UNAUTHORIZED);
     }

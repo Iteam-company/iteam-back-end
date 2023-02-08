@@ -53,9 +53,9 @@ export class TokensService {
   }
 
   async removeToken(dto: RemoveTokenDto) {
-    const { userId } = dto;
+    const { token } = dto;
     const findedToken = await this.tokensRepository.findOne({
-      where: { userId },
+      where: { token },
     });
 
     if (findedToken) {
