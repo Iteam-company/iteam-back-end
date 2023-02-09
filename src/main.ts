@@ -5,9 +5,10 @@ import { DocumentBuilder } from '@nestjs/swagger';
 import { SwaggerModule } from '@nestjs/swagger/dist';
 import { globalPipes } from '@/utils/global-pipes';
 import { globalMiddlewares } from './utils/global-middlewares';
+import { cors } from '@/utils/cors-options';
 
 const start = async () => {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors });
   const PORT = getEnviroment(EnviromentNames.PORT);
 
   globalPipes.forEach((pipe) => app.useGlobalPipes(pipe));
