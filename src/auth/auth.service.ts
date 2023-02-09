@@ -1,3 +1,4 @@
+import { AllowedRegistrationEmailsService } from '@/allowed-registration-emails/allowed-registration-emails.service';
 import { RemoveTokenDto } from '@/tokens/dto/delete-token.dto';
 import { TokensService } from '@/tokens/tokens.service';
 import { CreateUserDto } from '@/users/dto/create-user.dto';
@@ -12,6 +13,7 @@ export class AuthService {
   constructor(
     private userService: UsersService,
     private tokensService: TokensService,
+    private allowedRegistrationEmailsService: AllowedRegistrationEmailsService,
   ) {}
 
   async singIn(userDto: CreateUserDto) {
@@ -34,6 +36,18 @@ export class AuthService {
   }
 
   async registration(userDto: CreateUserDto) {
+    const isEmailAllowed =
+      await this.allowedRegistrationEmailsService.getAllowedEmailByEmail(
+        userDto.email,
+      );
+
+    if (!isEmailAllowed) {
+      throw new HttpException(
+        'Email is not in whitelist',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     const candidate = await this.userService.getUserByEmail(userDto.email);
 
     if (candidate) {

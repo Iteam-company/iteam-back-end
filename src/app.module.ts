@@ -35,7 +35,7 @@ console.log(`.${process.env.NODE_ENV}.env`);
       autoLoadModels: true,
       protocol: 'postgres',
       dialectOptions: {
-        // ssl: true,
+        ssl: true,
         native: true,
       },
     }),
