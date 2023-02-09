@@ -12,5 +12,6 @@ import { TokensModule } from '@/tokens/tokens.module';
     SequelizeModule.forFeature([AllowedRegistrationEmail]),
     TokensModule,
   ],
+  exports: [AllowedRegistrationEmailsService],
 })
 export class AllowedRegistrationEmailsModule {}

@@ -27,6 +27,14 @@ export class AllowedRegistrationEmailsService {
     return createdEmail;
   }
 
+  async getAllowedEmailByEmail(email: string) {
+    const allowedEmail = await this.allowedRegistrationEmailRepository.findOne({
+      where: { email },
+    });
+
+    return allowedEmail;
+  }
+
   async getAllAllowedEmails() {
     const allowedEmail =
       await this.allowedRegistrationEmailRepository.findAll();
