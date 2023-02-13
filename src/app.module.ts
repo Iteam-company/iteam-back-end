@@ -17,6 +17,7 @@ import { Token } from '@/tokens/token.model';
 import { TeamsModule } from './teams/teams.module';
 import { AllowedRegistrationEmailsModule } from './allowed-registration-emails/allowed-registration-emails.module';
 import { AllowedRegistrationEmail } from '@/allowed-registration-emails/allowed-registration-email.model';
+import { ProjectsModule } from './projects/projects.module';
 console.log(`.${process.env.NODE_ENV}.env`);
 @Module({
   imports: [
@@ -35,7 +36,7 @@ console.log(`.${process.env.NODE_ENV}.env`);
       autoLoadModels: true,
       protocol: 'postgres',
       dialectOptions: {
-        ssl: true,
+        // ssl: true,
         native: true,
       },
     }),
@@ -47,6 +48,7 @@ console.log(`.${process.env.NODE_ENV}.env`);
     TokensModule,
     TeamsModule,
     AllowedRegistrationEmailsModule,
+    ProjectsModule,
   ],
   providers: [],
 })
