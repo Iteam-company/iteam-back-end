@@ -1,5 +1,5 @@
-import { Role } from '@/roles/role.model';
-import { User } from '@/users/user.model';
+import { Project } from '@/projects/project.model';
+import { Technology } from '@/technologies/technology.model';
 import { ApiProperty } from '@nestjs/swagger/dist/decorators';
 import {
   Column,
@@ -10,11 +10,11 @@ import {
 } from 'sequelize-typescript';
 
 @Table({
-  tableName: 'user_roles',
+  tableName: 'project_technologies',
   createdAt: false,
   updatedAt: false,
 })
-export class UserRole extends Model<UserRole> {
+export class ProjectTechnology extends Model<ProjectTechnology> {
   @ApiProperty({ example: '1', description: 'unique identifier' })
   @Column({
     type: DataType.INTEGER,
@@ -24,17 +24,17 @@ export class UserRole extends Model<UserRole> {
   })
   id: number;
 
-  @ForeignKey(() => Role)
+  @ForeignKey(() => Project)
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
   })
-  roleId: number;
+  projectId: number;
 
-  @ForeignKey(() => User)
+  @ForeignKey(() => Technology)
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
   })
-  userId: number;
+  technologyId: number;
 }
