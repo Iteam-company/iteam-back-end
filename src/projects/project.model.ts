@@ -56,6 +56,10 @@ export class Project extends Model<Project, ProjectCreationAttributes> {
   })
   description: string;
 
+  @ApiProperty({
+    type: [Technology],
+    description: 'technologies that using on that project',
+  })
   @BelongsToMany(() => Technology, () => ProjectTechnology)
   technologies: Technology[];
 
@@ -95,7 +99,7 @@ export class Project extends Model<Project, ProjectCreationAttributes> {
     description: 'count of tracked hours within month',
   })
   @Column({
-    type: DataType.NUMBER,
+    type: DataType.FLOAT,
   })
   averageHoursPerMonth: number;
 
@@ -104,7 +108,7 @@ export class Project extends Model<Project, ProjectCreationAttributes> {
     description: `hourly rate pricing if pricingModel === ${PricingModel.HOURLY_RATE}`,
   })
   @Column({
-    type: DataType.NUMBER,
+    type: DataType.FLOAT,
   })
   hourlyRate: number;
 
@@ -113,7 +117,7 @@ export class Project extends Model<Project, ProjectCreationAttributes> {
     description: `fixed price cost if pricingModel === ${PricingModel.FIXED_PRICE}`,
   })
   @Column({
-    type: DataType.NUMBER,
+    type: DataType.FLOAT,
   })
   fixedPrice: number;
 
@@ -125,12 +129,16 @@ export class Project extends Model<Project, ProjectCreationAttributes> {
   userId: number;
 
   @ApiProperty({
-    type: User,
+    type: () => User,
     description: 'lead of rpoject from our company',
   })
   @BelongsTo(() => User)
   mainParticipant: User;
 
+  @ApiProperty({
+    type: () => [User],
+    description: 'users that take a part in project',
+  })
   @BelongsToMany(() => User, () => UserParticipantProject)
   participatingInProjects: User[];
 

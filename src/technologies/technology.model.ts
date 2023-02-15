@@ -67,6 +67,10 @@ export class Technology extends Model<
   })
   icon: string;
 
+  @ApiProperty({
+    type: [Project],
+    description: 'project where technology usings',
+  })
   @BelongsToMany(() => Project, () => ProjectTechnology)
   projects: Project[];
 }

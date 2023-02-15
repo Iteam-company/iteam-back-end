@@ -48,6 +48,10 @@ export class Role extends Model<Role, RoleCreationAttributes> {
   })
   description: string;
 
+  @ApiProperty({
+    type: [User],
+    description: 'user with that role',
+  })
   @BelongsToMany(() => User, () => UserRole)
   users: User[];
 }

@@ -213,6 +213,10 @@ export class User extends Model<User, UserCreationAttributes> {
   @HasMany(() => Project)
   leadingInProjects: Array<Project>;
 
+  @ApiProperty({
+    type: [Project],
+    description: 'participating in projects',
+  })
   @BelongsToMany(() => Project, () => UserParticipantProject)
   participatingInProjects: Project[];
 }

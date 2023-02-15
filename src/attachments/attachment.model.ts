@@ -55,14 +55,10 @@ export class Attachment extends Model<
   projectId: number;
 
   @ApiProperty({
-    type: Project,
+    type: () => Project,
     description: 'project on that attachment is attached',
   })
   @BelongsTo(() => Project)
-  @Column({
-    type: DataType.INTEGER,
-    allowNull: false,
-  })
   project: Project;
 
   @ApiProperty({
