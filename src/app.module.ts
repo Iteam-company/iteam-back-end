@@ -19,6 +19,8 @@ import { AllowedRegistrationEmailsModule } from './allowed-registration-emails/a
 import { AllowedRegistrationEmail } from '@/allowed-registration-emails/allowed-registration-email.model';
 import { ProjectsModule } from './projects/projects.module';
 import { TechnologiesModule } from './technologies/technologies.module';
+import { ClientsModule } from './clients/clients.module';
+import { AttachmentsModule } from './attachments/attachments.module';
 console.log(`.${process.env.NODE_ENV}.env`);
 @Module({
   imports: [
@@ -51,6 +53,8 @@ console.log(`.${process.env.NODE_ENV}.env`);
     AllowedRegistrationEmailsModule,
     ProjectsModule,
     TechnologiesModule,
+    ClientsModule,
+    AttachmentsModule,
   ],
   providers: [],
 })

@@ -1,11 +1,20 @@
+import { Attachment } from '@/attachments/attachment.model';
+import { Client } from '@/clients/client.model';
 import { PricingModel } from '@/enums/pricing-model';
+import { ProjectDeploymentStatus } from '@/enums/project-deployment-status';
+import { ProjectStatus } from '@/enums/project-status';
 import { Technology } from '@/technologies/technology.model';
+import { User } from '@/users/user.model';
 import { ProjectTechnology } from '@/util-models/project-technology.model';
+import { UserParticipantProject } from '@/util-models/user-participant-project.model';
 import { ApiProperty } from '@nestjs/swagger/dist/decorators';
 import {
+  BelongsTo,
   BelongsToMany,
   Column,
   DataType,
+  ForeignKey,
+  HasMany,
   Model,
   Table,
 } from 'sequelize-typescript';
@@ -108,12 +117,117 @@ export class Project extends Model<Project, ProjectCreationAttributes> {
   })
   fixedPrice: number;
 
-  // @ApiProperty({
-  //   example: 300.0,
-  //   description: `fixed price cost if pricingModel === ${PricingModel.FIXED_PRICE}`,
-  // })
-  // @Column({
-  //   type: DataType.NUMBER,
-  // })
-  // fixedPrice: number;
+  @ForeignKey(() => User)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: true,
+  })
+  userId: number;
+
+  @ApiProperty({
+    type: User,
+    description: 'lead of rpoject from our company',
+  })
+  @BelongsTo(() => User)
+  mainParticipant: User;
+
+  @BelongsToMany(() => User, () => UserParticipantProject)
+  participatingInProjects: User[];
+
+  @ApiProperty({
+    example: new Date(),
+    description: 'date of start deal with project',
+  })
+  @Column({
+    type: DataType.DATE,
+  })
+  startDate: Date;
+
+  @ApiProperty({
+    example: new Date(),
+    description: 'date of end deal with project',
+  })
+  @Column({
+    type: DataType.DATE,
+  })
+  endDate: Date;
+
+  @ApiProperty({
+    example: 'project is POLNAYA HUITA',
+    description: 'describe why project work ends',
+  })
+  @Column({
+    type: DataType.TEXT,
+  })
+  endReason: string;
+
+  @ApiProperty({
+    example: ProjectStatus.ACTIVE,
+    description: `project status may be: ${Object.values(ProjectStatus)}`,
+  })
+  @Column({
+    type: DataType.ENUM,
+    values: Object.values(PricingModel),
+  })
+  status: ProjectStatus;
+
+  @ForeignKey(() => Client)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: true,
+  })
+  clientId: number;
+
+  @ApiProperty({
+    type: Client,
+    description: 'client of that project',
+  })
+  @BelongsTo(() => Client)
+  client: Client;
+
+  @ApiProperty({
+    example: ProjectDeploymentStatus.MVP_RELEASED,
+    description: `project status may be: ${Object.values(
+      ProjectDeploymentStatus,
+    )}`,
+  })
+  @Column({
+    type: DataType.ENUM,
+    values: Object.values(ProjectDeploymentStatus),
+  })
+  projectDeploymentStatus: ProjectStatus;
+
+  @ApiProperty({
+    example: 'https://nestjs.com/',
+    description: 'link to project',
+  })
+  @Column({
+    type: DataType.TEXT,
+  })
+  projectLink: string;
+
+  @ApiProperty({
+    example: 'aniah@gmail.com',
+    description: 'login credentials to demo',
+  })
+  @Column({
+    type: DataType.TEXT,
+  })
+  demoCredentialsLogin: string;
+
+  @ApiProperty({
+    example: '14881337',
+    description: 'password credentials to demo',
+  })
+  @Column({
+    type: DataType.TEXT,
+  })
+  demoCredentialsPassword: string;
+
+  @ApiProperty({
+    type: [Attachment],
+    description: 'projects where user is leader',
+  })
+  @HasMany(() => Attachment)
+  attachments: Array<Attachment>;
 }

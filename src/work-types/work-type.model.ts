@@ -42,5 +42,5 @@ export class WorkType extends Model<WorkType, WorkTypeCreationAttributes> {
   description: string;
 
   @HasMany(() => User)
-  users: User[];
+  users: Array<User>;
 }
