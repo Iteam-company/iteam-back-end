@@ -14,7 +14,7 @@ import {
   createdAt: false,
   updatedAt: false,
 })
-export class UserLeadProject extends Model<UserLeadProject> {
+export class UserParticipantProject extends Model<UserParticipantProject> {
   @ApiProperty({ example: '1', description: 'unique identifier' })
   @Column({
     type: DataType.INTEGER,

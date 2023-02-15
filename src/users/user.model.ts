@@ -1,5 +1,7 @@
+import { Project } from '@/projects/project.model';
 import { Role } from '@/roles/role.model';
 import { Token } from '@/tokens/token.model';
+import { UserParticipantProject } from '@/util-models/user-participant-project.model';
 import { UserRole } from '@/util-models/user-role.model';
 import { WorkType } from '@/work-types/work-type.model';
 import { ApiProperty } from '@nestjs/swagger/dist/decorators';
@@ -13,6 +15,7 @@ import {
   BelongsTo,
   ForeignKey,
   HasOne,
+  HasMany,
 } from 'sequelize-typescript';
 
 interface UserCreationAttributes {
@@ -187,7 +190,7 @@ export class User extends Model<User, UserCreationAttributes> {
   workTypeId: number;
 
   @ApiProperty({
-    type: [WorkType],
+    type: WorkType,
     description: 'user work type',
   })
   @BelongsTo(() => WorkType)
@@ -202,6 +205,16 @@ export class User extends Model<User, UserCreationAttributes> {
 
   @HasOne(() => Token)
   token: Token;
+
+  @ApiProperty({
+    type: [Project],
+    description: 'projects where user is leader',
+  })
+  @HasMany(() => Project)
+  leadingInProjects: Array<Project>;
+
+  @BelongsToMany(() => Project, () => UserParticipantProject)
+  participatingInProjects: Project[];
 }
 
 // stack: [{ type: ObjectId, ref: 'Stack' }],
