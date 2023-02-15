@@ -7,16 +7,13 @@ import {
 import { ForbiddenException } from '@nestjs/common/exceptions';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt/dist';
-import { Observable } from 'rxjs';
 import { ROLES_KEY } from './roles-auth.decorator';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(private jwtService: JwtService, private reflector: Reflector) {}
 
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
+  async canActivate(context: ExecutionContext) {
     try {
       const requiredRoles = this.reflector.getAllAndOverride<Array<string>>(
         ROLES_KEY,
@@ -34,10 +31,10 @@ export class RolesGuard implements CanActivate {
       const token = splitedAuthHeader[1];
 
       if (bearer !== 'Bearer' || !token) {
-        throw new UnauthorizedException({ message: 'not authorized' });
+        throw new UnauthorizedException({ message: 'not authorized ewqewq' });
       }
 
-      const user = this.jwtService.verify(token);
+      const user = await this.jwtService.verify(token);
 
       request.user = user;
 

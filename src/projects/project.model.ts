@@ -20,7 +20,7 @@ import {
 } from 'sequelize-typescript';
 
 interface ProjectCreationAttributes {
-  value: string;
+  name: string;
   description: string;
 }
 

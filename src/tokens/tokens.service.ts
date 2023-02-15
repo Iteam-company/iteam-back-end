@@ -84,7 +84,7 @@ export class TokensService {
 
   async validateToken(token: string) {
     const user =
-      this.jwtService.verify<Pick<User, 'email' | 'id' | 'roles'>>(token);
+      this.jwtService.verifyAsync<Pick<User, 'email' | 'id' | 'roles'>>(token);
     return user;
   }
 }

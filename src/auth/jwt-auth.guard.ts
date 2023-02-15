@@ -5,15 +5,12 @@ import {
   UnauthorizedException,
   Injectable,
 } from '@nestjs/common';
-import { Observable } from 'rxjs';
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
   constructor(private tokensService: TokensService) {}
 
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
+  async canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest();
 
     try {
@@ -24,16 +21,20 @@ export class JwtAuthGuard implements CanActivate {
       const token = splitedAuthHeader[1];
 
       if (bearer !== 'Bearer' || !token) {
-        throw new UnauthorizedException({ message: 'not authorized' });
+        throw new UnauthorizedException({
+          message: 'authorization header is wrong',
+        });
       }
 
-      const user = this.tokensService.validateToken(token);
+      const user = await this.tokensService.validateToken(token);
 
       request.user = user;
 
       return true;
     } catch (error) {
-      throw new UnauthorizedException({ message: 'not authorized' });
+      throw new UnauthorizedException({
+        message: 'error on verifying access token',
+      });
     }
   }
 }
