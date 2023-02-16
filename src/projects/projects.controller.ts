@@ -1,13 +1,14 @@
-import { JwtAuthGuard } from '@/auth/jwt-auth.guard';
-import { Roles } from '@/auth/roles-auth.decorator';
-import { roles } from '@/constants/auth/roles';
+// import { JwtAuthGuard } from '@/auth/jwt-auth.guard';
+// import { Roles } from '@/auth/roles-auth.decorator';
+// import { roles } from '@/constants/auth/roles';
 import {
   Body,
   Controller,
   HttpCode,
   HttpStatus,
   Post,
-  UseGuards,
+  Patch,
+  // UseGuards,
 } from '@nestjs/common';
 import { Delete, Get, Param } from '@nestjs/common/decorators';
 import {
@@ -18,6 +19,7 @@ import {
 } from '@nestjs/swagger';
 import { AssignLeadOfProjectDto } from './dto/assign-lead-of-project.dto';
 import { CreateProjectDto } from './dto/create-project.dto';
+import { UpdateProjectDto } from './dto/update-project.dto';
 import { Project } from './project.model';
 import { ProjectsService } from './projects.service';
 @ApiBearerAuth()
@@ -46,7 +48,7 @@ export class ProjectsController {
     return this.projectsService.getAllProjects();
   }
 
-  @ApiOperation({ summary: 'delete project by id' })
+  @ApiOperation({ summary: 'delete project' })
   @ApiResponse({ status: HttpStatus.ACCEPTED })
   // @Roles(roles.GUEST.value)
   // @UseGuards(JwtAuthGuard, RolesGuard)
@@ -74,5 +76,15 @@ export class ProjectsController {
   @HttpCode(HttpStatus.CREATED)
   assignParticipantOfProject(@Body() dto: AssignLeadOfProjectDto) {
     return this.projectsService.assignParticipantOfProject(dto);
+  }
+
+  @ApiOperation({ summary: 'update project' })
+  @ApiResponse({ status: HttpStatus.OK })
+  // @Roles(roles.GUEST.value)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  @Patch('/:id')
+  @HttpCode(HttpStatus.OK)
+  updateProject(@Param('id') id: string, @Body() dto: UpdateProjectDto) {
+    return this.projectsService.updateProject(id, dto);
   }
 }
