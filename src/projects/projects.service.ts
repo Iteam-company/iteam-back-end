@@ -5,6 +5,7 @@ import { HttpException } from '@nestjs/common/exceptions';
 import { InjectModel } from '@nestjs/sequelize';
 import { AssignLeadOfProjectDto } from './dto/assign-lead-of-project.dto';
 import { CreateProjectDto } from './dto/create-project.dto';
+import { UpdateProjectDto } from './dto/update-project.dto';
 import { Project } from './project.model';
 
 @Injectable()
@@ -18,6 +19,8 @@ export class ProjectsService {
     const project = await this.projectRepository.create(dto, {
       include: { all: true },
     });
+
+    await project.reload({ include: { all: true } });
 
     return project;
   }
@@ -96,5 +99,22 @@ export class ProjectsService {
     await project.$add('secondaryParticipants', user.id);
 
     return dto;
+  }
+
+  async updateProject(projectId: string, dto: UpdateProjectDto) {
+    const project = await this.projectRepository.findByPk(projectId);
+
+    if (!project) {
+      throw new HttpException(
+        `project with id: ${projectId} not exist`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const updatedProject = await project.update(dto);
+
+    await updatedProject.reload({ include: { all: true } });
+
+    return updatedProject;
   }
 }

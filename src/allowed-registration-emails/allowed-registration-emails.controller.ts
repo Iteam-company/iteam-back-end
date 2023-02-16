@@ -50,7 +50,7 @@ export class AllowedRegistrationEmailsController {
     return this.allowedRegistrationEmailsService.getAllAllowedEmails();
   }
 
-  @ApiOperation({ summary: 'delete email from whitelist by id' })
+  @ApiOperation({ summary: 'delete email from whitelist' })
   @ApiResponse({ status: HttpStatus.CREATED })
   // @Roles(roles.GUEST.value)
   // @UseGuards(JwtAuthGuard, RolesGuard)

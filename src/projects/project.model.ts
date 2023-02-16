@@ -175,7 +175,7 @@ export class Project extends Model<Project, ProjectCreationAttributes> {
   })
   @Column({
     type: DataType.ENUM,
-    values: Object.values(PricingModel),
+    values: Object.values(ProjectStatus),
   })
   status: ProjectStatus;
 
@@ -203,7 +203,7 @@ export class Project extends Model<Project, ProjectCreationAttributes> {
     type: DataType.ENUM,
     values: Object.values(ProjectDeploymentStatus),
   })
-  projectDeploymentStatus: ProjectStatus;
+  projectDeploymentStatus: ProjectDeploymentStatus;
 
   @ApiProperty({
     example: 'https://nestjs.com/',
