@@ -140,7 +140,7 @@ export class Project extends Model<Project, ProjectCreationAttributes> {
     description: 'users that take a part in project',
   })
   @BelongsToMany(() => User, () => UserParticipantProject)
-  participatingInProjects: User[];
+  secondaryParticipants: Array<User>;
 
   @ApiProperty({
     example: new Date(),

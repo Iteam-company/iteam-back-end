@@ -207,7 +207,7 @@ export class User extends Model<User, UserCreationAttributes> {
   token: Token;
 
   @ApiProperty({
-    type: [Project],
+    type: () => [Project],
     description: 'projects where user is leader',
   })
   @HasMany(() => Project)
@@ -218,7 +218,7 @@ export class User extends Model<User, UserCreationAttributes> {
     description: 'participating in projects',
   })
   @BelongsToMany(() => Project, () => UserParticipantProject)
-  participatingInProjects: Project[];
+  participatingInProjects: Array<Project>;
 }
 
 // stack: [{ type: ObjectId, ref: 'Stack' }],
