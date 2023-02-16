@@ -37,10 +37,10 @@ export class UsersController {
 
   @ApiOperation({ summary: 'get all users' })
   @ApiResponse({ status: HttpStatus.OK, type: [User] })
-  @Roles(roles.GUEST.value)
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Get()
+  // @Roles(roles.GUEST.value)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
   @HttpCode(HttpStatus.OK)
+  @Get()
   getAllUsers() {
     return this.usersService.getAllUsers();
   }

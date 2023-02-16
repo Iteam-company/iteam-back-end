@@ -7,7 +7,7 @@ interface ClientCreationAttributes {
 }
 
 @Table({
-  tableName: 'allowed_registration_email',
+  tableName: 'clients',
 })
 export class Client extends Model<Client, ClientCreationAttributes> {
   @ApiProperty({ example: '1', description: 'unique identifier' })
