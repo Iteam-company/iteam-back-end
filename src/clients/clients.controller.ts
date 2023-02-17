@@ -1,9 +1,11 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
+  Param,
   Post,
 } from '@nestjs/common';
 import {
@@ -38,5 +40,25 @@ export class ClientsController {
   @Get()
   getAllProjects() {
     return this.clientsService.getAllClients();
+  }
+
+  @ApiOperation({ summary: 'delete client' })
+  @ApiResponse({ status: HttpStatus.ACCEPTED })
+  // @Roles(roles.GUEST.value)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  @HttpCode(HttpStatus.ACCEPTED)
+  @Delete('/:id')
+  deleteClientById(@Param('id') id: string) {
+    return this.clientsService.deleteClientById(id);
+  }
+
+  @ApiOperation({ summary: 'get client' })
+  @ApiResponse({ status: HttpStatus.ACCEPTED })
+  // @Roles(roles.GUEST.value)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  @HttpCode(HttpStatus.ACCEPTED)
+  @Get('/:id')
+  getClientById(@Param('id') id: string) {
+    return this.clientsService.getClietById(id);
   }
 }
