@@ -25,7 +25,6 @@ export class Client extends Model<Client, ClientCreationAttributes> {
   })
   @Column({
     type: DataType.STRING,
-    unique: true,
     allowNull: false,
   })
   name: string;

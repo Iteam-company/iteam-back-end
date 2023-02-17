@@ -17,7 +17,9 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { AssignClientOfProjectDto } from './dto/assign-client-of-project.dto';
 import { AssignLeadOfProjectDto } from './dto/assign-lead-of-project.dto';
+import { AssignTechnologyToProjectDto } from './dto/assign-technology-to-project.dto';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { Project } from './project.model';
@@ -86,5 +88,25 @@ export class ProjectsController {
   @HttpCode(HttpStatus.OK)
   updateProject(@Param('id') id: string, @Body() dto: UpdateProjectDto) {
     return this.projectsService.updateProject(id, dto);
+  }
+
+  @ApiOperation({ summary: 'assign client of project' })
+  @ApiResponse({ status: HttpStatus.CREATED })
+  // @Roles(roles.GUEST.value)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  @Post('/client-of-project')
+  @HttpCode(HttpStatus.CREATED)
+  assignClientOfProject(@Body() dto: AssignClientOfProjectDto) {
+    return this.projectsService.assignClientOfProject(dto);
+  }
+
+  @ApiOperation({ summary: 'assign technology of project' })
+  @ApiResponse({ status: HttpStatus.CREATED })
+  // @Roles(roles.GUEST.value)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  @Post('/technology')
+  @HttpCode(HttpStatus.CREATED)
+  assignTechnologyToProject(@Body() dto: AssignTechnologyToProjectDto) {
+    return this.projectsService.assignTechnologyToProject(dto);
   }
 }

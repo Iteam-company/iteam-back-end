@@ -1,3 +1,5 @@
+import { ClientsModule } from '@/clients/clients.module';
+import { TechnologiesModule } from '@/technologies/technologies.module';
 import { TokensModule } from '@/tokens/tokens.module';
 import { UsersModule } from '@/users/users.module';
 import { Module } from '@nestjs/common';
@@ -9,7 +11,13 @@ import { ProjectsService } from './projects.service';
 @Module({
   controllers: [ProjectsController],
   providers: [ProjectsService],
-  imports: [SequelizeModule.forFeature([Project]), TokensModule, UsersModule],
+  imports: [
+    SequelizeModule.forFeature([Project]),
+    TokensModule,
+    UsersModule,
+    ClientsModule,
+    TechnologiesModule,
+  ],
   exports: [ProjectsService],
 })
 export class ProjectsModule {}
