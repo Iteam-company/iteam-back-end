@@ -1,19 +1,12 @@
+import { File } from '@/files/file.model';
 import { Project } from '@/projects/project.model';
+import { User } from '@/users/user.model';
+import { AttachmentRelation } from '@/util-models/attachment-relation.model';
 import { ApiProperty } from '@nestjs/swagger/dist/decorators';
-import {
-  BelongsTo,
-  Column,
-  DataType,
-  ForeignKey,
-  Model,
-  Table,
-} from 'sequelize-typescript';
+import { Column, DataType, HasOne, Model, Table } from 'sequelize-typescript';
 
 interface AttachmentCreationAttributes {
-  projectId: number;
-  fileId: string;
-  fileName: string;
-  fileUrl: string;
+  comment;
 }
 
 @Table({
@@ -44,56 +37,23 @@ export class Attachment extends Model<
   comment: string;
 
   @ApiProperty({
-    example: 1,
-    description: 'project id',
+    type: () => File,
+    description: 'attachment with that file is related',
   })
-  @ForeignKey(() => Project)
-  @Column({
-    type: DataType.INTEGER,
-    allowNull: false,
-  })
-  projectId: number;
+  @HasOne(() => File)
+  file: File;
 
-  @ApiProperty({
-    type: () => Project,
-    description: 'project on that attachment is attached',
-  })
-  @BelongsTo(() => Project)
-  project: Project;
+  // @ApiProperty({
+  //   type: () => User,
+  //   description: 'users related with that attach',
+  // })
+  // @BelongsTo(() => User, {})
+  // users: User;
 
-  @ApiProperty({
-    example: 'qwerty',
-    description: 'id of file',
-  })
-  @Column({
-    type: DataType.TEXT,
-  })
-  fileId: string;
-
-  @ApiProperty({
-    example: 'qwerty',
-    description: 'name of file',
-  })
-  @Column({
-    type: DataType.TEXT,
-  })
-  fileName: string;
-
-  @ApiProperty({
-    example: 'localhost/13-3213214-1/qwerty',
-    description: 'url to load file',
-  })
-  @Column({
-    type: DataType.TEXT,
-  })
-  fileUrl: string;
-
-  @ApiProperty({
-    example: 'localhost/minified/qwerty',
-    description: 'minified image url',
-  })
-  @Column({
-    type: DataType.TEXT,
-  })
-  thumbnailUrl: string;
+  // @ApiProperty({
+  //   type: () => Project,
+  //   description: 'project on that attachment is attached',
+  // })
+  // @BelongsTo(() => Project)
+  // project: Project;
 }

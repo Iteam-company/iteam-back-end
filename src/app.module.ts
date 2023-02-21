@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
-
 import { UsersModule } from '@/users/users.module';
 import { EnviromentNames, getEnviroment } from '@/utils/evniroment-getter';
 import { User } from '@/users/user.model';
@@ -27,6 +26,8 @@ import { ProjectTechnology } from '@/util-models/project-technology.model';
 import { Technology } from '@/technologies/technology.model';
 import { Client } from '@/clients/client.model';
 import { Attachment } from '@/attachments/attachment.model';
+import { File } from '@/files/file.model';
+import { CloudinaryModule } from '@/cloudinary/cloudinary.module';
 
 console.log(`.${process.env.NODE_ENV}.env`);
 @Module({
@@ -55,11 +56,12 @@ console.log(`.${process.env.NODE_ENV}.env`);
         Technology,
         Client,
         Attachment,
+        File,
       ],
       autoLoadModels: true,
       protocol: 'postgres',
       dialectOptions: {
-        ssl: true,
+        // ssl: true,
         native: true,
       },
     }),
@@ -75,6 +77,7 @@ console.log(`.${process.env.NODE_ENV}.env`);
     TechnologiesModule,
     ClientsModule,
     AttachmentsModule,
+    CloudinaryModule,
   ],
   providers: [],
 })
