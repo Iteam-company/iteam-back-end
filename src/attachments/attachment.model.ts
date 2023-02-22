@@ -3,7 +3,15 @@ import { Project } from '@/projects/project.model';
 import { User } from '@/users/user.model';
 import { AttachmentRelation } from '@/util-models/attachment-relation.model';
 import { ApiProperty } from '@nestjs/swagger/dist/decorators';
-import { Column, DataType, HasOne, Model, Table } from 'sequelize-typescript';
+import {
+  BelongsTo,
+  Column,
+  DataType,
+  ForeignKey,
+  HasOne,
+  Model,
+  Table,
+} from 'sequelize-typescript';
 
 interface AttachmentCreationAttributes {
   comment;
@@ -42,6 +50,24 @@ export class Attachment extends Model<
   })
   @HasOne(() => File)
   file: File;
+
+  @ApiProperty({
+    type: () => User,
+    description: 'users related with that attach',
+  })
+  @ForeignKey(() => User)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: true,
+  })
+  publisherId: number;
+
+  @ApiProperty({
+    type: () => User,
+    description: 'users that post that attach',
+  })
+  @BelongsTo(() => User, {})
+  publisher: User;
 
   // @ApiProperty({
   //   type: () => User,

@@ -80,13 +80,13 @@ export class FilesController {
     return this.filesService.getAllFiles();
   }
 
-  @ApiOperation({ summary: 'delete client' })
+  @ApiOperation({ summary: 'delete file by publicId' })
   @ApiResponse({ status: HttpStatus.ACCEPTED })
   // @Roles(roles.GUEST.value)
   // @UseGuards(JwtAuthGuard, RolesGuard)
   @HttpCode(HttpStatus.ACCEPTED)
   @Delete('/:id')
   deleteFileById(@Param('id') id: string) {
-    return this.filesService.deleteFileById(id);
+    return this.filesService.deleteFileByPublicId(id);
   }
 }
