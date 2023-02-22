@@ -39,11 +39,13 @@ export class FilesService {
     return this.fileRepository.findAll({ include: { all: true } });
   }
 
-  async deleteFileById(id: string) {
-    const deleteFromCloudResponse = await this.cloudinaryService.deleteFile(id);
-    const deleteFromDbResponse = await this.fileRepository.destroy({
-      where: { publicId: id },
-    });
+  async deleteFileByPublicId(id: string) {
+    const [deleteFromCloudResponse, deleteFromDbResponse] = await Promise.all([
+      this.cloudinaryService.deleteFile(id),
+      this.fileRepository.destroy({
+        where: { publicId: id },
+      }),
+    ]);
 
     return { deleteFromCloudResponse, deleteFromDbResponse };
   }
