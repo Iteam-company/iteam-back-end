@@ -1,5 +1,7 @@
 import { Project } from '@/projects/project.model';
+import { User } from '@/users/user.model';
 import { ProjectTechnology } from '@/util-models/project-technology.model';
+import { UserTechnology } from '@/util-models/user-technology.model';
 import { ApiProperty } from '@nestjs/swagger/dist/decorators';
 import {
   BelongsToMany,
@@ -69,8 +71,15 @@ export class Technology extends Model<
 
   @ApiProperty({
     type: [Project],
-    description: 'project where technology usings',
+    description: 'projects where technology usings',
   })
   @BelongsToMany(() => Project, () => ProjectTechnology)
-  projects: Project[];
+  projects: Array<Project>;
+
+  @ApiProperty({
+    type: [User],
+    description: 'users that use that technology',
+  })
+  @BelongsToMany(() => User, () => UserTechnology)
+  users: Array<Project>;
 }

@@ -11,6 +11,8 @@ import { SetUserWorkTypeDto } from './dto/set-user-work-type.dto';
 import { WorkTypesService } from '@/work-types/work-types.service';
 import { AssignAttachmentToUserDto } from './dto/assign-attachment-to-user.dto';
 import { AttachmentsService } from '@/attachments/attachments.service';
+import { AssignTechnologyToUserDto } from './dto/assign-technology-to-user.dto';
+import { TechnologiesService } from '@/technologies/technologies.service';
 
 @Injectable()
 export class UsersService {
@@ -19,6 +21,7 @@ export class UsersService {
     private rolesService: RolesService,
     private workTypesService: WorkTypesService,
     private attachmentsService: AttachmentsService,
+    private technologiesService: TechnologiesService,
   ) {}
   async createUser(dto: CreateUserDto) {
     const candidate = await this.getUserByEmail(dto.email);
@@ -126,5 +129,33 @@ export class UsersService {
     ]);
 
     return user.reload({ include: { all: true } });
+  }
+
+  async assignTechnologyToUser(dto: AssignTechnologyToUserDto) {
+    const { technologyId, userId } = dto;
+
+    const technology = await this.technologiesService.getTechnologyById(
+      technologyId,
+    );
+
+    if (!technology) {
+      throw new HttpException(
+        `client with id: ${technologyId} not exist`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const user = await this.userRepository.findByPk(userId);
+
+    if (!user) {
+      throw new HttpException(
+        `user with id: ${user} not exist`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    await user.$add('techStack', technology.id);
+
+    return dto;
   }
 }

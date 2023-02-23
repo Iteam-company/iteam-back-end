@@ -22,6 +22,7 @@ import {
   ApiConsumes,
 } from '@nestjs/swagger/dist/decorators';
 import { AssignAttachmentToUserDto } from './dto/assign-attachment-to-user.dto';
+import { AssignTechnologyToUserDto } from './dto/assign-technology-to-user.dto';
 import { AssignUserRoleDto } from './dto/assign-user-role.dto';
 import { BanUserDto } from './dto/ban-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -94,5 +95,15 @@ export class UsersController {
     @Body() dto: AssignAttachmentToUserDto,
   ) {
     return this.usersService.attachAttachment({ ...dto, file });
+  }
+
+  @ApiOperation({ summary: 'assign technology to user' })
+  @ApiResponse({ status: HttpStatus.CREATED })
+  // @Roles(roles.GUEST.value)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  @Post('/technology')
+  @HttpCode(HttpStatus.CREATED)
+  assignTechnologyToUser(@Body() dto: AssignTechnologyToUserDto) {
+    return this.usersService.assignTechnologyToUser(dto);
   }
 }

@@ -1,9 +1,12 @@
 import { Attachment } from '@/attachments/attachment.model';
+import { UserStatus } from '@/enums/user-status';
 import { Project } from '@/projects/project.model';
 import { Role } from '@/roles/role.model';
+import { Technology } from '@/technologies/technology.model';
 import { Token } from '@/tokens/token.model';
 import { UserParticipantProject } from '@/util-models/user-participant-project.model';
 import { UserRole } from '@/util-models/user-role.model';
+import { UserTechnology } from '@/util-models/user-technology.model';
 import { WorkType } from '@/work-types/work-type.model';
 import { ApiProperty } from '@nestjs/swagger/dist/decorators';
 import {
@@ -67,6 +70,33 @@ export class User extends Model<User, UserCreationAttributes> {
   surname: string;
 
   @ApiProperty({
+    example: 'etc.. I am FE developer…',
+    description: 'description of position',
+  })
+  @Column({
+    type: DataType.TEXT('long'),
+    allowNull: true,
+  })
+  positionDescription: string;
+
+  @ApiProperty({ example: 'russian', description: 'user language' })
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  language: string;
+
+  @ApiProperty({
+    example: 'developer find new company',
+    description: 'end of offer reason',
+  })
+  @Column({
+    type: DataType.TEXT('long'),
+    allowNull: true,
+  })
+  endReason: string;
+
+  @ApiProperty({
     example:
       'https://res.cloudinary.com/iteam-cloud/image/upload/v1643381088/Iteam/iteam.logo_lrlwkj.jpg',
     description: 'user avatar image url',
@@ -75,7 +105,7 @@ export class User extends Model<User, UserCreationAttributes> {
     'https://res.cloudinary.com/iteam-cloud/image/upload/v1643381088/Iteam/iteam.logo_lrlwkj.jpg',
   )
   @Column({
-    type: DataType.STRING,
+    type: DataType.TEXT('long'),
     allowNull: true,
   })
   avatarUrl: string;
@@ -87,7 +117,11 @@ export class User extends Model<User, UserCreationAttributes> {
   })
   phone: string;
 
-  @ApiProperty({ example: 'Kriviy Rih', description: 'user city' })
+  @ApiProperty({
+    example: 'Kriviy Rih',
+    description:
+      'actual address where person located etc Kiev Obolon, Ternopil Druzba',
+  })
   @Column({
     type: DataType.STRING,
     allowNull: true,
@@ -102,7 +136,11 @@ export class User extends Model<User, UserCreationAttributes> {
   })
   salary: number;
 
-  @ApiProperty({ example: 'Uhtomskogo 13/37', description: 'user address' })
+  @ApiProperty({
+    example: 'Uhtomskogo 13/37',
+    description:
+      'actual address where person located etc Kiev Obolon, Ternopil Druzba',
+  })
   @Column({
     type: DataType.STRING,
     allowNull: true,
@@ -181,7 +219,18 @@ export class User extends Model<User, UserCreationAttributes> {
     type: DataType.DATE,
     allowNull: true,
   })
-  offerDay: Date;
+  startDate: Date;
+
+  @ApiProperty({
+    example:
+      'Sat Feb 04 2023 14:02:55 GMT+0200 (Eastern European Standard Time)',
+    description: 'end date of offer',
+  })
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+  })
+  endDate: Date;
 
   @ForeignKey(() => WorkType)
   @Column({
@@ -234,6 +283,23 @@ export class User extends Model<User, UserCreationAttributes> {
   })
   @HasMany(() => Attachment, 'publisherId')
   publishedAttachments: Array<Attachment>;
+
+  @ApiProperty({
+    type: [Technology],
+    description: 'technologies that user use',
+  })
+  @BelongsToMany(() => Technology, () => UserTechnology)
+  techStack: Array<Technology>;
+
+  @ApiProperty({
+    example: UserStatus.ACTIVE,
+    description: `project status may be: ${Object.values(UserStatus)}`,
+  })
+  @Column({
+    type: DataType.ENUM,
+    values: Object.values(UserStatus),
+  })
+  status: UserStatus;
 }
 
 // stack: [{ type: ObjectId, ref: 'Stack' }],

@@ -61,7 +61,7 @@ export class Project extends Model<Project, ProjectCreationAttributes> {
     description: 'technologies that using on that project',
   })
   @BelongsToMany(() => Technology, () => ProjectTechnology)
-  technologies: Technology[];
+  technologies: Array<Technology>;
 
   @ApiProperty({
     example: 'team consist of three PM two BE and two FE developers',

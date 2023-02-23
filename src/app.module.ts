@@ -28,6 +28,7 @@ import { Client } from '@/clients/client.model';
 import { Attachment } from '@/attachments/attachment.model';
 import { File } from '@/files/file.model';
 import { CloudinaryModule } from '@/cloudinary/cloudinary.module';
+import { UserTechnology } from './util-models/user-technology.model';
 
 console.log(`.${process.env.NODE_ENV}.env`);
 @Module({
@@ -57,6 +58,7 @@ console.log(`.${process.env.NODE_ENV}.env`);
         Client,
         Attachment,
         File,
+        UserTechnology,
       ],
       autoLoadModels: true,
       protocol: 'postgres',
