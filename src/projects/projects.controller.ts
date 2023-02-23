@@ -10,13 +10,22 @@ import {
   Patch,
   // UseGuards,
 } from '@nestjs/common';
-import { Delete, Get, Param } from '@nestjs/common/decorators';
+import {
+  Delete,
+  Get,
+  Param,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common/decorators';
+import { FileInterceptor } from '@nestjs/platform-express';
 import {
   ApiBearerAuth,
+  ApiConsumes,
   ApiOperation,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { AssignAttachmentToProjectDto } from './dto/assign-attachment-to-project.dto';
 import { AssignClientOfProjectDto } from './dto/assign-client-of-project.dto';
 import { AssignLeadOfProjectDto } from './dto/assign-lead-of-project.dto';
 import { AssignTechnologyToProjectDto } from './dto/assign-technology-to-project.dto';
@@ -108,5 +117,18 @@ export class ProjectsController {
   @HttpCode(HttpStatus.CREATED)
   assignTechnologyToProject(@Body() dto: AssignTechnologyToProjectDto) {
     return this.projectsService.assignTechnologyToProject(dto);
+  }
+
+  @ApiConsumes('multipart/form-data')
+  @ApiOperation({ summary: 'attachment assigment' })
+  @ApiResponse({ status: HttpStatus.CREATED, type: Project })
+  @HttpCode(HttpStatus.CREATED)
+  @Post('assign-attachment')
+  @UseInterceptors(FileInterceptor('file'))
+  attachAttachment(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() dto: AssignAttachmentToProjectDto,
+  ) {
+    return this.projectsService.attachAttachment({ ...dto, file });
   }
 }

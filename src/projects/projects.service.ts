@@ -1,3 +1,4 @@
+import { AttachmentsService } from '@/attachments/attachments.service';
 import { ClientsService } from '@/clients/clients.service';
 import { TechnologiesService } from '@/technologies/technologies.service';
 import { UsersService } from '@/users/users.service';
@@ -5,6 +6,7 @@ import { Injectable } from '@nestjs/common';
 import { HttpStatus } from '@nestjs/common/enums';
 import { HttpException } from '@nestjs/common/exceptions';
 import { InjectModel } from '@nestjs/sequelize';
+import { AssignAttachmentToProjectDto } from './dto/assign-attachment-to-project.dto';
 import { AssignClientOfProjectDto } from './dto/assign-client-of-project.dto';
 import { AssignLeadOfProjectDto } from './dto/assign-lead-of-project.dto';
 import { AssignTechnologyToProjectDto } from './dto/assign-technology-to-project.dto';
@@ -19,6 +21,7 @@ export class ProjectsService {
     private usersService: UsersService,
     private clientsService: ClientsService,
     private technologiesService: TechnologiesService,
+    private attachmentsService: AttachmentsService,
   ) {}
 
   async createProject(dto: CreateProjectDto) {
@@ -176,5 +179,29 @@ export class ProjectsService {
     await project.$add('technologies', technology.id);
 
     return dto;
+  }
+
+  async attachAttachment(dto: AssignAttachmentToProjectDto) {
+    const { comment, file, projectId, publisherId } = dto;
+    const [project, publisherUser] = await Promise.all([
+      this.projectRepository.findByPk(projectId),
+      this.usersService.getUserById(publisherId),
+    ]);
+
+    if (!project || !publisherUser) {
+      throw new HttpException('user not found', HttpStatus.NOT_FOUND);
+    }
+
+    const attachment = await this.attachmentsService.createAttachment({
+      comment,
+      file,
+    });
+
+    await Promise.all([
+      project.$add('attachedAttachments', attachment.id),
+      publisherUser.$add('publishedAttachments', attachment.id),
+    ]);
+
+    return project.reload({ include: { all: true } });
   }
 }

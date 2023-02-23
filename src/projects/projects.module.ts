@@ -1,3 +1,4 @@
+import { AttachmentsModule } from '@/attachments/attachments.module';
 import { ClientsModule } from '@/clients/clients.module';
 import { TechnologiesModule } from '@/technologies/technologies.module';
 import { TokensModule } from '@/tokens/tokens.module';
@@ -17,6 +18,7 @@ import { ProjectsService } from './projects.service';
     UsersModule,
     ClientsModule,
     TechnologiesModule,
+    AttachmentsModule,
   ],
   exports: [ProjectsService],
 })

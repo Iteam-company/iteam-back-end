@@ -2,7 +2,6 @@ import { Attachment } from '@/attachments/attachment.model';
 import { Project } from '@/projects/project.model';
 import { Role } from '@/roles/role.model';
 import { Token } from '@/tokens/token.model';
-import { AttachmentRelation } from '@/util-models/attachment-relation.model';
 import { UserParticipantProject } from '@/util-models/user-participant-project.model';
 import { UserRole } from '@/util-models/user-role.model';
 import { WorkType } from '@/work-types/work-type.model';
@@ -222,15 +221,21 @@ export class User extends Model<User, UserCreationAttributes> {
   @BelongsToMany(() => Project, () => UserParticipantProject)
   participatingInProjects: Array<Project>;
 
-  // @ApiProperty({
-  //   type: [Attachment],
-  //   description: 'user related with that attach',
-  // })
-  // @BelongsToMany(() => Attachment, () => AttachmentRelation)
-  // users: Array<Attachment>;
+  @ApiProperty({
+    type: [Attachment],
+    description: 'attachments attached with that user',
+  })
+  @HasMany(() => Attachment, 'userId')
+  attachedAttachments: Array<Attachment>;
+
+  @ApiProperty({
+    type: [Attachment],
+    description: 'published attachments by user',
+  })
+  @HasMany(() => Attachment, 'publisherId')
+  publishedAttachments: Array<Attachment>;
 }
 
 // stack: [{ type: ObjectId, ref: 'Stack' }],
-// team: [{ type: ObjectId, ref: 'Teams' }],
 // company: { type: ObjectId, ref: 'Company' },
 // links: [{ type: ObjectId, ref: 'Links' }],
