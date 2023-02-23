@@ -1,7 +1,6 @@
 import { File } from '@/files/file.model';
 import { Project } from '@/projects/project.model';
 import { User } from '@/users/user.model';
-import { AttachmentRelation } from '@/util-models/attachment-relation.model';
 import { ApiProperty } from '@nestjs/swagger/dist/decorators';
 import {
   BelongsTo,
@@ -52,7 +51,6 @@ export class Attachment extends Model<
   file: File;
 
   @ApiProperty({
-    type: () => User,
     description: 'users related with that attach',
   })
   @ForeignKey(() => User)
@@ -64,22 +62,42 @@ export class Attachment extends Model<
 
   @ApiProperty({
     type: () => User,
-    description: 'users that post that attach',
+    description: 'user that post that attach',
   })
-  @BelongsTo(() => User, {})
+  @BelongsTo(() => User, 'publisherId')
   publisher: User;
 
-  // @ApiProperty({
-  //   type: () => User,
-  //   description: 'users related with that attach',
-  // })
-  // @BelongsTo(() => User, {})
-  // users: User;
+  @ApiProperty({
+    description: 'user related with that attach',
+  })
+  @ForeignKey(() => User)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: true,
+  })
+  userId: number;
 
-  // @ApiProperty({
-  //   type: () => Project,
-  //   description: 'project on that attachment is attached',
-  // })
-  // @BelongsTo(() => Project)
-  // project: Project;
+  @ApiProperty({
+    type: () => User,
+    description: 'id of user related with that attach',
+  })
+  @BelongsTo(() => User, 'userId')
+  user: User;
+
+  @ApiProperty({
+    description: 'id of project related with that attach',
+  })
+  @ForeignKey(() => Project)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: true,
+  })
+  projectId: number;
+
+  @ApiProperty({
+    type: () => Project,
+    description: 'project on that attachment is attached',
+  })
+  @BelongsTo(() => Project, 'projectId')
+  project: Project;
 }

@@ -8,6 +8,7 @@ import { UsersService } from './users.service';
 import { RolesModule } from '@/roles/roles.module';
 import { WorkTypesModule } from '@/work-types/work-types.module';
 import { TokensModule } from '@/tokens/tokens.module';
+import { AttachmentsModule } from '@/attachments/attachments.module';
 
 @Module({
   controllers: [UsersController],
@@ -17,6 +18,7 @@ import { TokensModule } from '@/tokens/tokens.module';
     RolesModule,
     WorkTypesModule,
     TokensModule,
+    AttachmentsModule,
   ],
   exports: [UsersService],
 })

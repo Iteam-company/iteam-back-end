@@ -9,6 +9,8 @@ import { User } from './user.model';
 import { HttpStatus } from '@nestjs/common/enums';
 import { SetUserWorkTypeDto } from './dto/set-user-work-type.dto';
 import { WorkTypesService } from '@/work-types/work-types.service';
+import { AssignAttachmentToUserDto } from './dto/assign-attachment-to-user.dto';
+import { AttachmentsService } from '@/attachments/attachments.service';
 
 @Injectable()
 export class UsersService {
@@ -16,6 +18,7 @@ export class UsersService {
     @InjectModel(User) private userRepository: typeof User,
     private rolesService: RolesService,
     private workTypesService: WorkTypesService,
+    private attachmentsService: AttachmentsService,
   ) {}
   async createUser(dto: CreateUserDto) {
     const candidate = await this.getUserByEmail(dto.email);
@@ -99,5 +102,29 @@ export class UsersService {
     await user.save();
 
     return user;
+  }
+
+  async attachAttachment(dto: AssignAttachmentToUserDto) {
+    const { comment, file, userId, publisherId } = dto;
+    const [user, publisherUser] = await Promise.all([
+      this.userRepository.findByPk(userId),
+      this.userRepository.findByPk(publisherId),
+    ]);
+
+    if (!user || !publisherUser) {
+      throw new HttpException('user not found', HttpStatus.NOT_FOUND);
+    }
+
+    const attachment = await this.attachmentsService.createAttachment({
+      comment,
+      file,
+    });
+
+    await Promise.all([
+      user.$add('attachedAttachments', attachment.id),
+      publisherUser.$add('publishedAttachments', attachment.id),
+    ]);
+
+    return user.reload({ include: { all: true } });
   }
 }

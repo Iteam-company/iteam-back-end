@@ -10,10 +10,18 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common/decorators/core/use-guards.decorator';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger/dist';
-import { ApiTags, ApiBearerAuth } from '@nestjs/swagger/dist/decorators';
+import {
+  ApiTags,
+  ApiBearerAuth,
+  ApiConsumes,
+} from '@nestjs/swagger/dist/decorators';
+import { AssignAttachmentToUserDto } from './dto/assign-attachment-to-user.dto';
 import { AssignUserRoleDto } from './dto/assign-user-role.dto';
 import { BanUserDto } from './dto/ban-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -73,5 +81,18 @@ export class UsersController {
   @HttpCode(HttpStatus.CREATED)
   banUser(@Body() dto: BanUserDto) {
     return this.usersService.banUser(dto);
+  }
+
+  @ApiConsumes('multipart/form-data')
+  @ApiOperation({ summary: 'attachment assigment' })
+  @ApiResponse({ status: HttpStatus.CREATED, type: User })
+  @HttpCode(HttpStatus.CREATED)
+  @Post('assign-attachment')
+  @UseInterceptors(FileInterceptor('file'))
+  attachAttachment(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() dto: AssignAttachmentToUserDto,
+  ) {
+    return this.usersService.attachAttachment({ ...dto, file });
   }
 }

@@ -232,10 +232,10 @@ export class Project extends Model<Project, ProjectCreationAttributes> {
   })
   demoCredentialsPassword: string;
 
-  // @ApiProperty({
-  //   type: [Attachment],
-  //   description: 'projects where user is leader',
-  // })
-  // @HasMany(() => Attachment)
-  // attachments: Array<Attachment>;
+  @ApiProperty({
+    type: [Attachment],
+    description: 'attachments attached with that user',
+  })
+  @HasMany(() => Attachment, 'projectId')
+  attachedAttachments: Array<Attachment>;
 }
