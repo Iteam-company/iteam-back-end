@@ -28,7 +28,9 @@ import { Client } from '@/clients/client.model';
 import { Attachment } from '@/attachments/attachment.model';
 import { File } from '@/files/file.model';
 import { CloudinaryModule } from '@/cloudinary/cloudinary.module';
-import { UserTechnology } from './util-models/user-technology.model';
+import { UserTechnology } from '@/util-models/user-technology.model';
+import { EducationInfo } from '@/education-infos/education-info.model';
+import { EducationInfosModule } from './education-infos/education-infos.module';
 
 console.log(`.${process.env.NODE_ENV}.env`);
 @Module({
@@ -59,11 +61,12 @@ console.log(`.${process.env.NODE_ENV}.env`);
         Attachment,
         File,
         UserTechnology,
+        EducationInfo,
       ],
       autoLoadModels: true,
       protocol: 'postgres',
       dialectOptions: {
-        // ssl: true,
+        ssl: true,
         native: true,
       },
     }),
@@ -80,6 +83,7 @@ console.log(`.${process.env.NODE_ENV}.env`);
     ClientsModule,
     AttachmentsModule,
     CloudinaryModule,
+    EducationInfosModule,
   ],
   providers: [],
 })

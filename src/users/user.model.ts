@@ -1,4 +1,5 @@
 import { Attachment } from '@/attachments/attachment.model';
+import { EducationInfo } from '@/education-infos/education-info.model';
 import { UserStatus } from '@/enums/user-status';
 import { Project } from '@/projects/project.model';
 import { Role } from '@/roles/role.model';
@@ -204,7 +205,7 @@ export class User extends Model<User, UserCreationAttributes> {
     description: 'url to download cv',
   })
   @Column({
-    type: DataType.STRING,
+    type: DataType.TEXT('long'),
     allowNull: true,
   })
   cv: string;
@@ -300,8 +301,54 @@ export class User extends Model<User, UserCreationAttributes> {
     values: Object.values(UserStatus),
   })
   status: UserStatus;
+
+  @ApiProperty({
+    type: [EducationInfo],
+    description: 'educations by achived by user',
+  })
+  @HasMany(() => EducationInfo, 'userId')
+  educationInfo: Array<User>;
+
+  @ApiProperty({
+    example: 'https://www.upwork.com/',
+    description: 'url to Upwork',
+  })
+  @Column({
+    type: DataType.TEXT('long'),
+    allowNull: true,
+  })
+  upwork: string;
+
+  @ApiProperty({
+    example: 'https://github.com/',
+    description: 'url to GitHub',
+  })
+  @Column({
+    type: DataType.TEXT('long'),
+    allowNull: true,
+  })
+  github: string;
+
+  @ApiProperty({
+    example: 'https://github.com/',
+    description: 'url to LinkedIn',
+  })
+  @Column({
+    type: DataType.TEXT('long'),
+    allowNull: true,
+  })
+  linkedin: string;
+
+  @ApiProperty({
+    example: 'https://www.linkedin.com/in/misha-kravtsov-6b3817239/',
+    description: 'url to LinkedIn',
+  })
+  @Column({
+    type: DataType.TEXT('long'),
+    allowNull: true,
+  })
+  telegramTag: string;
 }
 
 // stack: [{ type: ObjectId, ref: 'Stack' }],
 // company: { type: ObjectId, ref: 'Company' },
-// links: [{ type: ObjectId, ref: 'Links' }],

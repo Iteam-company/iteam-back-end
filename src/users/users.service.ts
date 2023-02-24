@@ -13,6 +13,8 @@ import { AssignAttachmentToUserDto } from './dto/assign-attachment-to-user.dto';
 import { AttachmentsService } from '@/attachments/attachments.service';
 import { AssignTechnologyToUserDto } from './dto/assign-technology-to-user.dto';
 import { TechnologiesService } from '@/technologies/technologies.service';
+import { AssignEducationInfoToUserDto } from './dto/assign-education-info-to-user.dto';
+import { EducationInfosService } from '@/education-infos/education-infos.service';
 
 @Injectable()
 export class UsersService {
@@ -22,6 +24,7 @@ export class UsersService {
     private workTypesService: WorkTypesService,
     private attachmentsService: AttachmentsService,
     private technologiesService: TechnologiesService,
+    private educationInfoService: EducationInfosService,
   ) {}
   async createUser(dto: CreateUserDto) {
     const candidate = await this.getUserByEmail(dto.email);
@@ -155,6 +158,27 @@ export class UsersService {
     }
 
     await user.$add('techStack', technology.id);
+
+    return dto;
+  }
+
+  async assignEducationInfoToUser(dto: AssignEducationInfoToUserDto) {
+    const { universityName, userId } = dto;
+
+    const educationInfo = await this.educationInfoService.createEducationInfo({
+      universityName,
+    });
+
+    const user = await this.userRepository.findByPk(userId);
+
+    if (!user) {
+      throw new HttpException(
+        `user with id: ${user} not exist`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    await user.$add('educationInfo', educationInfo.id);
 
     return dto;
   }
