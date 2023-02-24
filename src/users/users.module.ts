@@ -12,6 +12,7 @@ import { AttachmentsModule } from '@/attachments/attachments.module';
 import { TechnologiesModule } from '@/technologies/technologies.module';
 import { EducationInfosModule } from '@/education-infos/education-infos.module';
 import { WorkHistoryInfoModule } from '@/work-history-info/work-history-info.module';
+import { FilesModule } from '@/files/files.module';
 
 @Module({
   controllers: [UsersController],
@@ -25,6 +26,7 @@ import { WorkHistoryInfoModule } from '@/work-history-info/work-history-info.mod
     TechnologiesModule,
     EducationInfosModule,
     WorkHistoryInfoModule,
+    FilesModule,
   ],
   exports: [UsersService],
 })

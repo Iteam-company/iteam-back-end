@@ -22,7 +22,7 @@ export class AttachmentsService {
 
     const attachmentEntity = await this.attachRepository.create({ comment });
 
-    await attachmentEntity.$set('file', fileEntity);
+    await attachmentEntity.$set('file', fileEntity.id);
 
     return attachmentEntity.reload({ include: { all: true } });
   }

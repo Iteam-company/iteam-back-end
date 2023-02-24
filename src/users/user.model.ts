@@ -1,6 +1,7 @@
 import { Attachment } from '@/attachments/attachment.model';
 import { EducationInfo } from '@/education-infos/education-info.model';
 import { UserStatus } from '@/enums/user-status';
+import { File } from '@/files/file.model';
 import { Project } from '@/projects/project.model';
 import { Role } from '@/roles/role.model';
 import { Technology } from '@/technologies/technology.model';
@@ -202,14 +203,22 @@ export class User extends Model<User, UserCreationAttributes> {
   birthday: Date;
 
   @ApiProperty({
-    example: 'https://path-to-download-cv/',
-    description: 'url to download cv',
+    example: 1,
+    description: 'cv id with that user is related',
   })
+  @ForeignKey(() => File)
   @Column({
-    type: DataType.TEXT('long'),
+    type: DataType.INTEGER,
     allowNull: true,
   })
-  cv: string;
+  cvId: number;
+
+  @ApiProperty({
+    type: () => File,
+    description: 'cv with that user is related',
+  })
+  @BelongsTo(() => File, 'cvId')
+  cv: File;
 
   @ApiProperty({
     example:
@@ -436,4 +445,14 @@ export class User extends Model<User, UserCreationAttributes> {
   })
   @HasMany(() => WorkHistoryInfo, 'userId')
   workHistory: Array<WorkHistoryInfo>;
+
+  @ApiProperty({
+    example: 'lorem ipsum dolor sit amet, consectetur adipiscing el',
+    description: 'default cover letter',
+  })
+  @Column({
+    type: DataType.TEXT('long'),
+    allowNull: true,
+  })
+  defaultCoverLetter: string;
 }
