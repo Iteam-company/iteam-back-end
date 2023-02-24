@@ -22,6 +22,7 @@ import {
   ApiConsumes,
 } from '@nestjs/swagger/dist/decorators';
 import { AssignAttachmentToUserDto } from './dto/assign-attachment-to-user.dto';
+import { AssignCvToUserDto } from './dto/assign-cv-to-user.dto';
 import { AssignEducationInfoToUserDto } from './dto/assign-education-info-to-user.dto';
 import { AssignTechnologyToUserDto } from './dto/assign-technology-to-user.dto';
 import { AssignUserRoleDto } from './dto/assign-user-role.dto';
@@ -90,7 +91,7 @@ export class UsersController {
   @ApiOperation({ summary: 'attachment assigment' })
   @ApiResponse({ status: HttpStatus.CREATED, type: User })
   @HttpCode(HttpStatus.CREATED)
-  @Post('assign-attachment')
+  @Post('attachment')
   @UseInterceptors(FileInterceptor('file'))
   attachAttachment(
     @UploadedFile() file: Express.Multer.File,
@@ -127,5 +128,15 @@ export class UsersController {
   @HttpCode(HttpStatus.CREATED)
   assignWorkHistoryInfoToUser(@Body() dto: AssignWorkHistoryInfoToUserDto) {
     return this.usersService.assignWorkHistoryInfoToUser(dto);
+  }
+
+  @Post('/cv')
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('file'))
+  async assignCvToUser(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() dto: AssignCvToUserDto,
+  ) {
+    return this.usersService.assignCvToUser({ ...dto, file });
   }
 }

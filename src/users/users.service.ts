@@ -17,6 +17,8 @@ import { AssignEducationInfoToUserDto } from './dto/assign-education-info-to-use
 import { EducationInfosService } from '@/education-infos/education-infos.service';
 import { WorkHistoryInfoService } from '@/work-history-info/work-history-info.service';
 import { AssignWorkHistoryInfoToUserDto } from './dto/assign-work-history-info-to-user.dto';
+import { FilesService } from '@/files/files.service';
+import { AssignCvToUserDto } from './dto/assign-cv-to-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -28,6 +30,7 @@ export class UsersService {
     private technologiesService: TechnologiesService,
     private educationInfoService: EducationInfosService,
     private workHistoryInfoService: WorkHistoryInfoService,
+    private fileService: FilesService,
   ) {}
   async createUser(dto: CreateUserDto) {
     const candidate = await this.getUserByEmail(dto.email);
@@ -206,5 +209,24 @@ export class UsersService {
     await user.$add('workHistory', workHistoryInfo.id);
 
     return dto;
+  }
+
+  async assignCvToUser(dto: AssignCvToUserDto) {
+    const { userId, file } = dto;
+
+    const user = await this.userRepository.findByPk(userId);
+
+    if (!user) {
+      throw new HttpException(
+        `user with id: ${user} not exist`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const fileEntity = await this.fileService.upload(file);
+
+    await user.$set('cv', fileEntity.id);
+
+    return user.reload({ include: { all: true } });
   }
 }

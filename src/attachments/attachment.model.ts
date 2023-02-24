@@ -8,7 +8,6 @@ import {
   Column,
   DataType,
   ForeignKey,
-  HasOne,
   Model,
   Table,
 } from 'sequelize-typescript';
@@ -45,10 +44,21 @@ export class Attachment extends Model<
   comment: string;
 
   @ApiProperty({
+    example: 1,
+    description: 'file id with that file is related',
+  })
+  @ForeignKey(() => File)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: true,
+  })
+  fileId: number;
+
+  @ApiProperty({
     type: () => File,
     description: 'attachment with that file is related',
   })
-  @HasOne(() => File)
+  @BelongsTo(() => File, 'attachmentId')
   file: File;
 
   @ApiProperty({
