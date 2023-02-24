@@ -30,7 +30,9 @@ import { File } from '@/files/file.model';
 import { CloudinaryModule } from '@/cloudinary/cloudinary.module';
 import { UserTechnology } from '@/util-models/user-technology.model';
 import { EducationInfo } from '@/education-infos/education-info.model';
-import { EducationInfosModule } from './education-infos/education-infos.module';
+import { EducationInfosModule } from '@/education-infos/education-infos.module';
+import { WorkHistoryInfoModule } from '@/work-history-info/work-history-info.module';
+import { WorkHistoryInfo } from '@/work-history-info/work-history-info.model';
 
 console.log(`.${process.env.NODE_ENV}.env`);
 @Module({
@@ -62,11 +64,12 @@ console.log(`.${process.env.NODE_ENV}.env`);
         File,
         UserTechnology,
         EducationInfo,
+        WorkHistoryInfo,
       ],
       autoLoadModels: true,
       protocol: 'postgres',
       dialectOptions: {
-        ssl: true,
+        // ssl: true,
         native: true,
       },
     }),
@@ -84,6 +87,7 @@ console.log(`.${process.env.NODE_ENV}.env`);
     AttachmentsModule,
     CloudinaryModule,
     EducationInfosModule,
+    WorkHistoryInfoModule,
   ],
   providers: [],
 })

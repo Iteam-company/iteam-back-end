@@ -15,6 +15,8 @@ import { AssignTechnologyToUserDto } from './dto/assign-technology-to-user.dto';
 import { TechnologiesService } from '@/technologies/technologies.service';
 import { AssignEducationInfoToUserDto } from './dto/assign-education-info-to-user.dto';
 import { EducationInfosService } from '@/education-infos/education-infos.service';
+import { WorkHistoryInfoService } from '@/work-history-info/work-history-info.service';
+import { AssignWorkHistoryInfoToUserDto } from './dto/assign-work-history-info-to-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -25,6 +27,7 @@ export class UsersService {
     private attachmentsService: AttachmentsService,
     private technologiesService: TechnologiesService,
     private educationInfoService: EducationInfosService,
+    private workHistoryInfoService: WorkHistoryInfoService,
   ) {}
   async createUser(dto: CreateUserDto) {
     const candidate = await this.getUserByEmail(dto.email);
@@ -179,6 +182,28 @@ export class UsersService {
     }
 
     await user.$add('educationInfo', educationInfo.id);
+
+    return dto;
+  }
+
+  async assignWorkHistoryInfoToUser(dto: AssignWorkHistoryInfoToUserDto) {
+    const { projectId, userId } = dto;
+
+    const user = await this.userRepository.findByPk(userId);
+
+    if (!user) {
+      throw new HttpException(
+        `user with id: ${user} not exist`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const workHistoryInfo =
+      await this.workHistoryInfoService.createWorkHistoryInfo({
+        projectId,
+      });
+
+    await user.$add('workHistory', workHistoryInfo.id);
 
     return dto;
   }

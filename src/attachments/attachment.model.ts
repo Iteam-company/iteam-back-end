@@ -1,6 +1,7 @@
 import { File } from '@/files/file.model';
 import { Project } from '@/projects/project.model';
 import { User } from '@/users/user.model';
+import { WorkHistoryInfo } from '@/work-history-info/work-history-info.model';
 import { ApiProperty } from '@nestjs/swagger/dist/decorators';
 import {
   BelongsTo,
@@ -39,7 +40,7 @@ export class Attachment extends Model<
     description: 'comment to attach',
   })
   @Column({
-    type: DataType.TEXT,
+    type: DataType.TEXT('long'),
   })
   comment: string;
 
@@ -100,4 +101,21 @@ export class Attachment extends Model<
   })
   @BelongsTo(() => Project, 'projectId')
   project: Project;
+
+  @ApiProperty({
+    description: 'id of work history related with that attach',
+  })
+  @ForeignKey(() => WorkHistoryInfo)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: true,
+  })
+  workHistoryInfoId: number;
+
+  @ApiProperty({
+    type: () => WorkHistoryInfo,
+    description: 'project on that attachment is attached',
+  })
+  @BelongsTo(() => WorkHistoryInfo, 'workHistoryInfoId')
+  workHistoryInfo: Project;
 }

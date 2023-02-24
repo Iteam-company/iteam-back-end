@@ -25,6 +25,7 @@ import { AssignAttachmentToUserDto } from './dto/assign-attachment-to-user.dto';
 import { AssignEducationInfoToUserDto } from './dto/assign-education-info-to-user.dto';
 import { AssignTechnologyToUserDto } from './dto/assign-technology-to-user.dto';
 import { AssignUserRoleDto } from './dto/assign-user-role.dto';
+import { AssignWorkHistoryInfoToUserDto } from './dto/assign-work-history-info-to-user.dto';
 import { BanUserDto } from './dto/ban-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { SetUserWorkTypeDto } from './dto/set-user-work-type.dto';
@@ -108,7 +109,7 @@ export class UsersController {
     return this.usersService.assignTechnologyToUser(dto);
   }
 
-  @ApiOperation({ summary: 'assign technology to user' })
+  @ApiOperation({ summary: 'assign education info to user' })
   @ApiResponse({ status: HttpStatus.CREATED })
   // @Roles(roles.GUEST.value)
   // @UseGuards(JwtAuthGuard, RolesGuard)
@@ -116,5 +117,15 @@ export class UsersController {
   @HttpCode(HttpStatus.CREATED)
   assignEducationInfoToUser(@Body() dto: AssignEducationInfoToUserDto) {
     return this.usersService.assignEducationInfoToUser(dto);
+  }
+
+  @ApiOperation({ summary: 'assign work history info to user' })
+  @ApiResponse({ status: HttpStatus.CREATED })
+  // @Roles(roles.GUEST.value)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  @Post('/work-history-info')
+  @HttpCode(HttpStatus.CREATED)
+  assignWorkHistoryInfoToUser(@Body() dto: AssignWorkHistoryInfoToUserDto) {
+    return this.usersService.assignWorkHistoryInfoToUser(dto);
   }
 }
