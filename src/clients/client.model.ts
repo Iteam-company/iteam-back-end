@@ -1,4 +1,5 @@
 import { Project } from '@/projects/project.model';
+import { WorkHistoryInfo } from '@/work-history-info/work-history-info.model';
 import { ApiProperty } from '@nestjs/swagger/dist/decorators';
 import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
 
@@ -34,7 +35,7 @@ export class Client extends Model<Client, ClientCreationAttributes> {
     description: 'link to client page',
   })
   @Column({
-    type: DataType.TEXT,
+    type: DataType.TEXT('medium'),
   })
   link: string;
 
@@ -43,7 +44,7 @@ export class Client extends Model<Client, ClientCreationAttributes> {
     description: 'communication type',
   })
   @Column({
-    type: DataType.TEXT,
+    type: DataType.TEXT('medium'),
   })
   communicationType: string;
 

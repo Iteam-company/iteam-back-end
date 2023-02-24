@@ -7,6 +7,7 @@ import { Technology } from '@/technologies/technology.model';
 import { User } from '@/users/user.model';
 import { ProjectTechnology } from '@/util-models/project-technology.model';
 import { UserParticipantProject } from '@/util-models/user-participant-project.model';
+import { WorkHistoryInfo } from '@/work-history-info/work-history-info.model';
 import { ApiProperty } from '@nestjs/swagger/dist/decorators';
 import {
   BelongsTo,
@@ -52,7 +53,7 @@ export class Project extends Model<Project, ProjectCreationAttributes> {
     description: 'description of project ( 16 <= length)',
   })
   @Column({
-    type: DataType.TEXT,
+    type: DataType.TEXT('long'),
   })
   description: string;
 
@@ -68,7 +69,7 @@ export class Project extends Model<Project, ProjectCreationAttributes> {
     description: 'description of team members that works on that project',
   })
   @Column({
-    type: DataType.TEXT,
+    type: DataType.TEXT('long'),
   })
   teamSize: string;
 
@@ -78,7 +79,7 @@ export class Project extends Model<Project, ProjectCreationAttributes> {
       'description of work impact on that project by our team members',
   })
   @Column({
-    type: DataType.TEXT,
+    type: DataType.TEXT('long'),
   })
   ourCompanyResponsibility: string;
 
@@ -165,7 +166,7 @@ export class Project extends Model<Project, ProjectCreationAttributes> {
     description: 'describe why project work ends',
   })
   @Column({
-    type: DataType.TEXT,
+    type: DataType.TEXT('long'),
   })
   endReason: string;
 
@@ -210,7 +211,7 @@ export class Project extends Model<Project, ProjectCreationAttributes> {
     description: 'link to project',
   })
   @Column({
-    type: DataType.TEXT,
+    type: DataType.TEXT('medium'),
   })
   projectLink: string;
 
@@ -219,7 +220,7 @@ export class Project extends Model<Project, ProjectCreationAttributes> {
     description: 'login credentials to demo',
   })
   @Column({
-    type: DataType.TEXT,
+    type: DataType.TEXT('tiny'),
   })
   demoCredentialsLogin: string;
 
@@ -228,14 +229,21 @@ export class Project extends Model<Project, ProjectCreationAttributes> {
     description: 'password credentials to demo',
   })
   @Column({
-    type: DataType.TEXT,
+    type: DataType.TEXT('tiny'),
   })
   demoCredentialsPassword: string;
 
   @ApiProperty({
     type: [Attachment],
-    description: 'attachments attached with that user',
+    description: 'attached attachments',
   })
   @HasMany(() => Attachment, 'projectId')
   attachedAttachments: Array<Attachment>;
+
+  @ApiProperty({
+    type: [WorkHistoryInfo],
+    description: 'work histories related with that project',
+  })
+  @HasMany(() => WorkHistoryInfo, 'projectId')
+  workHistories: Array<WorkHistoryInfo>;
 }

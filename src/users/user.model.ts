@@ -8,6 +8,7 @@ import { Token } from '@/tokens/token.model';
 import { UserParticipantProject } from '@/util-models/user-participant-project.model';
 import { UserRole } from '@/util-models/user-role.model';
 import { UserTechnology } from '@/util-models/user-technology.model';
+import { WorkHistoryInfo } from '@/work-history-info/work-history-info.model';
 import { WorkType } from '@/work-types/work-type.model';
 import { ApiProperty } from '@nestjs/swagger/dist/decorators';
 import {
@@ -153,7 +154,7 @@ export class User extends Model<User, UserCreationAttributes> {
     description: 'user skills',
   })
   @Column({
-    type: DataType.STRING,
+    type: DataType.TEXT('long'),
     allowNull: true,
   })
   skills: string;
@@ -163,7 +164,7 @@ export class User extends Model<User, UserCreationAttributes> {
     description: 'user experience',
   })
   @Column({
-    type: DataType.STRING,
+    type: DataType.TEXT('long'),
     allowNull: true,
   })
   experience: string;
@@ -348,7 +349,91 @@ export class User extends Model<User, UserCreationAttributes> {
     allowNull: true,
   })
   telegramTag: string;
-}
 
-// stack: [{ type: ObjectId, ref: 'Stack' }],
-// company: { type: ObjectId, ref: 'Company' },
+  @ApiProperty({
+    example: 'sasha slyapik',
+    description: 'individual entrepreneur name',
+  })
+  @Column({
+    type: DataType.TEXT('long'),
+    allowNull: true,
+  })
+  individualEntrepreneurName: string;
+
+  @ApiProperty({
+    example: 'moskovskaya 45/1',
+    description: 'individual entrepreneur address',
+  })
+  @Column({
+    type: DataType.TEXT('long'),
+    allowNull: true,
+  })
+  individualEntrepreneurAddress: string;
+
+  @ApiProperty({
+    example: '2281488',
+    description: 'individual entrepreneur tax number',
+  })
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: true,
+  })
+  individualEntrepreneurIndividualTaxNumber: number;
+
+  @ApiProperty({
+    example: 'UA23132145422321423413244',
+    description: 'individual entrepreneur bank account number',
+  })
+  @Column({
+    type: DataType.TEXT('medium'),
+    allowNull: true,
+  })
+  individualEntrepreneurBankAccounNumber: string;
+
+  @ApiProperty({
+    example: 'UA23132145422321423413244',
+    description: 'individual entrepreneur bank name',
+  })
+  @Column({
+    type: DataType.TEXT('medium'),
+    allowNull: true,
+  })
+  individualEntrepreneurBankName: string;
+
+  @ApiProperty({
+    example: '2281488',
+    description: 'individual entrepreneur bank code',
+  })
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: true,
+  })
+  individualEntrepreneurBankCode: number;
+
+  @ApiProperty({
+    example: '07288098089 UKRSIBBANK ADNRIIVSKA STREET 2/12 KYIV, UKRAINE',
+    description: 'individual entrepreneur bank beneficiary',
+  })
+  @Column({
+    type: DataType.TEXT('long'),
+    allowNull: true,
+  })
+  individualEntrepreneurBeneficiaryBank: string;
+
+  @ApiProperty({
+    example: 'KHABUA2K',
+    description: 'individual entrepreneur swift code',
+  })
+  @Column({
+    type: DataType.TEXT('long'),
+    allowNull: true,
+  })
+  individualEntrepreneurSwiftCode: string;
+
+  @ApiProperty({
+    type: [WorkHistoryInfo],
+    description: 'attachments attached with that user',
+  })
+  @HasMany(() => WorkHistoryInfo, 'userId')
+  workHistory: Array<WorkHistoryInfo>;
+}

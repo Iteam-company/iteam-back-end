@@ -11,6 +11,7 @@ import { TokensModule } from '@/tokens/tokens.module';
 import { AttachmentsModule } from '@/attachments/attachments.module';
 import { TechnologiesModule } from '@/technologies/technologies.module';
 import { EducationInfosModule } from '@/education-infos/education-infos.module';
+import { WorkHistoryInfoModule } from '@/work-history-info/work-history-info.module';
 
 @Module({
   controllers: [UsersController],
@@ -23,6 +24,7 @@ import { EducationInfosModule } from '@/education-infos/education-infos.module';
     AttachmentsModule,
     TechnologiesModule,
     EducationInfosModule,
+    WorkHistoryInfoModule,
   ],
   exports: [UsersService],
 })

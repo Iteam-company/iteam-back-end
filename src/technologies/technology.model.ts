@@ -44,10 +44,10 @@ export class Technology extends Model<
 
   @ApiProperty({
     example: 'this is shit technology',
-    description: 'technology description',
+    description: 'project description',
   })
   @Column({
-    type: DataType.TEXT,
+    type: DataType.TEXT('long'),
   })
   description: string;
 
@@ -56,7 +56,7 @@ export class Technology extends Model<
     description: 'url to official website',
   })
   @Column({
-    type: DataType.TEXT,
+    type: DataType.TEXT('long'),
   })
   officialDocsHref: string;
 
@@ -65,7 +65,7 @@ export class Technology extends Model<
     description: 'technology icon url',
   })
   @Column({
-    type: DataType.TEXT,
+    type: DataType.TEXT('long'),
   })
   icon: string;
 

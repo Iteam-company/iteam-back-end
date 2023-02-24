@@ -34,7 +34,7 @@ export class File extends Model<File, FileCreationAttributes> {
     description: 'original name of file',
   })
   @Column({
-    type: DataType.TEXT,
+    type: DataType.TEXT('long'),
   })
   originalName: string;
 
@@ -43,7 +43,7 @@ export class File extends Model<File, FileCreationAttributes> {
     description: 'url to load file',
   })
   @Column({
-    type: DataType.TEXT,
+    type: DataType.TEXT('long'),
   })
   fileUrl: string;
 
@@ -52,7 +52,7 @@ export class File extends Model<File, FileCreationAttributes> {
     description: 'mime type of file',
   })
   @Column({
-    type: DataType.TEXT,
+    type: DataType.TEXT('medium'),
   })
   mimetype: string;
 
@@ -79,7 +79,7 @@ export class File extends Model<File, FileCreationAttributes> {
     description: 'public id of file',
   })
   @Column({
-    type: DataType.TEXT,
+    type: DataType.TEXT('long'),
   })
   publicId: string;
 }
