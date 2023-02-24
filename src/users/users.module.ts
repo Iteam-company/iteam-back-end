@@ -10,6 +10,7 @@ import { WorkTypesModule } from '@/work-types/work-types.module';
 import { TokensModule } from '@/tokens/tokens.module';
 import { AttachmentsModule } from '@/attachments/attachments.module';
 import { TechnologiesModule } from '@/technologies/technologies.module';
+import { EducationInfosModule } from '@/education-infos/education-infos.module';
 
 @Module({
   controllers: [UsersController],
@@ -21,6 +22,7 @@ import { TechnologiesModule } from '@/technologies/technologies.module';
     TokensModule,
     AttachmentsModule,
     TechnologiesModule,
+    EducationInfosModule,
   ],
   exports: [UsersService],
 })
