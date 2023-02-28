@@ -8,7 +8,7 @@ export class WorkTypesService {
   constructor(
     @InjectModel(WorkType) private workTypeRepository: typeof WorkType,
   ) {}
-  async createRole(dto: CreateWorkTypeDto) {
+  async createWorkType(dto: CreateWorkTypeDto) {
     const role = await this.workTypeRepository.create(dto);
 
     return role;
