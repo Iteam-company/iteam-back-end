@@ -11,7 +11,7 @@ export class WorkTypesController {
 
   @Post()
   create(@Body() dto: CreateWorkTypeDto) {
-    return this.workTypesService.createRole(dto);
+    return this.workTypesService.createWorkType(dto);
   }
 
   @Get('/:value')
