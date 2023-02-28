@@ -1,14 +1,15 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '@/app.module';
-import { EnviromentNames, getEnviroment } from './utils/evniroment-getter';
 import { DocumentBuilder } from '@nestjs/swagger';
 import { SwaggerModule } from '@nestjs/swagger/dist';
-import { globalPipes } from '@/utils/global-pipes';
-import { globalMiddlewares } from './utils/global-middlewares';
-import { cors } from '@/utils/cors-options';
+import { getEnviroment } from '@/common/helpers/evniroment-getter';
+import { EnviromentNames } from '@/common/enums/enviroment-names';
+import { globalPipes } from '@/common/global-pipes';
+import { globalMiddlewares } from '@/common/global-middlewares';
+import { corsOptions } from '@/config/cors-options';
 
 const start = async () => {
-  const app = await NestFactory.create(AppModule, { cors });
+  const app = await NestFactory.create(AppModule, { cors: corsOptions });
   const PORT = getEnviroment(EnviromentNames.PORT);
 
   globalPipes.forEach((pipe) => app.useGlobalPipes(pipe));
