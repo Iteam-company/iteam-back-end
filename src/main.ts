@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from '@/app.module';
 import { DocumentBuilder } from '@nestjs/swagger';
 import { SwaggerModule } from '@nestjs/swagger/dist';
-import { getEnviroment } from '@/common/helpers/evniroment-getter';
+import { getEnviroment } from '@/common/helpers/evniroment-getter.helper';
 import { EnviromentNames } from '@/common/enums/enviroment-names';
 import { globalPipes } from '@/common/global-pipes';
 import { globalMiddlewares } from '@/common/global-middlewares';

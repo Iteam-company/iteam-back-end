@@ -8,10 +8,13 @@ import {
   HttpStatus,
   UploadedFile,
   UseInterceptors,
+  Param,
+  Query,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common/decorators/core/use-guards.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger/dist';
+import { ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger/dist';
 import {
   ApiTags,
   ApiBearerAuth,
@@ -31,6 +34,13 @@ import { SetUserWorkTypeDto } from './dto/set-user-work-type.dto';
 import { User } from './user.model';
 import { UsersService } from './users.service';
 import { RolesGuard } from '@/modules/authentication/auth/guards/roles.guard';
+import { GetPipeType } from '@/common/enums/get-pipes-type';
+import { Criteries } from './enums/criteries';
+import {
+  getEnviroment,
+  isProd,
+} from '@/common/helpers/evniroment-getter.helper';
+import { EnviromentNames } from '@/common/enums/enviroment-names';
 
 @ApiBearerAuth()
 @ApiTags('users')
@@ -47,13 +57,56 @@ export class UsersController {
   }
 
   @ApiOperation({ summary: 'get all users' })
+  @ApiQuery({
+    name: 'pipe-type',
+    description: `if you want to ${Object.values(GetPipeType)}`,
+    required: false,
+    enum: GetPipeType,
+  })
+  @ApiQuery({
+    name: 'critery',
+    description: `critery by that you want to ${Object.values(GetPipeType)}`,
+    required: false,
+    enum: Criteries,
+  })
+  @ApiQuery({
+    name: 'value',
+    description: `value by that you want to ${Object.values(GetPipeType)}`,
+    required: false,
+  })
+  @ApiQuery({
+    name: 'page',
+    description: `page`,
+    required: false,
+  })
+  @ApiQuery({
+    name: 'limit',
+    description: `limit`,
+    required: false,
+  })
   @ApiResponse({ status: HttpStatus.OK, type: [User] })
   // @Roles(roles.GUEST.value)
   // @UseGuards(JwtAuthGuard, RolesGuard)
   @HttpCode(HttpStatus.OK)
   @Get()
-  getAllUsers() {
-    return this.usersService.getAllUsers();
+  getAllUsers(
+    @Query('pipe-type') action: GetPipeType,
+    @Query('critery') critery: Criteries,
+    @Query('value') value: string,
+    @Query('page') page: string,
+    @Query('limit') limit: string,
+  ) {
+    return this.usersService.getAllUsers(
+      action,
+      critery,
+      value,
+      page,
+      limit,
+      `${
+        getEnviroment(EnviromentNames.HOST_URL) +
+        (isProd ? '' : `:${getEnviroment(EnviromentNames.PORT)}`)
+      }/users`,
+    );
   }
 
   @ApiOperation({ summary: 'assign role to user' })

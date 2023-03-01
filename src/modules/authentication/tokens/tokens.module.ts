@@ -3,7 +3,7 @@ import { TokensService } from './tokens.service';
 import { JwtModule } from '@nestjs/jwt';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Token } from './token.model';
-import { getEnviroment } from '@/common/helpers/evniroment-getter';
+import { getEnviroment } from '@/common/helpers/evniroment-getter.helper';
 import { EnviromentNames } from '@/common/enums/enviroment-names';
 
 @Module({

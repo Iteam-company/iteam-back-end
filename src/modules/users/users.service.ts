@@ -19,6 +19,9 @@ import { TechnologiesService } from '@/modules/technologies/technologies.service
 import { EducationInfosService } from '@/modules/education-infos/education-infos.service';
 import { WorkHistoryInfoService } from '@/modules/work-history-info/work-history-info.service';
 import { FilesService } from '@/modules/files/files.service';
+import { GetPipeType } from '@/common/enums/get-pipes-type';
+import { Criteries } from './enums/criteries';
+import { getDbEntities } from '@/common/helpers/get-db-entities.helper';
 
 @Injectable()
 export class UsersService {
@@ -52,9 +55,23 @@ export class UsersService {
     return user;
   }
 
-  async getAllUsers() {
-    const users = await this.userRepository.findAll({ include: { all: true } });
-    return users;
+  async getAllUsers(
+    pipeType: GetPipeType,
+    critery: Criteries,
+    value: string,
+    page: string,
+    limit: string,
+    url: string,
+  ) {
+    return getDbEntities(
+      this.userRepository,
+      page,
+      limit,
+      pipeType,
+      critery,
+      value,
+      url,
+    );
   }
 
   async getUserByEmail(email: string) {

@@ -1,5 +1,5 @@
 import { EnviromentNames } from '@/common/enums/enviroment-names';
-import { getEnviroment } from '@/common/helpers/evniroment-getter';
+import { getEnviroment } from '@/common/helpers/evniroment-getter.helper';
 import { AllowedRegistrationEmail } from '@/modules/authentication/allowed-registration-emails/allowed-registration-email.model';
 import { Attachment } from '@/modules/attachments/attachment.model';
 import { Client } from '@/modules/clients/client.model';

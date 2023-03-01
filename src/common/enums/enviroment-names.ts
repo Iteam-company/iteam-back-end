@@ -1,6 +1,7 @@
 export enum EnviromentNames {
   NODE_ENV = 'NODE_ENV',
 
+  HOST_URL = 'HOST_URL',
   PORT = 'PORT',
 
   POSTGRES_HOST = 'POSTGRES_HOST',
