@@ -1,5 +1,5 @@
 import { EnviromentNames } from '@/common/enums/enviroment-names';
-import { getEnviroment } from '@/common/helpers/evniroment-getter';
+import { getEnviroment } from '@/common/helpers/evniroment-getter.helper';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { v2 as cloudinary, UploadApiResponse } from 'cloudinary';
 import { v4 as uuidv4 } from 'uuid';
@@ -65,7 +65,6 @@ export class CloudinaryService {
       );
       return uploadApiResponse;
     } catch (error) {
-      console.log({ error });
       throw new HttpException(
         error.message ?? 'error on upload file',
         HttpStatus.CONFLICT,
