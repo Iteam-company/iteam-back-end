@@ -8,9 +8,7 @@ import {
   HttpStatus,
   UploadedFile,
   UseInterceptors,
-  Param,
   Query,
-  ParseIntPipe,
 } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common/decorators/core/use-guards.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -41,6 +39,7 @@ import {
   isProd,
 } from '@/common/helpers/evniroment-getter.helper';
 import { EnviromentNames } from '@/common/enums/enviroment-names';
+import { UserPaginationDataResponseDto } from './dto/user-pagination-data-response.dto';
 
 @ApiBearerAuth()
 @ApiTags('users')
@@ -84,7 +83,10 @@ export class UsersController {
     description: `limit`,
     required: false,
   })
-  @ApiResponse({ status: HttpStatus.OK, type: [User] })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: UserPaginationDataResponseDto,
+  })
   // @Roles(roles.GUEST.value)
   // @UseGuards(JwtAuthGuard, RolesGuard)
   @HttpCode(HttpStatus.OK)

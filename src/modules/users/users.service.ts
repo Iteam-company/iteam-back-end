@@ -22,6 +22,7 @@ import { FilesService } from '@/modules/files/files.service';
 import { GetPipeType } from '@/common/enums/get-pipes-type';
 import { Criteries } from './enums/criteries';
 import { getDbEntities } from '@/common/helpers/get-db-entities.helper';
+import { UserPaginationDataResponseDto } from './dto/user-pagination-data-response.dto';
 
 @Injectable()
 export class UsersService {
@@ -62,7 +63,7 @@ export class UsersService {
     page: string,
     limit: string,
     url: string,
-  ) {
+  ): Promise<UserPaginationDataResponseDto> {
     return getDbEntities(
       this.userRepository,
       page,
