@@ -36,5 +36,4 @@ export enum Criteries {
   INDIVIDUALENTREPRENEURBENEFICIARYBANK = 'individualEntrepreneurBeneficiaryBank',
   INDIVIDUALENTREPRENEURSWIFTCODE = 'individualEntrepreneurSwiftCode',
   DEFAULTCOVERLETTER = 'defaultCoverLetter',
-  NONE = '',
 }
