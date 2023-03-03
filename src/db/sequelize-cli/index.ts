@@ -1,5 +1,9 @@
-import { EnviromentNames } from '@/common/enums/enviroment-names';
-import { getEnviroment } from '@/common/helpers/evniroment-getter.helper';
+import prettierOptions from '../../../.prettierrc.json';
+import * as dbConfig from '@/db/sequelize-cli/config/config.json';
+import * as path from 'path';
+import { Sequelize } from 'sequelize-typescript';
+import { generateMigration } from 'sequelize-typescript-model-migration';
+
 import { AllowedRegistrationEmail } from '@/modules/authentication/allowed-registration-emails/allowed-registration-email.model';
 import { Attachment } from '@/modules/attachments/attachment.model';
 import { Client } from '@/modules/clients/client.model';
@@ -12,41 +16,38 @@ import { Technology } from '@/modules/technologies/technology.model';
 import { Token } from '@/modules/authentication/tokens/token.model';
 import { User } from '@/modules/users/user.model';
 import { WorkHistoryInfo } from '@/modules/work-history-info/work-history-info.model';
-import { SequelizeModule } from '@nestjs/sequelize';
 import { ProjectTechnology } from '@/db/util-models/project-technology.model';
 import { UserParticipantProject } from '@/db/util-models/user-participant-project.model';
 import { UserRole } from '@/db/util-models/user-role.model';
 import { UserTechnology } from '@/db/util-models/user-technology.model';
 
-export const sequelizeModule = SequelizeModule.forRoot({
-  dialect: 'postgres',
-  host: getEnviroment(EnviromentNames.POSTGRES_HOST),
-  port: Number(getEnviroment(EnviromentNames.POSTGRES_PORT)),
-  username: getEnviroment(EnviromentNames.POSTGRES_USER),
-  password: getEnviroment(EnviromentNames.POSTGRES_PASSWORD),
-  database: getEnviroment(EnviromentNames.POSTGRES_DB),
+const { database, username, password } = dbConfig.development;
+
+const sequelize: Sequelize = new Sequelize(database, username, password, {
   models: [
-    User,
-    Role,
-    UserRole,
-    Token,
     AllowedRegistrationEmail,
-    Project,
-    UserParticipantProject,
-    ProjectTechnology,
-    Technology,
-    Client,
     Attachment,
-    File,
-    UserTechnology,
+    Client,
     EducationInfo,
-    WorkHistoryInfo,
+    File,
+    Project,
+    Role,
     WorkType,
+    Technology,
+    Token,
+    User,
+    WorkHistoryInfo,
+    ProjectTechnology,
+    UserParticipantProject,
+    UserRole,
+    UserTechnology,
   ],
-  autoLoadModels: true,
-  protocol: 'postgres',
-  dialectOptions: {
-    // ssl: true,
-    native: true,
-  },
+  dialect: 'postgres',
+});
+
+generateMigration(sequelize, {
+  outDir: path.join(__dirname, './migrations'),
+  snapshotDir: path.join(__dirname, './snapshots'),
+  migrationName: 'be-migration',
+  prettierOptions,
 });

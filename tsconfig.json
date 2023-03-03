@@ -18,7 +18,8 @@
     "noFallthroughCasesInSwitch": false,
     "baseUrl": "./src",
     "paths": {
-      "@/*": ["*"]
-    }
+      "@/*": ["*"],
+    },
+    "resolveJsonModule": true
   }
 }
