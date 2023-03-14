@@ -14,7 +14,6 @@ export const getDbEntities = async <T extends typeof User>(
   url: string,
 ) => {
   const [page, limit] = [Number(pageStr), Number(limitStr)];
-  console.log(page, 'pageStr', limit, 'limitStr');
 
   if (isNaN(page) || isNaN(limit)) {
     throw new HttpException(

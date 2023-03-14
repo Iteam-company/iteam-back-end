@@ -46,7 +46,7 @@ export const sequelizeModule = SequelizeModule.forRoot({
   autoLoadModels: true,
   protocol: 'postgres',
   dialectOptions: {
-    // ssl: true,
+    ssl: true,
     native: true,
   },
 });

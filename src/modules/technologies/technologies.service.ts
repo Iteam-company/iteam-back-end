@@ -12,17 +12,13 @@ export class TechnologiesService {
   ) {}
 
   async createTechnology(dto: CreateTechnologyDto) {
-    const technology = await this.technologyRepository.create(dto);
-
-    return technology;
+    return this.technologyRepository.create(dto);
   }
 
   async getAllTechnologies() {
-    const technologies = await this.technologyRepository.findAll({
+    return this.technologyRepository.findAll({
       include: { all: true },
     });
-
-    return technologies;
   }
 
   async deleteTechnologyById(id: string) {

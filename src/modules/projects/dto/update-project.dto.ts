@@ -30,7 +30,7 @@ export class UpdateProjectDto extends CreateProjectDto {
   })
   @IsString({ message: 'must be a string value' })
   @IsOptional()
-  teamSize: string;
+  readonly teamSize: string;
 
   @ApiProperty({
     example: 'working with FE',
@@ -39,7 +39,7 @@ export class UpdateProjectDto extends CreateProjectDto {
   })
   @IsString({ message: 'must be a string value' })
   @IsOptional()
-  ourCompanyResponsibility: string;
+  readonly ourCompanyResponsibility: string;
 
   @ApiProperty({
     example: PricingModel.FIXED_PRICE,
@@ -49,7 +49,7 @@ export class UpdateProjectDto extends CreateProjectDto {
   })
   @IsEnum(PricingModel, { always: true, message: 'must be of enum type' })
   @IsOptional()
-  pricingModel: PricingModel;
+  readonly pricingModel: PricingModel;
 
   @ApiProperty({
     example: 160.0,
@@ -57,7 +57,7 @@ export class UpdateProjectDto extends CreateProjectDto {
   })
   @IsNumber()
   @IsOptional()
-  averageHoursPerMonth: number;
+  readonly averageHoursPerMonth: number;
 
   @ApiProperty({
     example: 25.0,
@@ -65,7 +65,7 @@ export class UpdateProjectDto extends CreateProjectDto {
   })
   @IsNumber()
   @IsOptional()
-  hourlyRate: number;
+  readonly hourlyRate: number;
 
   @ApiProperty({
     example: 300.0,
@@ -73,7 +73,7 @@ export class UpdateProjectDto extends CreateProjectDto {
   })
   @IsNumber()
   @IsOptional()
-  fixedPrice: number;
+  readonly fixedPrice: number;
 
   @ApiProperty({
     example: new Date(),
@@ -81,7 +81,7 @@ export class UpdateProjectDto extends CreateProjectDto {
   })
   @IsDateString()
   @IsOptional()
-  startDate: Date;
+  readonly startDate: Date;
 
   @ApiProperty({
     example: new Date(),
@@ -89,7 +89,7 @@ export class UpdateProjectDto extends CreateProjectDto {
   })
   @IsDateString()
   @IsOptional()
-  endDate: Date;
+  readonly endDate: Date;
 
   @ApiProperty({
     example: 'project is POLNAYA HUITA',
@@ -97,7 +97,7 @@ export class UpdateProjectDto extends CreateProjectDto {
   })
   @IsString()
   @IsOptional()
-  endReason: string;
+  readonlyendReason: string;
 
   @ApiProperty({
     example: ProjectStatus.ACTIVE,
@@ -105,7 +105,7 @@ export class UpdateProjectDto extends CreateProjectDto {
   })
   @IsEnum(ProjectStatus, { always: true, message: 'not a enum value' })
   @IsOptional()
-  status: ProjectStatus;
+  readonly status: ProjectStatus;
 
   @ApiProperty({
     example: ProjectDeploymentStatus.MVP_RELEASED,
@@ -118,7 +118,7 @@ export class UpdateProjectDto extends CreateProjectDto {
     message: 'not a enum value',
   })
   @IsOptional()
-  projectDeploymentStatus: ProjectDeploymentStatus;
+  readonly projectDeploymentStatus: ProjectDeploymentStatus;
 
   @ApiProperty({
     example: 'https://nestjs.com/',
@@ -126,7 +126,7 @@ export class UpdateProjectDto extends CreateProjectDto {
   })
   @IsString()
   @IsOptional()
-  projectLink: string;
+  readonly projectLink: string;
 
   @ApiProperty({
     example: 'aniah@gmail.com',
@@ -134,7 +134,7 @@ export class UpdateProjectDto extends CreateProjectDto {
   })
   @IsString()
   @IsOptional()
-  demoCredentialsLogin: string;
+  readonly demoCredentialsLogin: string;
 
   @ApiProperty({
     example: '14881337',
@@ -142,5 +142,5 @@ export class UpdateProjectDto extends CreateProjectDto {
   })
   @IsString()
   @IsOptional()
-  demoCredentialsPassword: string;
+  readonly demoCredentialsPassword: string;
 }

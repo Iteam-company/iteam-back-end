@@ -23,6 +23,7 @@ import { GetPipeType } from '@/common/enums/get-pipes-type';
 import { Criteries } from './enums/criteries';
 import { getDbEntities } from '@/common/helpers/get-db-entities.helper';
 import { UserPaginationDataResponseDto } from './dto/user-pagination-data-response.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -56,6 +57,14 @@ export class UsersService {
     return user;
   }
 
+  async deleteUserById(id: string) {
+    const user = await this.userRepository.findByPk(id);
+
+    if (user) {
+      user.destroy();
+    }
+  }
+
   async getAllUsers(
     pipeType: GetPipeType,
     critery: Criteries,
@@ -73,6 +82,21 @@ export class UsersService {
       value,
       url,
     );
+  }
+
+  async updateUser(userId: string, dto: UpdateUserDto) {
+    const user = await this.userRepository.findByPk(userId);
+
+    if (!user) {
+      throw new HttpException(
+        `user with id: ${userId} not exist`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const updatedUser = await user.update(dto);
+
+    return updatedUser.reload({ include: { all: true } });
   }
 
   async getUserByEmail(email: string) {

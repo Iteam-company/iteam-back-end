@@ -9,6 +9,9 @@ import {
   UploadedFile,
   UseInterceptors,
   Query,
+  Patch,
+  Param,
+  Delete,
 } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common/decorators/core/use-guards.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -40,6 +43,7 @@ import {
 } from '@/common/helpers/evniroment-getter.helper';
 import { EnviromentNames } from '@/common/enums/enviroment-names';
 import { UserPaginationDataResponseDto } from './dto/user-pagination-data-response.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @ApiBearerAuth()
 @ApiTags('users')
@@ -139,6 +143,26 @@ export class UsersController {
   @HttpCode(HttpStatus.CREATED)
   banUser(@Body() dto: BanUserDto) {
     return this.usersService.banUser(dto);
+  }
+
+  @ApiOperation({ summary: 'update project' })
+  @ApiResponse({ status: HttpStatus.OK })
+  // @Roles(roles.GUEST.value)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  @Patch('/:id')
+  @HttpCode(HttpStatus.OK)
+  updateUser(@Param('id') id: string, @Body() dto: UpdateUserDto) {
+    return this.usersService.updateUser(id, dto);
+  }
+
+  @ApiOperation({ summary: 'delete project' })
+  @ApiResponse({ status: HttpStatus.ACCEPTED })
+  // @Roles(roles.GUEST.value)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  @HttpCode(HttpStatus.ACCEPTED)
+  @Delete('/:id')
+  deleteUserById(@Param('id') id: string) {
+    return this.usersService.deleteUserById(id);
   }
 
   @ApiConsumes('multipart/form-data')
