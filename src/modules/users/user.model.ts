@@ -302,8 +302,9 @@ export class User extends Model<User, UserCreationAttributes> {
   @BelongsToMany(() => Technology, () => UserTechnology)
   techStack: Array<Technology>;
 
+  @Default(UserStatus.ARCHIVED)
   @ApiProperty({
-    example: UserStatus.ACTIVE,
+    example: UserStatus.ARCHIVED,
     description: `project status may be: ${Object.values(UserStatus)}`,
   })
   @Column({

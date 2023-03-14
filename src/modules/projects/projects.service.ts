@@ -54,7 +54,7 @@ export class ProjectsService {
     const project = await this.projectRepository.findByPk(id);
 
     if (project) {
-      await project.destroy();
+      project.destroy();
     }
   }
 
