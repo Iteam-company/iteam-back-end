@@ -84,6 +84,21 @@ export class UsersService {
     );
   }
 
+  async getUserById(id: string | number) {
+    const user = await this.userRepository.findByPk(id, {
+      include: { all: true },
+    });
+
+    if (!user) {
+      throw new HttpException(
+        `client with id: ${id} not exist`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    return user;
+  }
+
   async updateUser(userId: string, dto: UpdateUserDto) {
     const user = await this.userRepository.findByPk(userId);
 
@@ -102,14 +117,6 @@ export class UsersService {
   async getUserByEmail(email: string) {
     const user = await this.userRepository.findOne({
       where: { email },
-      include: { all: true },
-    });
-
-    return user;
-  }
-
-  async getUserById(id: number) {
-    const user = await this.userRepository.findByPk(id, {
       include: { all: true },
     });
 

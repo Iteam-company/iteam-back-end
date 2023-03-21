@@ -115,6 +115,16 @@ export class UsersController {
     );
   }
 
+  @ApiOperation({ summary: 'get user' })
+  @ApiResponse({ status: HttpStatus.ACCEPTED })
+  // @Roles(roles.GUEST.value)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  @Get('/:id')
+  @HttpCode(HttpStatus.ACCEPTED)
+  getUserById(@Param('id') id: string) {
+    return this.usersService.getUserById(id);
+  }
+
   @ApiOperation({ summary: 'assign role to user' })
   @ApiResponse({ status: HttpStatus.CREATED })
   @Roles(roles.GUEST.value)

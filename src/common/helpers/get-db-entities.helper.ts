@@ -29,6 +29,7 @@ export const getDbEntities = async <T extends typeof User>(
   const options: FindAndCountOptions<T> = {
     offset,
     limit,
+    include: { all: true, nested: true },
   };
 
   switch (pipeType) {
@@ -38,6 +39,7 @@ export const getDbEntities = async <T extends typeof User>(
           [Op.eq]: value,
         },
       } as any;
+      break;
   }
 
   // Find the users that match the options
