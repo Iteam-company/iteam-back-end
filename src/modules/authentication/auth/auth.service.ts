@@ -1,3 +1,4 @@
+import { MailService } from '@/app-shared/services/mail/mail.service';
 import { AllowedRegistrationEmailsService } from '@/modules/authentication/allowed-registration-emails/allowed-registration-emails.service';
 import { RemoveTokenDto } from '@/modules/authentication/tokens/dto/delete-token.dto';
 import { TokensService } from '@/modules/authentication/tokens/tokens.service';
@@ -7,6 +8,7 @@ import { Injectable } from '@nestjs/common';
 import { HttpStatus } from '@nestjs/common/enums';
 import { HttpException } from '@nestjs/common/exceptions';
 import * as bcrypt from 'bcryptjs';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -14,6 +16,7 @@ export class AuthService {
     private userService: UsersService,
     private tokensService: TokensService,
     private allowedRegistrationEmailsService: AllowedRegistrationEmailsService,
+    private mailService: MailService,
   ) {}
 
   async singIn(userDto: CreateUserDto) {
@@ -69,6 +72,10 @@ export class AuthService {
 
     await user.reload({ include: { all: true } });
     return { tokens, user };
+  }
+
+  async resetPassword(dto: ResetPasswordDto) {
+    await this.mailService.send(dto.email);
   }
 
   async refresh(refreshToken: string) {

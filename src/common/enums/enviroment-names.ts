@@ -15,4 +15,9 @@ export enum EnviromentNames {
   CLOUD_NAME = 'CLOUD_NAME',
   API_KEY = 'API_KEY',
   API_SECRET = 'API_SECRET',
+
+  SMTP_HOST = 'smtp.gmail.com',
+  SMTP_PORT = '587',
+  SMTP_USER = 'mikhailo.kravtsov@gmail.com',
+  SMTP_PASSWORD = 'ytbuicxnfixcmwvh',
 }
