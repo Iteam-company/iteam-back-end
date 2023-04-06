@@ -6,6 +6,7 @@ import { Request, Response } from 'express';
 import { HttpStatus } from '@nestjs/common/enums';
 import { CookiesStorageKeys } from '@/common/constants/auth/cookies-storage-keys';
 import { thirtyDaysInMilliseconds } from '@/common/constants/auth/timeDescriptionInMilliseconds';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 
 @ApiBearerAuth()
 @ApiTags('authorization')
@@ -22,7 +23,12 @@ export class AuthController {
     response.cookie(
       CookiesStorageKeys.REFRESH_TOKEN,
       authorizedData.tokens.refreshToken,
-      { maxAge: thirtyDaysInMilliseconds, httpOnly: true },
+      {
+        maxAge: thirtyDaysInMilliseconds,
+        httpOnly: true,
+        sameSite: 'none',
+        secure: true,
+      },
     );
     delete authorizedData.tokens.refreshToken;
 
@@ -40,7 +46,12 @@ export class AuthController {
     response.cookie(
       CookiesStorageKeys.REFRESH_TOKEN,
       registeredData.tokens.refreshToken,
-      { maxAge: thirtyDaysInMilliseconds, httpOnly: true },
+      {
+        maxAge: thirtyDaysInMilliseconds,
+        httpOnly: true,
+        sameSite: 'none',
+        secure: true,
+      },
     );
     delete registeredData.tokens.refreshToken;
     return registeredData;
@@ -60,10 +71,21 @@ export class AuthController {
     response.cookie(
       CookiesStorageKeys.REFRESH_TOKEN,
       refreshData.tokens.refreshToken,
-      { maxAge: thirtyDaysInMilliseconds, httpOnly: true },
+      {
+        maxAge: thirtyDaysInMilliseconds,
+        httpOnly: true,
+        sameSite: 'none',
+        secure: true,
+      },
     );
     delete refreshData.tokens.refreshToken;
     return refreshData;
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('/reset-password')
+  async resetPassword(@Body() resetDto: ResetPasswordDto) {
+    await this.authService.resetPassword(resetDto);
   }
 
   @HttpCode(HttpStatus.OK)
