@@ -11,6 +11,7 @@ import { corsOptions } from '@/config/cors-options';
 const start = async () => {
   const app = await NestFactory.create(AppModule, { cors: corsOptions });
   const PORT = getEnviroment(EnviromentNames.PORT);
+  const HOST_URL = getEnviroment(EnviromentNames.HOST_URL);
 
   globalPipes.forEach((pipe) => app.useGlobalPipes(pipe));
   globalMiddlewares.forEach((middleware) => app.use(middleware));
@@ -29,7 +30,11 @@ const start = async () => {
   SwaggerModule.setup('/api/docs', app, document);
 
   await app.listen(PORT ?? 5000, () =>
-    console.log(`server started at module ${PORT ?? 5000}`),
+    console.log(
+      `Server started at module http://${HOST_URL ?? 'localhost'}:${
+        PORT ?? 5000
+      } 🚪`,
+    ),
   );
 };
 
