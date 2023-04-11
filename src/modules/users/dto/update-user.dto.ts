@@ -5,11 +5,13 @@ import {
   IsUrl,
   IsEnum,
   IsNumber,
+  IsPhoneNumber,
   IsOptional,
   IsBoolean,
   IsDate,
 } from 'class-validator';
 import { UserStatus } from '../enums/user-status';
+import { Transform } from 'class-transformer';
 
 export class UpdateUserDto {
   @ApiProperty({ example: 'example@gmail.com', description: 'user email' })
@@ -63,7 +65,7 @@ export class UpdateUserDto {
   readonly avatarUrl: string;
 
   @ApiProperty({ example: '+380685199434', description: 'user phone number' })
-  @IsNumber()
+  @IsPhoneNumber()
   @IsOptional()
   readonly phone: string;
 
@@ -127,6 +129,7 @@ export class UpdateUserDto {
       'Sat Feb 04 2023 14:02:55 GMT+0200 (Eastern European Standard Time)',
     description: 'date of birth',
   })
+  @Transform(({ value }) => value && new Date(value))
   @IsDate()
   @IsOptional()
   readonly birthday: Date;
@@ -144,6 +147,7 @@ export class UpdateUserDto {
       'Sat Feb 04 2023 14:02:55 GMT+0200 (Eastern European Standard Time)',
     description: 'date of offer',
   })
+  @Transform(({ value }) => value && new Date(value))
   @IsDate()
   @IsOptional()
   readonly startDate: Date;
@@ -153,6 +157,7 @@ export class UpdateUserDto {
       'Sat Feb 04 2023 14:02:55 GMT+0200 (Eastern European Standard Time)',
     description: 'end date of offer',
   })
+  @Transform(({ value }) => value && new Date(value))
   @IsDate()
   @IsOptional()
   readonly endDate: Date;
@@ -249,7 +254,7 @@ export class UpdateUserDto {
     example: '2281488',
     description: 'individual entrepreneur bank code',
   })
-  @IsString()
+  @IsNumber()
   @IsOptional()
   readonly individualEntrepreneurBankCode: number;
 
