@@ -10,7 +10,7 @@ import {
 //   optionsSuccessStatus: 204,
 // };
 
-const corsAllowedUrls = ['http://localhost:3000'];
+const corsAllowedUrls = ['http://localhost:3000', 'http://localhost:5001'];
 
 export const corsOptions: boolean | CorsOptions | CorsOptionsDelegate<any> = (
   req,
