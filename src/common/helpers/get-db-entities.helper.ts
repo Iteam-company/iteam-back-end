@@ -7,7 +7,7 @@ import { GetPipeType } from '@/common/enums/get-pipes-type';
 export const getDbEntities = async <T extends typeof User>(
   repository: T,
   pageStr = '1',
-  limitStr = '20',
+  limitStr = '2000',
   pipeType: GetPipeType,
   critery: string,
   value: string,
