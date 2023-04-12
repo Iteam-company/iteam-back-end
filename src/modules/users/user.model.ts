@@ -227,7 +227,7 @@ export class User extends Model<User, UserCreationAttributes> {
   })
   @Default(new Date())
   @Column({
-    type: DataType.STRING,
+    type: DataType.DATE,
     allowNull: true,
   })
   startDate: Date;
@@ -238,7 +238,7 @@ export class User extends Model<User, UserCreationAttributes> {
     description: 'end date of offer',
   })
   @Column({
-    type: DataType.STRING,
+    type: DataType.DATE,
     allowNull: true,
   })
   endDate: Date;
