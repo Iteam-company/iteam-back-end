@@ -10,7 +10,11 @@ import {
 //   optionsSuccessStatus: 204,
 // };
 
-const corsAllowedUrls = ['http://localhost:3000', 'http://localhost:5001'];
+const corsAllowedUrls = [
+  'http://localhost:3000',
+  'http://localhost:5001',
+  'https://iteam-users.netlify.app',
+];
 
 export const corsOptions: boolean | CorsOptions | CorsOptionsDelegate<any> = (
   req,
