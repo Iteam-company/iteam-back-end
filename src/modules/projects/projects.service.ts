@@ -42,7 +42,7 @@ export class ProjectsService {
     return projects;
   }
 
-  async getProjectById(id: number) {
+  async getProjectById(id: string) {
     const project = await this.projectRepository.findByPk(id, {
       include: { all: true },
     });
