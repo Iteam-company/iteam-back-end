@@ -58,6 +58,13 @@ export class ProjectsController {
   getAllProjects() {
     return this.projectsService.getAllProjects();
   }
+  @ApiOperation({ summary: 'get project by id' })
+  @ApiResponse({ status: HttpStatus.OK, type: Project })
+  @HttpCode(HttpStatus.OK)
+  @Get('/:id')
+  getProjectById(@Param('id') id: string) {
+    return this.projectsService.getProjectById(id);
+  }
 
   @ApiOperation({ summary: 'delete project' })
   @ApiResponse({ status: HttpStatus.ACCEPTED })

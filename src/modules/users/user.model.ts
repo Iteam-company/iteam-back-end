@@ -197,7 +197,7 @@ export class User extends Model<User, UserCreationAttributes> {
     description: 'date of birth',
   })
   @Column({
-    type: DataType.STRING,
+    type: DataType.DATE,
     allowNull: true,
   })
   birthday: Date;
@@ -227,7 +227,7 @@ export class User extends Model<User, UserCreationAttributes> {
   })
   @Default(new Date())
   @Column({
-    type: DataType.STRING,
+    type: DataType.DATE,
     allowNull: true,
   })
   startDate: Date;
@@ -238,7 +238,7 @@ export class User extends Model<User, UserCreationAttributes> {
     description: 'end date of offer',
   })
   @Column({
-    type: DataType.STRING,
+    type: DataType.DATE,
     allowNull: true,
   })
   endDate: Date;
@@ -415,7 +415,7 @@ export class User extends Model<User, UserCreationAttributes> {
     description: 'individual entrepreneur bank code',
   })
   @Column({
-    type: DataType.BIGINT,
+    type: DataType.INTEGER,
     allowNull: true,
   })
   individualEntrepreneurBankCode: number;
