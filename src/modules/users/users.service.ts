@@ -219,10 +219,14 @@ export class UsersService {
   }
 
   async assignEducationInfoToUser(dto: AssignEducationInfoToUserDto) {
-    const { universityName, userId } = dto;
+    const { universityName, specialization, startDate, endDate, educationLevel, userId } = dto;
 
     const educationInfo = await this.educationInfoService.createEducationInfo({
       universityName,
+      specialization,
+      startDate,
+      endDate,
+      educationLevel
     });
 
     const user = await this.userRepository.findByPk(userId);
