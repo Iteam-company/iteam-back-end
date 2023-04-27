@@ -12,6 +12,10 @@ import { EducationLevel } from './enums/education-level';
 
 interface EducationInfoCreationAttributes {
   universityName: string;
+  startDate: Date;
+  endDate: Date;
+  specialization: string;
+  educationLevel: EducationLevel;
 }
 
 @Table({
@@ -82,7 +86,7 @@ export class EducationInfo extends Model<
     type: DataType.ENUM,
     values: Object.values(EducationLevel),
   })
-  pricingModel: EducationLevel;
+  educationLevel: EducationLevel;
 
   @ForeignKey(() => User)
   @Column({
