@@ -6,12 +6,14 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  Patch,
   Post,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateEducationInfoDto } from './dto/create-education-info.dto';
 import { EducationInfo } from './education-info.model';
 import { EducationInfosService } from './education-infos.service';
+import { UpdateEducationInfoDto } from '@/modules/education-infos/dto/update-education-info.dto';
 
 @ApiTags('education info')
 @Controller('education-infos')
@@ -36,6 +38,14 @@ export class EducationInfosController {
   @Get()
   getAllEducationInfo() {
     return this.educationInfoService.getAllEducationInfos();
+  }
+
+  @ApiOperation({ summary: 'update education info' })
+  @ApiResponse({ status: HttpStatus.OK })
+  @Patch('/:id')
+  @HttpCode(HttpStatus.OK)
+  updateEducationInfo(@Param('id') id: string, @Body() dto: UpdateEducationInfoDto) {
+    return this.educationInfoService.updateEducationInfo(id, dto);
   }
 
   @ApiOperation({ summary: 'delete education info' })
