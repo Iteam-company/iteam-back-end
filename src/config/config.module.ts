@@ -3,6 +3,6 @@ import { getEnviroment } from '@/common/helpers/evniroment-getter.helper';
 import { ConfigModule } from '@nestjs/config';
 
 export const configModule = ConfigModule.forRoot({
-  envFilePath: `.${getEnviroment(EnviromentNames.NODE_ENV)}.env`,
+  envFilePath: `.env.${getEnviroment(EnviromentNames.NODE_ENV)}`,
   isGlobal: true,
 });

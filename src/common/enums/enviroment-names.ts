@@ -16,8 +16,8 @@ export enum EnviromentNames {
   API_KEY = 'API_KEY',
   API_SECRET = 'API_SECRET',
 
-  SMTP_HOST = 'smtp.gmail.com',
-  SMTP_PORT = '587',
-  SMTP_USER = 'mikhailo.kravtsov@gmail.com',
-  SMTP_PASSWORD = 'ytbuicxnfixcmwvh',
+  SMTP_HOST = 'SMTP_HOST',
+  SMTP_PORT = 'SMTP_PORT',
+  SMTP_USER = 'SMTP_USER',
+  SMTP_PASSWORD = 'SMTP_PASSWORD',
 }
