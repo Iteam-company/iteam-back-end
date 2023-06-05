@@ -1,5 +1,8 @@
 {
   "name": "iteam-back-end",
+  "engines" : { 
+    "node" : ">=16.0.0 <=18.0.0"
+  },
   "version": "0.0.1",
   "description": "",
   "author": "Misha Kravtsov Igor Sergienko Evgen Semenyuk",
