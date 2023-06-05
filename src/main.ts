@@ -31,7 +31,7 @@ const start = async () => {
 
   await app.listen(PORT ?? 5000, () =>
     console.log(
-      `Server started at module http://${HOST_URL ?? 'localhost'}:${
+      `Server started at module => http://${HOST_URL ?? 'localhost'}:${
         PORT ?? 5000
       } 🚪`,
     ),
