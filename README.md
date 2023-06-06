@@ -7,6 +7,30 @@
 1.  `npm install` || `yarn`
 1.  fill `.env.development` for dev or `.env.production` for prod by `env.example`
 
+
+.env.development:
+```
+# URL
+HOST_URL=localhost
+PORT=5001
+
+# DB
+POSTGRES_HOST=rogue.db.elephantsql.com
+POSTGRES_USER=orssobts
+POSTGRES_DB=orssobts
+POSTGRES_PASSWORD=cFvUIucl1aCPPRJv1Mj_Sch1L9QRphru
+POSTGRES_PORT=5432
+
+# JWT
+JWT_PRIVATE_KEY=secret-key
+
+# SMTP
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=465
+SMTP_USER=iteam.comp.org@gmail.com
+SMTP_PASSWORD=fqrpshvbumbqdyok
+```
+
 ## Running the app:
 
 ### `NPM`
