@@ -19,7 +19,7 @@ Build and start automatically:
 $ npm run start
 ```
 
-Start if exast `dist` folder:
+Start if exist `dist` folder:
 
 ```sh
 $ npm run start:prod
@@ -43,7 +43,7 @@ Build and start automatically:
 $ yarn start
 ```
 
-Start if exast `dist` folder:
+Start if exist `dist` folder:
 
 ```sh
 $ yarn start:prod
